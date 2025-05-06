@@ -10,7 +10,7 @@ The aim is not to build one universal agent, but rather to understand what it ta
 
 ## 🧩 Games
 
-1. Gridworld (RL fundamentals)
+1. Gridworld (RL fundamentals, not a placement game, but to learn the basics)
 2. Tic-Tac-Toe (strategy and rewards)
 3. 8 Queens (search and constraints)
 4. Tic-Tac-Logic (rule-driven grids)
