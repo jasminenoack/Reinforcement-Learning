@@ -8,7 +8,7 @@ Each game includes multiple difficulty stages. For example, a 4×4 Sudoku with 1
 
 The aim is not to build one universal agent, but rather to understand what it takes for an agent to solve each class of puzzle effectively.
 
-## 🧩 Games
+# 🧩 Games
 
 1. Gridworld (RL fundamentals, not a placement game, but to learn the basics)
 2. Tic-Tac-Toe (strategy and rewards)
@@ -17,7 +17,7 @@ The aim is not to build one universal agent, but rather to understand what it ta
 5. Small Sudoku (structured logic with partial observability)
 6. Large Sudoku (full challenge)
 
-## ❓ Open Questions
+# ❓ Open Questions
 
 1. Can we understand the rules the agent has learned, post-training?
 2. Can we interpret the agent’s steps to understand how it solves puzzles?
@@ -26,4 +26,18 @@ The aim is not to build one universal agent, but rather to understand what it ta
 5. How does reward timing (immediate vs delayed feedback) impact learning?
 6. How do we know when an agent has "finished" learning?
 7. Are these agents useful — or just a fun way to replicate solved problems?
+
+# How to run 
+
+Create a virtual environment and install the requirements:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Then run the main script:
+
+```bash
 
