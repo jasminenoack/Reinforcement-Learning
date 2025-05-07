@@ -102,8 +102,12 @@ class GridWorldEnv:
         self.current_step = 0
 
     @property
+    def reached_goal(self) -> bool:
+        return self.agent_pos == self.goal
+
+    @property
     def done(self) -> bool:
-        return self.agent_pos == self.goal or self.current_step >= self.max_steps
+        return self.reached_goal or self.current_step >= self.max_steps
 
     def reset(self) -> None:
         self._setup()

@@ -69,6 +69,23 @@ class TestDone:
         assert env.done is True
 
 
+class TestReachedGoal:
+    def test_reached_goal_is_false_when_not_at_goal(self):
+        env = GridWorldEnv()
+        env.agent_pos = (2, 2)
+        assert env.reached_goal is False
+
+    def test_reached_goal_is_true_when_at_goal(self):
+        env = GridWorldEnv()
+        env.agent_pos = (4, 4)
+        assert env.reached_goal is True
+
+    def test_reached_goal_at_start(self):
+        env = GridWorldEnv()
+        env.agent_pos = (0, 0)
+        assert env.reached_goal is False
+
+
 class TestGetState:
     def test_get_state(self):
         env = GridWorldEnv()
