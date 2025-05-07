@@ -3,6 +3,7 @@ from functools import reduce
 from os import mkdir
 from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
+from gridworld.agents.q_learning_agent import QLearningAgent
 from gridworld.agents.random_agent import RandomAgent
 from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
 from rich.console import Console
@@ -50,6 +51,7 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         cols=env.cols,
         stat=f"Avg Visit Count ({agent.__class__.__name__})",
         folder=folder,
+        scale_max=5,
     )
     render_heatmap(
         visit_counts=total_visit_counts,
@@ -57,6 +59,7 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         cols=env.cols,
         stat=f"Total Visit Count ({agent.__class__.__name__})",
         folder=folder,
+        scale_max=25,
     )
     log()
 
@@ -66,3 +69,5 @@ env = GridWorldEnv()
 run_test(env, random_agent, render=False)
 designed_agent = ManhattanAgent()
 run_test(env, designed_agent, render=False)
+learning_agent = QLearningAgent()
+run_test(env, learning_agent, render=False)

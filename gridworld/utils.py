@@ -35,18 +35,22 @@ def render_heatmap(
     cols: int,
     stat="Visit Count",
     folder: str = "output",
+    filename: str | None = None,
+    scale_max: int = 20,
 ) -> None:
     numpy_map = np.zeros((rows, cols))
     for (x, y), count in visit_counts.items():
         numpy_map[x, y] = count
 
     name = f"Gridworld {stat} Heatmap"
-    plt.imshow(numpy_map, cmap="hot", interpolation="nearest")
+    plt.imshow(numpy_map, cmap="hot", interpolation="nearest", vmax=scale_max)
     plt.colorbar(label=stat)
     plt.title(name)
     plt.show(block=False)
     plt.pause(2)
-    plt.savefig(
-        f'{folder}/{name.lower().replace(" ", "_").replace("(", "_").replace(")", "_")}.png'
+    filename = (
+        filename
+        or f'{name.lower().replace(" ", "_").replace("(", "_").replace(")", "_")}'
     )
+    plt.savefig(f"{folder}/{filename}.png")
     plt.close()
