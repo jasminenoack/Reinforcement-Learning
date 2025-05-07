@@ -2,8 +2,7 @@ from functools import reduce
 import os
 import shutil
 import time
-from gridworld.agents.manhattan_agent import ManhattanAgent
-from gridworld.agents.q_learning_agent import QLearningAgent
+from gridworld.agents.lost_agent import LostAgent
 from gridworld.agents.generic_agent import Agent
 from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
 from rich.console import Console
@@ -119,30 +118,6 @@ if __name__ == "__main__":
         pass
 
     env = GridWorldEnv(rows=10, cols=10)
-    agent = QLearningAgent(goal=env.goal)
+    agent = LostAgent(goal=env.goal)
     runner = Runner(env, agent)
-    run_count = 50
-    results = runner.run_episodes(run_count)
-    analysis = runner.analyze_results(results)
-    console.print(f"Analysis of 10 episodes with {agent.__class__.__name__} agent:")
-    console.print("Average Reward:", analysis["reward"]["average"])
-    console.print("Max Reward:", analysis["reward"]["max"])
-    console.print("Min Reward:", analysis["reward"]["min"])
-    console.print("Average Steps:", analysis["steps"]["average"])
-    console.print("Max Steps:", analysis["steps"]["max"])
-    console.print("Min Steps:", analysis["steps"]["min"])
-    console.print("Reached Goal Count:", analysis["reached_goal"]["count"])
-    console.print(
-        "Reached Goal Percentage:", analysis["reached_goal"]["count"] / run_count * 100
-    )
-
-    visit_counts = [result["visit_counts"] for result in results]
-    total_visit_counts = reduce(lambda x, y: x + y, visit_counts, VisitCounter())
-    render_heatmap(
-        visit_counts=total_visit_counts,
-        rows=env.rows,
-        cols=env.cols,
-        stat=f"Total Visit Count ({agent.__class__.__name__})",
-        folder=folder,
-        scale_max=50,
-    )
+    runner.run_episode(render=True, clear_render=False, sleep=0.5)

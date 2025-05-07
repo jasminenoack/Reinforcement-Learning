@@ -25,6 +25,25 @@ class Step(NamedTuple):
     new_state: tuple[int, int]
     done: bool
 
+    def get_reverse_action(self) -> "Step":
+        if self.start == self.new_state:
+            return None
+        reverse_actions = {
+            UP: DOWN,
+            DOWN: UP,
+            LEFT: RIGHT,
+            RIGHT: LEFT,
+        }
+        if self.action in reverse_actions:
+            return Step(
+                start=self.new_state,
+                action=reverse_actions[self.action],
+                reward=self.reward,
+                new_state=self.start,
+                done=self.done,
+            )
+        return None
+
 
 class RunnerReturn(TypedDict):
     total_reward: float

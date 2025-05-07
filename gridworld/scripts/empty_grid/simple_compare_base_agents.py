@@ -2,6 +2,7 @@ from functools import reduce
 from os import mkdir
 import os
 import shutil
+from gridworld.agents.lost_agent import LostAgent
 from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
 from gridworld.agents.q_learning_agent import QLearningAgent
@@ -31,9 +32,12 @@ def log(*message: list[str]):
         f.write(" ".join(str(m) for m in message) + "\n")
 
 
+NUMBER_OF_ITERATIONS = 50
+
+
 def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
     runner = Runner(env, agent)
-    results = runner.run_episodes(10, render=False)
+    results = runner.run_episodes(NUMBER_OF_ITERATIONS, render=False)
     analysis = runner.analyze_results(results)
 
     visit_counts = [result["visit_counts"] for result in results]
@@ -55,7 +59,7 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         cols=env.cols,
         stat=f"Avg Visit Count ({agent.__class__.__name__})",
         folder=folder,
-        scale_max=5,
+        scale_max=3,
     )
     render_heatmap(
         visit_counts=total_visit_counts,
@@ -63,15 +67,19 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         cols=env.cols,
         stat=f"Total Visit Count ({agent.__class__.__name__})",
         folder=folder,
-        scale_max=25,
+        scale_max=NUMBER_OF_ITERATIONS * 2,
     )
     log()
 
 
-random_agent = RandomAgent()
+agents = [
+    RandomAgent(),
+    LostAgent(),
+    ManhattanAgent(),
+    QLearningAgent(),
+]
+
 env = GridWorldEnv()
-run_test(env, random_agent, render=False)
-designed_agent = ManhattanAgent()
-run_test(env, designed_agent, render=False)
-learning_agent = QLearningAgent()
-run_test(env, learning_agent, render=False)
+
+for agent in agents:
+    run_test(env, agent, render=False)
