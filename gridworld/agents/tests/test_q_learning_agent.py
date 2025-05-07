@@ -100,3 +100,19 @@ class TestObserve:
             (0, 0): {UP: 0, DOWN: 0.8, LEFT: 0, RIGHT: 0},
             (1, 0): {UP: 0, DOWN: 0, LEFT: 10, RIGHT: 0},
         }
+
+    def test_next_best_choice_is_negative(self):
+        agent = QLearningAgent()
+        agent.q_table[(1, 0)] = {UP: -10, DOWN: -1, LEFT: -10, RIGHT: -1}
+        step = Step(
+            start=(0, 0),
+            action=DOWN,
+            reward=-1,
+            new_state=(1, 0),
+            done=False,
+        )
+        agent.observe(step)
+        assert agent.q_table == {
+            (0, 0): {UP: 0, DOWN: -0.19, LEFT: 0, RIGHT: 0},
+            (1, 0): {UP: -10, DOWN: -1, LEFT: -10, RIGHT: -1},
+        }

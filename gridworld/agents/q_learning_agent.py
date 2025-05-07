@@ -6,7 +6,7 @@ from gridworld.utils import SIMPLE_ACTIONS, Step
 
 
 class QLearningAgent(Agent):
-    def __init__(self, *, rng: Random | None = None):
+    def __init__(self, *, rng: Random | None = None, **kwargs):
         self.actions = SIMPLE_ACTIONS
         self.q_table = defaultdict(lambda: {action: 0 for action in self.actions})
         # exploration rate

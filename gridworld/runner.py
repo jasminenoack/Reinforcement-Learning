@@ -1,11 +1,14 @@
+from functools import reduce
+import os
+import shutil
 import time
 from gridworld.agents.manhattan_agent import ManhattanAgent
+from gridworld.agents.q_learning_agent import QLearningAgent
 from gridworld.agents.generic_agent import Agent
-from gridworld.agents.random_agent import RandomAgent
-from gridworld.components.grid_environment import GridWorldEnv
+from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
 from rich.console import Console
 
-from gridworld.utils import RunnerReturn, Step
+from gridworld.utils import RunnerReturn, Step, render_heatmap
 
 
 console = Console()
@@ -105,19 +108,41 @@ class Runner:
 
 
 if __name__ == "__main__":
-    random_agent = RandomAgent()
-    env = GridWorldEnv()
-    random_runner = Runner(env, random_agent)
-    random_results = random_runner.run_episodes(10, render=False)
-    random_analysis = random_runner.analyze_results(random_results)
-    console.print("Analysis of 10 episodes with random agent:")
-    console.print("Average Reward:", random_analysis["reward"]["average"])
-    console.print("Max Reward:", random_analysis["reward"]["max"])
-    console.print("Min Reward:", random_analysis["reward"]["min"])
-    console.print("Average Steps:", random_analysis["steps"]["average"])
-    console.print("Max Steps:", random_analysis["steps"]["max"])
-    console.print("Min Steps:", random_analysis["steps"]["min"])
-    console.print("Reached Goal Count:", random_analysis["reached_goal"]["count"])
+    folder = f"output/runner-main"
+    output_file = f"{folder}/output.txt"
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
+
+    try:
+        os.mkdir(folder)
+    except FileExistsError:
+        pass
+
+    env = GridWorldEnv(rows=10, cols=10)
+    agent = QLearningAgent(goal=env.goal)
+    runner = Runner(env, agent)
+    run_count = 50
+    results = runner.run_episodes(run_count)
+    analysis = runner.analyze_results(results)
+    console.print(f"Analysis of 10 episodes with {agent.__class__.__name__} agent:")
+    console.print("Average Reward:", analysis["reward"]["average"])
+    console.print("Max Reward:", analysis["reward"]["max"])
+    console.print("Min Reward:", analysis["reward"]["min"])
+    console.print("Average Steps:", analysis["steps"]["average"])
+    console.print("Max Steps:", analysis["steps"]["max"])
+    console.print("Min Steps:", analysis["steps"]["min"])
+    console.print("Reached Goal Count:", analysis["reached_goal"]["count"])
     console.print(
-        "Reached Goal Percentage:", random_analysis["reached_goal"]["count"] / 10 * 100
+        "Reached Goal Percentage:", analysis["reached_goal"]["count"] / run_count * 100
+    )
+
+    visit_counts = [result["visit_counts"] for result in results]
+    total_visit_counts = reduce(lambda x, y: x + y, visit_counts, VisitCounter())
+    render_heatmap(
+        visit_counts=total_visit_counts,
+        rows=env.rows,
+        cols=env.cols,
+        stat=f"Total Visit Count ({agent.__class__.__name__})",
+        folder=folder,
+        scale_max=50,
     )

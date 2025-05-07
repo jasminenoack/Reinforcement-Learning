@@ -4,6 +4,7 @@ from gridworld.utils import DOWN, RIGHT, UP, LEFT
 
 
 class ManhattanAgent(Agent):
+
     def reset(self, **kwargs): ...
 
     def act(self, state):

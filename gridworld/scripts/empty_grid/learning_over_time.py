@@ -10,7 +10,6 @@ from rich.console import Console
 from gridworld.utils import (
     line_plot,
     render_directional_heatmap_for_q_table,
-    render_heatmap,
 )
 
 from gridworld.runner import Runner
@@ -50,7 +49,7 @@ class Summary:
 
 summaries = []
 
-NUMBER_OF_EPISODES_PER_ITERATION = 3
+NUMBER_OF_EPISODES_PER_ITERATION = 30
 
 
 def run_test(env: GridWorldEnv, agent: Agent, iteration: int, render: bool = False):
@@ -71,7 +70,9 @@ def run_test(env: GridWorldEnv, agent: Agent, iteration: int, render: bool = Fal
             max_steps=analysis["steps"]["max"],
             min_steps=analysis["steps"]["min"],
             reached_goal_count=analysis["reached_goal"]["count"],
-            reached_goal_percentage=analysis["reached_goal"]["count"] / 3 * 100,
+            reached_goal_percentage=analysis["reached_goal"]["count"]
+            / len(results)
+            * 100,
         )
     )
 
@@ -161,7 +162,7 @@ def write_summary_charts(summaries: list[Summary]) -> None:
     log(f"![reached_goal](./reached_goal.png)")
 
 
-env = GridWorldEnv()
+env = GridWorldEnv(rows=10, cols=10)
 env.max_steps = 100
 learning_agent = QLearningAgent()
 log(
