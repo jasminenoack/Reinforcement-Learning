@@ -46,10 +46,21 @@ Example usage:
 from collections import defaultdict
 from dataclasses import dataclass
 from unittest.mock import ANY
+from matplotlib.pylab import dirichlet
 from rich.console import Console
 from rich.text import Text
 
-from gridworld.utils import DOWN, LEFT, RIGHT, UP, render_heatmap
+from gridworld.utils import (
+    DOWN,
+    GOAL,
+    LEFT,
+    MOVEMENT,
+    OFF_BOARD,
+    RIGHT,
+    UP,
+    WALL,
+    render_heatmap,
+)
 
 console = Console()
 
@@ -67,12 +78,12 @@ ACTIONS = {
     RIGHT: ActionConfig(0, 1),
 }
 
-
-@dataclass
-class RewardConfiguration:
-    step_penalty: int = -1
-    off_board_penalty: int = -10
-    goal_reward: int = 100
+STEP_RESULT_REWARD = {
+    OFF_BOARD: -10,
+    WALL: -10,
+    GOAL: 100,
+    MOVEMENT: -1,
+}
 
 
 @dataclass
@@ -88,8 +99,8 @@ class StepResult:
 
 
 class VisitCounter:
-    def __init__(self):
-        self.data = defaultdict(int)
+    def __init__(self, data: dict = None) -> None:
+        self.data = data or defaultdict(int)
 
     def __getitem__(self, key):
         return self.data[key]
@@ -99,9 +110,22 @@ class VisitCounter:
 
     def __eq__(self, value: "dict | VisitCounter") -> bool:
         if isinstance(value, dict):
-            return self.data == value
+            value_comparison = {
+                key: value for key, value in value.items() if value != 0
+            }
+            data_comparison = {
+                key: value for key, value in self.data.items() if value != 0
+            }
+            return value_comparison == data_comparison
         if isinstance(value, VisitCounter):
-            return self.data == value.data
+            value_comparison = {
+                key: value for key, value in value.data.items() if value != 0
+            }
+            data_comparison = {
+                key: value for key, value in self.data.items() if value != 0
+            }
+
+            return data_comparison == value_comparison
         if value is ANY:
             return True
         return False
@@ -129,6 +153,17 @@ class VisitCounter:
     def items(self):
         return self.data.items()
 
+    def values(self):
+        return self.data.values()
+
+
+@dataclass
+class Cell:
+    agent: bool = False
+    goal: bool = False
+    wall: bool = False
+    visited: int = 0
+
 
 class GridWorldEnv:
     def __init__(self, *, max_steps: int = 100, rows: int = 5, cols: int = 5) -> None:
@@ -136,24 +171,67 @@ class GridWorldEnv:
         self.cols = cols
         self.start = (0, 0)
         self.goal = (rows - 1, cols - 1)
-        self.reward_config = RewardConfiguration()
+        self.reward_config = STEP_RESULT_REWARD
         self.max_steps = max_steps
         self._setup()
 
     def _setup(self) -> None:
-        self.agent_pos = self.start
         self.total_reward = 0
         self.current_step = 0
-        self.visit_counts = VisitCounter()
-        self.visit_counts[self.agent_pos] = 1
+        self.grid = [[Cell() for _ in range(self.cols)] for _ in range(self.rows)]
+        self.get_cell(self.start).agent = True
+        self.get_cell(self.goal).goal = True
+        self.visit(new_pos=self.agent_pos)
+
+    @property
+    def visit_counts(self) -> VisitCounter:
+        return VisitCounter(
+            data={
+                (i, j): self.grid[i][j].visited
+                for i in range(self.rows)
+                for j in range(self.cols)
+            }
+        )
 
     @property
     def reached_goal(self) -> bool:
-        return self.agent_pos == self.goal
+        goal = self.find_goal_position()
+        goal_cell = self.get_cell(goal)
+        return goal_cell.visited > 0 and goal_cell.agent
 
     @property
     def done(self) -> bool:
         return self.reached_goal or self.current_step >= self.max_steps
+
+    @property
+    def agent_pos(self) -> tuple[int, int]:
+        return self.find_agent_position()
+
+    @agent_pos.setter
+    def agent_pos(self, pos: tuple[int, int]) -> None:
+        current_agent_pos = self.find_agent_position()
+        self.get_cell(current_agent_pos).agent = False
+        self.get_cell(pos).agent = True
+        self.visit(new_pos=pos)
+
+    def get_cell(self, pos: tuple[int, int]) -> Cell:
+        if not (0 <= pos[0] < self.rows and 0 <= pos[1] < self.cols):
+            raise ValueError(f"Position {pos} is out of bounds.")
+        return self.grid[pos[0]][pos[1]]
+
+    def find_agent_position(self) -> tuple[int, int]:
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.grid[i][j].agent:
+                    return (i, j)
+        raise ValueError("Agent not found in the grid.")
+
+    def find_goal_position(self) -> tuple[int, int]:
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.grid[i][j].goal:
+                    return (i, j)
+        raise ValueError("Goal not found in the grid.")
 
     def reset(self) -> None:
         self._setup()
@@ -179,6 +257,25 @@ class GridWorldEnv:
     def get_state(self) -> tuple[int, int]:
         return self.agent_pos
 
+    def visit(self, new_pos: tuple[int, int]) -> None:
+        self.grid[new_pos[0]][new_pos[1]].visited += 1
+
+    def next_cell(self, action: str) -> tuple[tuple[int, int], str]:
+        pos = self.agent_pos
+        action_config = ACTIONS[action]
+        new_row = pos[0] + action_config.row_movement
+        new_col = pos[1] + action_config.col_movement
+        if not (0 <= new_row < self.rows and 0 <= new_col < self.cols):
+            return (pos, OFF_BOARD)
+
+        new_cell = self.get_cell((new_row, new_col))
+        if new_cell.wall:
+            return (pos, WALL)
+        elif new_cell.goal:
+            return ((new_row, new_col), GOAL)
+        else:
+            return ((new_row, new_col), MOVEMENT)
+
     def step(self, action: str) -> StepResult:
         if action not in ACTIONS:
             raise ValueError(f"Invalid action: {action}")
@@ -187,25 +284,15 @@ class GridWorldEnv:
             raise RuntimeError("Cannot step; the goal has already been reached.")
 
         self.current_step += 1
+        new_cell, outcome = self.next_cell(action)
 
-        action_config = ACTIONS[action]
-        new_row = self.agent_pos[0] + action_config.row_movement
-        new_col = self.agent_pos[1] + action_config.col_movement
-        if not (0 <= new_row < self.rows and 0 <= new_col < self.cols):
-            reward = self.reward_config.off_board_penalty
-        else:
-            self.agent_pos = (new_row, new_col)
-            reward = self.reward_config.step_penalty
-
-        if self.reached_goal:
-            reward += self.reward_config.goal_reward
-
-        self.total_reward += reward
-        self.visit_counts[self.agent_pos] += 1
+        current_reward = self.reward_config[outcome]
+        self.total_reward += current_reward
+        self.agent_pos = new_cell
 
         return StepResult(
             new_state=self.agent_pos,
-            reward=reward,
+            reward=current_reward,
             done=self.done,
         )
 

@@ -42,7 +42,7 @@ class TestRunEpisode:
         result = Runner(env, agent).run_episode(render=False)
 
         assert result == RunnerReturn(
-            total_reward=92,
+            total_reward=93,
             steps=8,
             reached_goal=True,
             trajectory=[
@@ -98,7 +98,7 @@ class TestRunEpisode:
                 Step(
                     start=(3, 4),
                     action="down",
-                    reward=99,
+                    reward=100,
                     new_state=(4, 4),
                     done=True,
                 ),
@@ -126,14 +126,14 @@ class TestRunEpisodes:
 
         assert len(result) == 2
         assert result[0] == RunnerReturn(
-            total_reward=92,
+            total_reward=93,
             steps=8,
             reached_goal=True,
             trajectory=ANY,
             visit_counts=ANY,
         )
         assert result[1] == RunnerReturn(
-            total_reward=92,
+            total_reward=93,
             steps=8,
             reached_goal=True,
             trajectory=ANY,

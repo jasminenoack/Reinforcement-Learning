@@ -12,6 +12,11 @@ RIGHT = "right"
 
 SIMPLE_ACTIONS = [UP, DOWN, LEFT, RIGHT]
 
+OFF_BOARD = "off_board"
+WALL = "wall"
+GOAL = "goal"
+MOVEMENT = "movement"
+
 
 class Step(NamedTuple):
     start: tuple[int, int]
