@@ -99,12 +99,8 @@ class VisitCounter:
 
     def __eq__(self, value: "dict | VisitCounter") -> bool:
         if isinstance(value, dict):
-            print(f"self.data: {self.data}")
-            print(f"value: {value}")
             return self.data == value
         if isinstance(value, VisitCounter):
-            print(f"self.data: {self.data}")
-            print(f"value.data: {value.data}")
             return self.data == value.data
         if value is ANY:
             return True
@@ -201,7 +197,7 @@ class GridWorldEnv:
             self.agent_pos = (new_row, new_col)
             reward = self.reward_config.step_penalty
 
-        if self.done:
+        if self.reached_goal:
             reward += self.reward_config.goal_reward
 
         self.total_reward += reward

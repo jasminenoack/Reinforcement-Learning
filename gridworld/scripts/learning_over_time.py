@@ -50,10 +50,12 @@ class Summary:
 
 summaries = []
 
+NUMBER_OF_EPISODES_PER_ITERATION = 3
+
 
 def run_test(env: GridWorldEnv, agent: Agent, iteration: int, render: bool = False):
     runner = Runner(env, agent)
-    results = runner.run_episodes(3, render=False)
+    results = runner.run_episodes(NUMBER_OF_EPISODES_PER_ITERATION, render=False)
     analysis = runner.analyze_results(results)
 
     visit_counts = [result["visit_counts"] for result in results]
@@ -160,6 +162,7 @@ def write_summary_charts(summaries: list[Summary]) -> None:
 
 
 env = GridWorldEnv()
+env.max_steps = 100
 learning_agent = QLearningAgent()
 log(
     "Learning Agent:",

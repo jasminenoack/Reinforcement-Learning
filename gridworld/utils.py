@@ -74,6 +74,8 @@ def render_directional_heatmap_for_q_table(
         if len(set(actions.values())) > 1
     ]
     max_conf = max(all_confidences) if all_confidences else 1.0
+    if not max_conf:
+        max_conf = 1.0
 
     numpy_map = np.zeros((rows, cols))
     for (x, y), count in visit_counts.items():

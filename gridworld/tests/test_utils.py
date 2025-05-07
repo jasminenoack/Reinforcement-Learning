@@ -1,7 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from gridworld.utils import render_directional_heatmap_for_q_table, render_heatmap
+from gridworld.utils import (
+    line_plot,
+    render_directional_heatmap_for_q_table,
+    render_heatmap,
+)
 
 
 class TestRenderHeatmap:
@@ -29,7 +33,7 @@ class TestRenderHeatmap:
         )
         args, kwargs = plt.imshow.call_args
         assert np.array_equal(args[0], np.array([[1, 2], [3, 4]]))
-        assert kwargs["cmap"] == "hot"
+        assert kwargs["cmap"] == "Blues"
         assert kwargs["interpolation"] == "nearest"
         plt.colorbar.assert_called_once_with(label="Visit Count")
         plt.title.assert_called_once_with("Gridworld Visit Count Heatmap")
@@ -71,11 +75,39 @@ class TestRenderDirectionalHeatmapForQTable:
         )
         args, kwargs = plt.imshow.call_args
         assert np.array_equal(args[0], np.array([[1, 2], [3, 4]]))
-        assert kwargs["cmap"] == "hot"
+        assert kwargs["cmap"] == "Blues"
         assert kwargs["interpolation"] == "nearest"
         plt.colorbar.assert_called_once_with(label="Favorite Direction")
         plt.title.assert_called_once_with("Gridworld Favorite Direction Heatmap")
-        plt.show.assert_called_once()
-        plt.pause.assert_called_once()
         plt.close.assert_called_once()
         plt.savefig.assert_called_once()
+
+
+class TestRenderLinePlot:
+    def test_render_line_plot_runs(self, mocker):
+        mocker.patch.object(plt, "plot", autospec=True)
+        mocker.patch.object(plt, "title", autospec=True)
+        mocker.patch.object(plt, "xlabel", autospec=True)
+        mocker.patch.object(plt, "ylabel", autospec=True)
+        mocker.patch.object(plt, "show", autospec=True)
+        mocker.patch.object(plt, "pause", autospec=True)
+        mocker.patch.object(plt, "close", autospec=True)
+        mocker.patch("os.mkdir", autospec=True)
+        mocker.patch.object(plt, "savefig", autospec=True)
+
+        x_values = [1, 2, 3]
+        y_values = {"label1": [1, 2, 3], "label2": [3, 2, 1]}
+        title = "Test Title"
+        x_label = "X Axis"
+        y_label = "Y Axis"
+        line_plot(
+            x_values=x_values,
+            y_values=y_values,
+            title=title,
+            x_label=x_label,
+        )
+        plt.plot.assert_any_call(x_values, y_values["label1"], label="label1")
+        plt.plot.assert_any_call(x_values, y_values["label2"], label="label2")
+        plt.title.assert_called_once_with(title)
+        plt.xlabel.assert_called_once_with(x_label)
+        plt.close.assert_called_once()

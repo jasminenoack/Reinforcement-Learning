@@ -249,6 +249,17 @@ class TestStep:
         assert done is False
         assert env.visit_counts == {(0, 0): 2}
 
+    def test_does_not_get_goal_reward_if_max_steps_not_at_goal(self):
+        env = GridWorldEnv()
+        env.agent_pos = (3, 4)
+        env.current_step = 99
+        action = "left"
+        new_state, reward, done = env.step(action)
+        assert new_state == (3, 3)
+        assert reward == -1
+        assert done is True
+        assert env.total_reward == -1
+
 
 class TestItems:
     def test_items(self):
