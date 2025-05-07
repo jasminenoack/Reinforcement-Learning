@@ -3,7 +3,7 @@ from gridworld.components.maze_builders import (
     START,
     UNKNOWN,
     GOAL,
-    WALL,
+    OBSTACLE,
     MazeGenerator,
 )
 
@@ -73,11 +73,11 @@ class TestGetEmptyCoordinates:
     def test_get_empty_coordinates(self):
         maze = Fake(rows=5, cols=5)
         maze.grid = [
-            [START, PATH, UNKNOWN, UNKNOWN, WALL],
-            [WALL, UNKNOWN, UNKNOWN, WALL, UNKNOWN],
-            [UNKNOWN, UNKNOWN, WALL, UNKNOWN, UNKNOWN],
-            [WALL, UNKNOWN, UNKNOWN, WALL, UNKNOWN],
-            [UNKNOWN, WALL, UNKNOWN, UNKNOWN, GOAL],
+            [START, PATH, UNKNOWN, UNKNOWN, OBSTACLE],
+            [OBSTACLE, UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN],
+            [UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN],
+            [OBSTACLE, UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN],
+            [UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN, GOAL],
         ]
         empty_coords = maze.get_empty_coordinates()
         assert empty_coords == [
@@ -103,11 +103,11 @@ class TestGetEmptyNeighbors:
     def test_get_empty_neighbors(self):
         maze = Fake(rows=5, cols=5)
         maze.grid = [
-            [START, PATH, UNKNOWN, UNKNOWN, WALL],
-            [WALL, PATH, UNKNOWN, WALL, UNKNOWN],
-            [UNKNOWN, UNKNOWN, WALL, UNKNOWN, UNKNOWN],
-            [WALL, UNKNOWN, UNKNOWN, WALL, UNKNOWN],
-            [UNKNOWN, WALL, UNKNOWN, UNKNOWN, GOAL],
+            [START, PATH, UNKNOWN, UNKNOWN, OBSTACLE],
+            [OBSTACLE, PATH, UNKNOWN, OBSTACLE, UNKNOWN],
+            [UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN],
+            [OBSTACLE, UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN],
+            [UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN, GOAL],
         ]
         empty_neighbors = maze.get_empty_neighbors((2, 2))
         assert empty_neighbors == [(1, 2), (2, 1), (3, 1), (2, 3), (3, 2)]

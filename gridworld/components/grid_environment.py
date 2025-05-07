@@ -46,7 +46,6 @@ Example usage:
 from collections import defaultdict
 from dataclasses import dataclass
 from unittest.mock import ANY
-from matplotlib.pylab import dirichlet
 from rich.console import Console
 from rich.text import Text
 
@@ -58,7 +57,7 @@ from gridworld.utils import (
     OFF_BOARD,
     RIGHT,
     UP,
-    WALL,
+    OBSTACLE,
     render_heatmap,
 )
 
@@ -80,7 +79,7 @@ ACTIONS = {
 
 STEP_RESULT_REWARD = {
     OFF_BOARD: -10,
-    WALL: -10,
+    OBSTACLE: -10,
     GOAL: 100,
     MOVEMENT: -1,
 }
@@ -161,20 +160,20 @@ class VisitCounter:
 class Cell:
     agent: bool = False
     goal: bool = False
-    _wall: bool = False
+    _obstacle: bool = False
     visited: int = 0
 
     @property
-    def wall(self) -> bool:
-        return self._wall
+    def obstacle(self) -> bool:
+        return self._obstacle
 
-    @wall.setter
-    def wall(self, value: bool) -> None:
+    @obstacle.setter
+    def obstacle(self, value: bool) -> None:
         if self.agent:
-            raise ValueError("Cannot set wall on a cell with an agent.")
+            raise ValueError("Cannot set obstacle on a cell with an agent.")
         if self.goal:
-            raise ValueError("Cannot set wall on a cell with a goal.")
-        self._wall = value
+            raise ValueError("Cannot set obstacle on a cell with a goal.")
+        self._obstacle = value
 
 
 class GridWorldEnv:
@@ -184,7 +183,7 @@ class GridWorldEnv:
         max_steps: int = 100,
         rows: int = 5,
         cols: int = 5,
-        walls: list[tuple] | None = None,
+        obstacles: list[tuple] | None = None,
     ) -> None:
         self.rows = rows
         self.cols = cols
@@ -193,8 +192,8 @@ class GridWorldEnv:
         self.reward_config = STEP_RESULT_REWARD
         self.max_steps = max_steps
         self._setup()
-        for coordinate in walls or []:
-            self.get_cell(coordinate).wall = True
+        for coordinate in obstacles or []:
+            self.get_cell(coordinate).obstacle = True
 
     def _setup(self) -> None:
         self.total_reward = 0
@@ -290,8 +289,8 @@ class GridWorldEnv:
             return (pos, OFF_BOARD)
 
         new_cell = self.get_cell((new_row, new_col))
-        if new_cell.wall:
-            return (pos, WALL)
+        if new_cell.obstacle:
+            return (pos, OBSTACLE)
         elif new_cell.goal:
             return ((new_row, new_col), GOAL)
         else:

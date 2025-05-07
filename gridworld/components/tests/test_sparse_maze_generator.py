@@ -1,22 +1,26 @@
 import random
-from gridworld.components.maze_builders import PATH, UNKNOWN, SparseMazeGenerator
-from gridworld.utils import WALL
+from gridworld.components.maze_builders import (
+    PATH,
+    UNKNOWN,
+    SparseObstacleMazeGenerator,
+)
+from gridworld.utils import OBSTACLE
 
 
 class TestBlock:
     def test_block(self):
         rng = random.Random(42)
-        maze = SparseMazeGenerator(
+        maze = SparseObstacleMazeGenerator(
             rows=5,
             cols=5,
             start=(0, 0),
             end=(4, 4),
             rng=rng,
         )
-        maze.block((1, 1), WALL)
+        maze.block((1, 1), OBSTACLE)
         assert maze.grid == [
             [PATH, PATH, PATH, UNKNOWN, UNKNOWN],
-            [PATH, WALL, PATH, UNKNOWN, UNKNOWN],
+            [PATH, OBSTACLE, PATH, UNKNOWN, UNKNOWN],
             [PATH, PATH, PATH, UNKNOWN, UNKNOWN],
             [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
             [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
@@ -26,7 +30,7 @@ class TestBlock:
 class TestSparseMazeGenerator:
     def test_sparse_maze_generator(self):
         rng = random.Random(42)
-        maze = SparseMazeGenerator(
+        maze = SparseObstacleMazeGenerator(
             rows=5,
             cols=5,
             start=(0, 0),
@@ -34,7 +38,7 @@ class TestSparseMazeGenerator:
             rng=rng,
         ).run()
         assert maze == {
-            "walls": [
+            "obstacles": [
                 (0, 4),
                 (1, 2),
                 (2, 0),

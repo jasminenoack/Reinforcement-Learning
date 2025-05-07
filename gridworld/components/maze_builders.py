@@ -31,7 +31,7 @@ from gridworld.utils import GOAL
 
 START = "S"
 GOAL = "G"
-WALL = "#"
+OBSTACLE = "#"
 PATH = "."
 UNKNOWN = "_"
 
@@ -96,7 +96,7 @@ class MazeGenerator(ABC):
         return list(neighbors.intersection(empty_cells))
 
 
-class SparseMazeGenerator(MazeGenerator):
+class SparseObstacleMazeGenerator(MazeGenerator):
 
     def block(self, coor: tuple, marker: str) -> None:
         self.set_cell(coor, marker)
@@ -109,13 +109,13 @@ class SparseMazeGenerator(MazeGenerator):
         self.block(self.end, GOAL)
         while empty_cells := self.get_empty_coordinates():
             cell = self.rng.choice(empty_cells)
-            self.block(cell, WALL)
+            self.block(cell, OBSTACLE)
         return {
-            "walls": [
+            "obstacles": [
                 (i, j)
                 for i in range(self.rows)
                 for j in range(self.cols)
-                if self.grid[i][j] == WALL
+                if self.grid[i][j] == OBSTACLE
             ]
         }
 
@@ -132,7 +132,7 @@ class RecursiveBacktracking(MazeGenerator):
 
 
 if __name__ == "__main__":
-    maze = SparseMazeGenerator(
+    maze = SparseObstacleMazeGenerator(
         rows=5,
         cols=5,
         start=(0, 0),

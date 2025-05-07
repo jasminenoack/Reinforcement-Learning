@@ -1,6 +1,6 @@
 import pytest
 
-from gridworld.utils import DOWN, GOAL, LEFT, MOVEMENT, OFF_BOARD, RIGHT, UP, WALL
+from gridworld.utils import DOWN, GOAL, LEFT, MOVEMENT, OFF_BOARD, RIGHT, UP, OBSTACLE
 from ..grid_environment import Cell, GridWorldEnv
 
 
@@ -18,9 +18,15 @@ class TestGridWorldEnvInit:
         assert env.current_step == 0
         assert len(env.grid) == 5
         assert len(env.grid[0]) == 5
-        assert env.grid[0][0] == Cell(agent=True, goal=False, _wall=False, visited=1)
-        assert env.grid[4][4] == Cell(agent=False, goal=True, _wall=False, visited=0)
-        assert env.grid[0][1] == Cell(agent=False, goal=False, _wall=False, visited=0)
+        assert env.grid[0][0] == Cell(
+            agent=True, goal=False, _obstacle=False, visited=1
+        )
+        assert env.grid[4][4] == Cell(
+            agent=False, goal=True, _obstacle=False, visited=0
+        )
+        assert env.grid[0][1] == Cell(
+            agent=False, goal=False, _obstacle=False, visited=0
+        )
         assert env.visit_counts[(0, 0)] == 1
         assert sum(env.visit_counts.values()) == 1
 
@@ -38,18 +44,18 @@ class TestGridWorldEnvInit:
         assert env.start == (0, 0)
         assert env.goal == (9, 4)
 
-    def test_no_walls_by_default(self):
+    def test_no_obstacless_by_default(self):
         env = GridWorldEnv()
         for row in env.grid:
             for cell in row:
-                assert cell.wall is False
+                assert cell.obstacle is False
 
-    def test_can_set_specific_walls(self):
-        env = GridWorldEnv(walls=[(1, 1), (2, 2)])
-        assert env.grid[1][1].wall is True
-        assert env.grid[2][2].wall is True
-        assert env.grid[0][0].wall is False
-        assert env.grid[4][4].wall is False
+    def test_can_set_specific_obstacles(self):
+        env = GridWorldEnv(obstacles=[(1, 1), (2, 2)])
+        assert env.grid[1][1].obstacle is True
+        assert env.grid[2][2].obstacle is True
+        assert env.grid[0][0].obstacle is False
+        assert env.grid[4][4].obstacle is False
 
 
 class TestReset:
@@ -269,7 +275,7 @@ class TestStep:
 
         assert env.visit_counts == {(1, 0): 1, (0, 0): 2}
 
-    def adds_visit_count_when_walking_into_wall(self):
+    def adds_visit_count_when_walking_into_obstacle(self):
         env = GridWorldEnv()
         env.agent_pos = (0, 0)
         action = "up"
@@ -345,7 +351,7 @@ class TestGetCell:
         cell = env.get_cell((2, 2))
         assert cell.agent is False
         assert cell.goal is False
-        assert cell.wall is False
+        assert cell.obstacle is False
         assert cell.visited == 0
 
     def test_get_goal_cell(self):
@@ -353,7 +359,7 @@ class TestGetCell:
         cell = env.get_cell((4, 4))
         assert cell.agent is False
         assert cell.goal is True
-        assert cell.wall is False
+        assert cell.obstacle is False
         assert cell.visited == 0
 
     def test_get_agent_cell(self):
@@ -361,7 +367,7 @@ class TestGetCell:
         cell = env.get_cell((0, 0))
         assert cell.agent is True
         assert cell.goal is False
-        assert cell.wall is False
+        assert cell.obstacle is False
         assert cell.visited == 1
 
 
@@ -447,10 +453,10 @@ class TestNextCell:
         assert cell == (4, 4)
         assert effect == GOAL
 
-    def test_handles_wall(self):
+    def test_handles_obstacle(self):
         env = GridWorldEnv()
         env.agent_pos = (2, 2)
-        env.get_cell((2, 1)).wall = True
+        env.get_cell((2, 1)).obstacle = True
         cell, effect = env.next_cell(LEFT)
         assert cell == (2, 2)
-        assert effect == WALL
+        assert effect == OBSTACLE

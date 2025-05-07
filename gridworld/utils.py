@@ -13,7 +13,7 @@ RIGHT = "right"
 SIMPLE_ACTIONS = [UP, DOWN, LEFT, RIGHT]
 
 OFF_BOARD = "off_board"
-WALL = "wall"
+OBSTACLE = "obstacle"
 GOAL = "goal"
 MOVEMENT = "movement"
 
