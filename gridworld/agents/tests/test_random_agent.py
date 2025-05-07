@@ -1,6 +1,6 @@
 import random
 
-from gridworld.constants import RIGHT, UP, DOWN, LEFT
+from gridworld.utils import RIGHT, UP, DOWN, LEFT
 from ..random_agent import RandomAgent
 
 

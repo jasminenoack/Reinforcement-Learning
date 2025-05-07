@@ -47,7 +47,7 @@ from dataclasses import dataclass
 from rich.console import Console
 from rich.text import Text
 
-from gridworld.constants import DOWN, LEFT, RIGHT, UP
+from gridworld.utils import DOWN, LEFT, RIGHT, UP
 
 
 console = Console()
@@ -69,9 +69,9 @@ ACTIONS = {
 
 @dataclass
 class RewardConfiguration:
-    step_penalty: float = -0.01
-    off_board_penalty: float = -0.1
-    goal_reward: float = 1
+    step_penalty: int = -1
+    off_board_penalty: int = -10
+    goal_reward: int = 100
 
 
 @dataclass

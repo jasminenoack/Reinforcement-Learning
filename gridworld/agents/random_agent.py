@@ -1,10 +1,11 @@
 import random
 from typing import Any
 
-from gridworld.constants import SIMPLE_ACTIONS
+from gridworld.agents.generic_agent import Agent
+from gridworld.utils import SIMPLE_ACTIONS
 
 
-class RandomAgent:
+class RandomAgent(Agent):
     def __init__(self, *, rng: random.Random | None = None):
         """
         rng is for testing purposes, to seed the random number generator.

@@ -84,7 +84,7 @@ class TestStep:
         action = "up"
         new_state, reward, done = env.step(action)
         assert new_state == (1, 2)
-        assert reward == -0.01
+        assert reward == -1
         assert done is False
 
     def test_can_move_agent_down(self):
@@ -93,7 +93,7 @@ class TestStep:
         action = "down"
         new_state, reward, done = env.step(action)
         assert new_state == (3, 2)
-        assert reward == -0.01
+        assert reward == -1
         assert done is False
 
     def test_can_move_agent_left(self):
@@ -102,7 +102,7 @@ class TestStep:
         action = "left"
         new_state, reward, done = env.step(action)
         assert new_state == (2, 1)
-        assert reward == -0.01
+        assert reward == -1
         assert done is False
 
     def test_can_move_agent_right(self):
@@ -111,7 +111,7 @@ class TestStep:
         action = "right"
         new_state, reward, done = env.step(action)
         assert new_state == (2, 3)
-        assert reward == -0.01
+        assert reward == -1
         assert done is False
 
     def test_agent_stays_if_off_board_up(self):
@@ -120,7 +120,7 @@ class TestStep:
         action = "up"
         new_state, reward, done = env.step(action)
         assert new_state == (0, 2)
-        assert reward == -0.1
+        assert reward == -10
         assert done is False
 
     def test_agent_stays_if_off_board_down(self):
@@ -129,7 +129,7 @@ class TestStep:
         action = "down"
         new_state, reward, done = env.step(action)
         assert new_state == (4, 2)
-        assert reward == -0.1
+        assert reward == -10
         assert done is False
 
     def test_agent_stays_if_off_board_left(self):
@@ -138,7 +138,7 @@ class TestStep:
         action = "left"
         new_state, reward, done = env.step(action)
         assert new_state == (2, 0)
-        assert reward == -0.1
+        assert reward == -10
         assert done is False
 
     def test_agent_stays_if_off_board_right(self):
@@ -147,7 +147,7 @@ class TestStep:
         action = "right"
         new_state, reward, done = env.step(action)
         assert new_state == (2, 4)
-        assert reward == -0.1
+        assert reward == -10
         assert done is False
 
     def test_agent_is_happy_when_reaching_goal(self):
@@ -156,7 +156,7 @@ class TestStep:
         action = "down"
         new_state, reward, done = env.step(action)
         assert new_state == (4, 4)
-        assert reward == 0.99
+        assert reward == 99
         assert done is True
 
     def test_errors_if_done(self):
@@ -179,23 +179,23 @@ class TestStep:
         action = "up"
         new_state, reward, done = env.step(action)
         assert new_state == (1, 2)
-        assert reward == -0.01
+        assert reward == -1
         assert done is False
-        assert env.total_reward == -0.01
+        assert env.total_reward == -1
         assert env.current_step == 1
         action = "up"
         new_state, reward, done = env.step(action)
         assert new_state == (0, 2)
-        assert reward == -0.01
+        assert reward == -1
         assert done is False
-        assert env.total_reward == -0.02
+        assert env.total_reward == -2
         assert env.current_step == 2
         action = "up"
         new_state, reward, done = env.step(action)
         assert new_state == (0, 2)
-        assert reward == -0.1
+        assert reward == -10
         assert done is False
-        assert env.total_reward == pytest.approx(-0.12)
+        assert env.total_reward == -12
         assert env.current_step == 3
 
     def test_increments_step_count(self):
@@ -204,6 +204,6 @@ class TestStep:
         action = "up"
         new_state, reward, done = env.step(action)
         assert new_state == (1, 2)
-        assert reward == -0.01
+        assert reward == -1
         assert done is False
         assert env.current_step == 1
