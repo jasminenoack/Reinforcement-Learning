@@ -119,24 +119,3 @@ if __name__ == "__main__":
     console.print(
         "Reached Goal Percentage:", random_analysis["reached_goal"]["count"] / 10 * 100
     )
-
-    console.print()
-    console.print()
-
-    designed_agent = DesignedStaticMazeAgent()
-    designed_runner = Runner(env, designed_agent)
-    designed_results = designed_runner.run_episodes(10, render=False)
-    designed_analysis = designed_runner.analyze_results(designed_results)
-    console.print("Analysis of 10 episodes with designed agent:")
-    console.print("Average Reward:", designed_analysis["reward"]["average"])
-    console.print("Max Reward:", designed_analysis["reward"]["max"])
-    console.print("Min Reward:", designed_analysis["reward"]["min"])
-    console.print("Average Steps:", designed_analysis["steps"]["average"])
-    console.print("Max Steps:", designed_analysis["steps"]["max"])
-    console.print("Min Steps:", designed_analysis["steps"]["min"])
-    console.print("Reached Goal Count:", designed_analysis["reached_goal"]["count"])
-    console.print(
-        "Reached Goal Percentage:",
-        designed_analysis["reached_goal"]["count"] / 10 * 100,
-    )
-    console.print()
