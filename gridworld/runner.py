@@ -1,5 +1,5 @@
 import time
-from gridworld.agents.designed_agent import DesignedStaticMazeAgent
+from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
 from gridworld.agents.random_agent import RandomAgent
 from gridworld.components.grid_environment import GridWorldEnv

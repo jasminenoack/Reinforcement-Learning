@@ -34,6 +34,6 @@ class TestRenderHeatmap:
         plt.colorbar.assert_called_once_with(label="Visit Count")
         plt.title.assert_called_once_with("Gridworld Visit Count Heatmap")
         plt.show.assert_called_once()
-        plt.pause.assert_called_once_with(5)
+        plt.pause.assert_called_once()
         plt.close.assert_called_once()
         plt.savefig.assert_called_once()

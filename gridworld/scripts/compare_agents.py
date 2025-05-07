@@ -1,7 +1,7 @@
 from datetime import datetime
 from functools import reduce
 from os import mkdir
-from gridworld.agents.designed_agent import DesignedStaticMazeAgent
+from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
 from gridworld.agents.random_agent import RandomAgent
 from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
@@ -64,5 +64,5 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
 random_agent = RandomAgent()
 env = GridWorldEnv()
 run_test(env, random_agent, render=False)
-designed_agent = DesignedStaticMazeAgent()
+designed_agent = ManhattanAgent()
 run_test(env, designed_agent, render=False)
