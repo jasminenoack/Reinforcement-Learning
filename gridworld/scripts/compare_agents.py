@@ -8,43 +8,29 @@ from rich.console import Console
 from gridworld.runner import Runner
 from gridworld.utils import RunnerReturn, Step
 
-
 console = Console()
+
+
+def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
+    runner = Runner(env, agent)
+    results = runner.run_episodes(10, render=False)
+    analysis = runner.analyze_results(results)
+    console.print("Analysis of 10 episodes with random agent:")
+    console.print("Average Reward:", analysis["reward"]["average"])
+    console.print("Max Reward:", analysis["reward"]["max"])
+    console.print("Min Reward:", analysis["reward"]["min"])
+    console.print("Average Steps:", analysis["steps"]["average"])
+    console.print("Max Steps:", analysis["steps"]["max"])
+    console.print("Min Steps:", analysis["steps"]["min"])
+    console.print("Reached Goal Count:", analysis["reached_goal"]["count"])
+    console.print(
+        "Reached Goal Percentage:", analysis["reached_goal"]["count"] / 10 * 100
+    )
+    console.print()
+
 
 random_agent = RandomAgent()
 env = GridWorldEnv()
-random_runner = Runner(env, random_agent)
-random_results = random_runner.run_episodes(10, render=False)
-random_analysis = random_runner.analyze_results(random_results)
-console.print("Analysis of 10 episodes with random agent:")
-console.print("Average Reward:", random_analysis["reward"]["average"])
-console.print("Max Reward:", random_analysis["reward"]["max"])
-console.print("Min Reward:", random_analysis["reward"]["min"])
-console.print("Average Steps:", random_analysis["steps"]["average"])
-console.print("Max Steps:", random_analysis["steps"]["max"])
-console.print("Min Steps:", random_analysis["steps"]["min"])
-console.print("Reached Goal Count:", random_analysis["reached_goal"]["count"])
-console.print(
-    "Reached Goal Percentage:", random_analysis["reached_goal"]["count"] / 10 * 100
-)
-
-console.print()
-console.print()
-
+run_test(env, random_agent, render=False)
 designed_agent = DesignedStaticMazeAgent()
-designed_runner = Runner(env, designed_agent)
-designed_results = designed_runner.run_episodes(10, render=False)
-designed_analysis = designed_runner.analyze_results(designed_results)
-console.print("Analysis of 10 episodes with designed agent:")
-console.print("Average Reward:", designed_analysis["reward"]["average"])
-console.print("Max Reward:", designed_analysis["reward"]["max"])
-console.print("Min Reward:", designed_analysis["reward"]["min"])
-console.print("Average Steps:", designed_analysis["steps"]["average"])
-console.print("Max Steps:", designed_analysis["steps"]["max"])
-console.print("Min Steps:", designed_analysis["steps"]["min"])
-console.print("Reached Goal Count:", designed_analysis["reached_goal"]["count"])
-console.print(
-    "Reached Goal Percentage:",
-    designed_analysis["reached_goal"]["count"] / 10 * 100,
-)
-console.print()
+run_test(env, designed_agent, render=False)
