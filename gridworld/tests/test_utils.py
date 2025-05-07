@@ -28,5 +28,5 @@ class TestRenderHeatmap:
         assert kwargs["cmap"] == "hot"
         assert kwargs["interpolation"] == "nearest"
         plt.colorbar.assert_called_once_with(label="Visit Count")
-        plt.title.assert_called_once_with("Visit Counts Heatmap")
+        plt.title.assert_called_once_with("Gridworld Visit Count Heatmap")
         plt.show.assert_called_once()

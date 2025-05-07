@@ -130,6 +130,9 @@ class VisitCounter:
             new_counter[coordinate] = avg
         return new_counter
 
+    def items(self):
+        return self.data.items()
+
 
 class GridWorldEnv:
     def __init__(self) -> None:

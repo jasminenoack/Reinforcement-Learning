@@ -248,3 +248,15 @@ class TestStep:
         assert reward == -10
         assert done is False
         assert env.visit_counts == {(0, 0): 2}
+
+
+class TestItems:
+    def test_items(self):
+        env = GridWorldEnv()
+        env.agent_pos = (2, 2)
+        action = "up"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 2)
+        assert reward == -1
+        assert done is False
+        assert list(env.visit_counts.items()) == [((0, 0), 1), ((1, 2), 1)]
