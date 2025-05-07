@@ -1,5 +1,7 @@
 from hmac import new
 import pytest
+
+from gridworld.utils import DOWN, UP
 from ..grid_environment import GridWorldEnv
 
 
@@ -15,6 +17,10 @@ class TestGridWorldEnvInit:
         assert env.done is False
         assert env.max_steps == 100
         assert env.current_step == 0
+        assert env.visit_counts == {(0, 0): 1}
+        assert env.reward_config.step_penalty == -1
+        assert env.reward_config.off_board_penalty == -10
+        assert env.reward_config.goal_reward == 100
 
 
 class TestReset:
@@ -29,6 +35,7 @@ class TestReset:
         assert env.total_reward == 0
         assert pos == (0, 0)
         assert env.current_step == 0
+        assert env.visit_counts == {(0, 0): 1}
 
 
 class TestRender:
@@ -224,3 +231,20 @@ class TestStep:
         assert reward == -1
         assert done is False
         assert env.current_step == 1
+
+    def test_increments_visit_count(self):
+        env = GridWorldEnv()
+        env.step(DOWN)
+        env.step(UP)
+
+        assert env.visit_counts == {(1, 0): 1, (0, 0): 2}
+
+    def adds_visit_count_when_walking_into_wall(self):
+        env = GridWorldEnv()
+        env.agent_pos = (0, 0)
+        action = "up"
+        new_state, reward, done = env.step(action)
+        assert new_state == (0, 0)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts == {(0, 0): 2}

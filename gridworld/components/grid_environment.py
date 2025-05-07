@@ -43,12 +43,12 @@ Example usage:
     env.render()
 """
 
+from collections import defaultdict
 from dataclasses import dataclass
 from rich.console import Console
 from rich.text import Text
 
-from gridworld.utils import DOWN, LEFT, RIGHT, UP
-
+from gridworld.utils import DOWN, LEFT, RIGHT, UP, render_heatmap
 
 console = Console()
 
@@ -100,6 +100,8 @@ class GridWorldEnv:
         self.agent_pos = self.start
         self.total_reward = 0
         self.current_step = 0
+        self.visit_counts = defaultdict(int)
+        self.visit_counts[self.agent_pos] = 1
 
     @property
     def reached_goal(self) -> bool:
@@ -155,6 +157,7 @@ class GridWorldEnv:
             reward += self.reward_config.goal_reward
 
         self.total_reward += reward
+        self.visit_counts[self.agent_pos] += 1
 
         return StepResult(
             new_state=self.agent_pos,
@@ -174,10 +177,16 @@ if __name__ == "__main__":
     for step in range(max_steps):
         console.clear()
         env.render()
-        time.sleep(1)  # slower for readability
+        time.sleep(0.5)  # slower for readability
 
         if env.done:
             break
 
         action = random.choice(list(ACTIONS.keys()))
         state, reward, done = env.step(action)
+
+    render_heatmap(
+        visit_counts=env.visit_counts,
+        rows=env.rows,
+        cols=env.cols,
+    )
