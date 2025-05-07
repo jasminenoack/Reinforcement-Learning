@@ -44,7 +44,7 @@ def render_heatmap(
         numpy_map[x, y] = count
 
     name = f"Gridworld {stat} Heatmap"
-    plt.imshow(numpy_map, cmap="hot", interpolation="nearest", vmax=scale_max)
+    plt.imshow(numpy_map, cmap="Blues", interpolation="nearest", vmax=scale_max)
     plt.colorbar(label=stat)
     plt.title(name)
     plt.show(block=False)
@@ -80,7 +80,7 @@ def render_directional_heatmap_for_q_table(
         numpy_map[x, y] = count
 
     name = f"Gridworld {stat} Heatmap"
-    plt.imshow(numpy_map, cmap="hot", interpolation="nearest", vmax=scale_max)
+    plt.imshow(numpy_map, cmap="Blues", interpolation="nearest", vmax=scale_max)
     for (x, y), actions in q_table.items():
         q_values = sorted(list(actions.values()))
         max_action_value = q_values[-1]
@@ -150,11 +150,29 @@ def render_directional_heatmap_for_q_table(
             )
     plt.colorbar(label=stat)
     plt.title(name)
-    plt.show(block=False)
-    plt.pause(2)
     filename = (
         filename
         or f'{name.lower().replace(" ", "_").replace("(", "_").replace(")", "_")}'
     )
+    file_location = f"{folder}/{filename}.png"
+    plt.savefig(file_location)
+    plt.close()
+    return file_location
+
+
+def line_plot(
+    x_values: list[int],
+    y_values: dict[str, list[float]],
+    title: str,
+    x_label: str,
+    folder: str = "output",
+    filename: str | None = None,
+) -> None:
+    for label, y in y_values.items():
+        plt.plot(x_values, y, label=label)
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.grid()
+    filename = filename or f"{title.lower().replace(' ', '_')}"
     plt.savefig(f"{folder}/{filename}.png")
     plt.close()
