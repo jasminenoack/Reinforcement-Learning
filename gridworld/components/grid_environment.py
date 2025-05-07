@@ -45,6 +45,7 @@ Example usage:
 
 from collections import defaultdict
 from dataclasses import dataclass
+from unittest.mock import ANY
 from rich.console import Console
 from rich.text import Text
 
@@ -86,6 +87,50 @@ class StepResult:
         yield self.done
 
 
+class VisitCounter:
+    def __init__(self):
+        self.data = defaultdict(int)
+
+    def __getitem__(self, key):
+        return self.data[key]
+
+    def __setitem__(self, key, value):
+        self.data[key] = value
+
+    def __eq__(self, value: "dict | VisitCounter") -> bool:
+        if isinstance(value, dict):
+            print(f"self.data: {self.data}")
+            print(f"value: {value}")
+            return self.data == value
+        if isinstance(value, VisitCounter):
+            print(f"self.data: {self.data}")
+            print(f"value.data: {value.data}")
+            return self.data == value.data
+        if value is ANY:
+            return True
+        return False
+
+    def __add__(self, other: "VisitCounter") -> "VisitCounter":
+        for coordinate in other.data.keys():
+            self[coordinate] += other[coordinate]
+        return self
+
+    @classmethod
+    def avg(cls, *visit_counts: list["VisitCounter"]) -> "VisitCounter":
+        coordinates = set()
+        total_counters = len(visit_counts)
+        new_counter = cls()
+        # get all the coordinates
+        for visit_count in visit_counts:
+            coordinates.update(visit_count.data.keys())
+        # create avg counter
+        for coordinate in coordinates:
+            total = sum(visit_count.data[coordinate] for visit_count in visit_counts)
+            avg = total / total_counters
+            new_counter[coordinate] = avg
+        return new_counter
+
+
 class GridWorldEnv:
     def __init__(self) -> None:
         self.rows = 5
@@ -100,7 +145,7 @@ class GridWorldEnv:
         self.agent_pos = self.start
         self.total_reward = 0
         self.current_step = 0
-        self.visit_counts = defaultdict(int)
+        self.visit_counts = VisitCounter()
         self.visit_counts[self.agent_pos] = 1
 
     @property
