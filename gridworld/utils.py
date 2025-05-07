@@ -25,6 +25,7 @@ class RunnerReturn(TypedDict):
     steps: int
     reached_goal: bool
     trajectory: list[tuple[int, int]]
+    visit_counts: dict[tuple[int, int], int]
 
 
 def render_heatmap(

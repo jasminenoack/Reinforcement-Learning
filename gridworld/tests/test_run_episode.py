@@ -103,6 +103,17 @@ class TestRunEpisode:
                     done=True,
                 ),
             ],
+            visit_counts={
+                (0, 0): 1,
+                (0, 1): 1,
+                (0, 2): 1,
+                (0, 3): 1,
+                (0, 4): 1,
+                (1, 4): 1,
+                (2, 4): 1,
+                (3, 4): 1,
+                (4, 4): 1,
+            },
         )
 
 
@@ -119,12 +130,14 @@ class TestRunEpisodes:
             steps=8,
             reached_goal=True,
             trajectory=ANY,
+            visit_counts=ANY,
         )
         assert result[1] == RunnerReturn(
             total_reward=92,
             steps=8,
             reached_goal=True,
             trajectory=ANY,
+            visit_counts=ANY,
         )
 
 

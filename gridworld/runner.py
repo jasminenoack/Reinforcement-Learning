@@ -65,6 +65,7 @@ class Runner:
             steps=len(trajectory),
             reached_goal=self.env.reached_goal,
             trajectory=trajectory,
+            visit_counts=self.env.visit_counts,
         )
 
     def run_episodes(
@@ -85,6 +86,7 @@ class Runner:
     def analyze_results(self, results: list[RunnerReturn]) -> dict:
         total_rewards = [result["total_reward"] for result in results]
         average_reward = sum(total_rewards) / len(total_rewards)
+
         return {
             "reward": {
                 "average": average_reward,
