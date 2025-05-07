@@ -26,6 +26,16 @@ class TestGridWorldEnvInit:
         env = GridWorldEnv(max_steps=37)
         assert env.max_steps == 37
 
+    def test_can_set_rows_and_cols(self):
+        env = GridWorldEnv(rows=20, cols=20)
+        assert env.start == (0, 0)
+        assert env.goal == (19, 19)
+
+    def test_can_be_not_square(self):
+        env = GridWorldEnv(rows=10, cols=5)
+        assert env.start == (0, 0)
+        assert env.goal == (9, 4)
+
 
 class TestReset:
     def test_moves_robot_back_to_start(self):

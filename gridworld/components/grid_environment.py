@@ -131,11 +131,11 @@ class VisitCounter:
 
 
 class GridWorldEnv:
-    def __init__(self, *, max_steps: int = 100) -> None:
-        self.rows = 5
-        self.cols = 5
+    def __init__(self, *, max_steps: int = 100, rows: int = 5, cols: int = 5) -> None:
+        self.rows = rows
+        self.cols = cols
         self.start = (0, 0)
-        self.goal = (4, 4)
+        self.goal = (rows - 1, cols - 1)
         self.reward_config = RewardConfiguration()
         self.max_steps = max_steps
         self._setup()
