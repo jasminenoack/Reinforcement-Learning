@@ -1,0 +1,30 @@
+Analysis of 10 episodes with RandomAgent:
+Average Reward: -108.4
+Max Reward: 36
+Min Reward: -279
+Average Steps: 70.7
+Max Steps: 100
+Min Steps: 21
+Reached Goal Count: 5
+Reached Goal Percentage: 50.0
+
+Analysis of 10 episodes with ManhattanAgent:
+Average Reward: 92.0
+Max Reward: 92
+Min Reward: 92
+Average Steps: 8.0
+Max Steps: 8
+Min Steps: 8
+Reached Goal Count: 10
+Reached Goal Percentage: 100.0
+
+Analysis of 10 episodes with QLearningAgent:
+Average Reward: 51.2
+Max Reward: 92
+Min Reward: -80
+Average Steps: 29.9
+Max Steps: 81
+Min Steps: 8
+Reached Goal Count: 10
+Reached Goal Percentage: 100.0
+
