@@ -36,9 +36,7 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python3 -m <file> 
+# or
+PYTHONPATH=. python3 -m <file>
 ```
-
-Then run the main script:
-
-```bash
 

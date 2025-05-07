@@ -1,3 +1,4 @@
+from unittest.mock import ANY
 from gridworld.components.grid_environment import GridWorldEnv
 from gridworld.runner import Runner
 from gridworld.utils import RunnerReturn, Step
@@ -29,7 +30,8 @@ class FakeAgent:
         self._results.append(step_result)
 
     def reset(self):
-        pass
+        self._complete = 0
+        self._results = []
 
 
 class TestRunEpisode:
@@ -102,3 +104,68 @@ class TestRunEpisode:
                 ),
             ],
         )
+
+
+class TestRunEpisodes:
+    def test_multiple_episodes_run_to_completion(self):
+        env = FakeEnv()
+        agent = FakeAgent()
+
+        result = Runner(env, agent).run_episodes(num_episodes=2, render=False)
+
+        assert len(result) == 2
+        assert result[0] == RunnerReturn(
+            total_reward=92,
+            steps=8,
+            reached_goal=True,
+            trajectory=ANY,
+        )
+        assert result[1] == RunnerReturn(
+            total_reward=92,
+            steps=8,
+            reached_goal=True,
+            trajectory=ANY,
+        )
+
+
+class TestAnalyzeResults:
+    def test_analyze_results(self):
+        env = FakeEnv()
+        agent = FakeAgent()
+
+        results = [
+            RunnerReturn(
+                total_reward=92,
+                steps=8,
+                reached_goal=True,
+                trajectory=ANY,
+            ),
+            RunnerReturn(
+                total_reward=40,
+                steps=42,
+                reached_goal=True,
+                trajectory=ANY,
+            ),
+            RunnerReturn(
+                total_reward=10,
+                steps=98,
+                reached_goal=False,
+                trajectory=ANY,
+            ),
+        ]
+        analysis = Runner(env, agent).analyze_results(results)
+        assert analysis == {
+            "reward": {
+                "average": 47.333333333333336,
+                "max": 92,
+                "min": 10,
+            },
+            "steps": {
+                "average": 49.333333333333336,
+                "max": 98,
+                "min": 8,
+            },
+            "reached_goal": {
+                "count": 2,
+            },
+        }
