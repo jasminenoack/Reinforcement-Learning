@@ -18,9 +18,9 @@ class TestGridWorldEnvInit:
         assert env.current_step == 0
         assert len(env.grid) == 5
         assert len(env.grid[0]) == 5
-        assert env.grid[0][0] == Cell(agent=True, goal=False, wall=False, visited=1)
-        assert env.grid[4][4] == Cell(agent=False, goal=True, wall=False, visited=0)
-        assert env.grid[0][1] == Cell(agent=False, goal=False, wall=False, visited=0)
+        assert env.grid[0][0] == Cell(agent=True, goal=False, _wall=False, visited=1)
+        assert env.grid[4][4] == Cell(agent=False, goal=True, _wall=False, visited=0)
+        assert env.grid[0][1] == Cell(agent=False, goal=False, _wall=False, visited=0)
         assert env.visit_counts[(0, 0)] == 1
         assert sum(env.visit_counts.values()) == 1
 
@@ -37,6 +37,19 @@ class TestGridWorldEnvInit:
         env = GridWorldEnv(rows=10, cols=5)
         assert env.start == (0, 0)
         assert env.goal == (9, 4)
+
+    def test_no_walls_by_default(self):
+        env = GridWorldEnv()
+        for row in env.grid:
+            for cell in row:
+                assert cell.wall is False
+
+    def test_can_set_specific_walls(self):
+        env = GridWorldEnv(walls=[(1, 1), (2, 2)])
+        assert env.grid[1][1].wall is True
+        assert env.grid[2][2].wall is True
+        assert env.grid[0][0].wall is False
+        assert env.grid[4][4].wall is False
 
 
 class TestReset:

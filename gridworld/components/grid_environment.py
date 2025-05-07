@@ -161,12 +161,31 @@ class VisitCounter:
 class Cell:
     agent: bool = False
     goal: bool = False
-    wall: bool = False
+    _wall: bool = False
     visited: int = 0
+
+    @property
+    def wall(self) -> bool:
+        return self._wall
+
+    @wall.setter
+    def wall(self, value: bool) -> None:
+        if self.agent:
+            raise ValueError("Cannot set wall on a cell with an agent.")
+        if self.goal:
+            raise ValueError("Cannot set wall on a cell with a goal.")
+        self._wall = value
 
 
 class GridWorldEnv:
-    def __init__(self, *, max_steps: int = 100, rows: int = 5, cols: int = 5) -> None:
+    def __init__(
+        self,
+        *,
+        max_steps: int = 100,
+        rows: int = 5,
+        cols: int = 5,
+        walls: list[tuple] | None = None,
+    ) -> None:
         self.rows = rows
         self.cols = cols
         self.start = (0, 0)
@@ -174,6 +193,8 @@ class GridWorldEnv:
         self.reward_config = STEP_RESULT_REWARD
         self.max_steps = max_steps
         self._setup()
+        for coordinate in walls or []:
+            self.get_cell(coordinate).wall = True
 
     def _setup(self) -> None:
         self.total_reward = 0
