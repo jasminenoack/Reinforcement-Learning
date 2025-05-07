@@ -130,3 +130,31 @@ class TestGetEmptyNeighbors:
         ]
         empty_neighbors = maze.get_unvisited_neighbors((2, 2))
         assert empty_neighbors == [(1, 2), (2, 1), (3, 1), (2, 3), (3, 2)]
+
+
+class TestGetUnvisitedOrthogonalNeighbors:
+    def test_get_unvisited_orthogonal_neighbors(self):
+        maze = Fake(rows=5, cols=5)
+        maze.grid = [
+            [START, PATH, UNKNOWN, UNKNOWN, OBSTACLE],
+            [OBSTACLE, PATH, UNKNOWN, OBSTACLE, UNKNOWN],
+            [UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN],
+            [OBSTACLE, UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN],
+            [UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN, GOAL],
+        ]
+        unvisited_neighbors = maze.get_unvisited_orthogonal_neighbors((1, 2))
+        assert unvisited_neighbors == [(0, 2)]
+
+
+class TestGetCell:
+    def test_get_cell(self):
+        maze = Fake(rows=5, cols=5)
+        maze.grid = [
+            [START, PATH, UNKNOWN, UNKNOWN, OBSTACLE],
+            [OBSTACLE, PATH, UNKNOWN, OBSTACLE, UNKNOWN],
+            [UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN],
+            [OBSTACLE, UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN],
+            [UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN, GOAL],
+        ]
+        cell = maze.get_cell((2, 2))
+        assert cell == maze.grid[2][2]  # Assuming get_cell returns the cell object

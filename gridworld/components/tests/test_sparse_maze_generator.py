@@ -2,6 +2,7 @@ import random
 from gridworld.components.maze_builders import (
     Entry,
     SparseObstacleMazeGenerator,
+    Walls,
 )
 
 PATH = Entry(
@@ -46,19 +47,142 @@ class TestSparseMazeGenerator:
     def test_sparse_maze_generator(self):
         rng = random.Random(42)
         maze = SparseObstacleMazeGenerator(
-            rows=5,
-            cols=5,
+            rows=3,
+            cols=3,
             start=(0, 0),
-            end=(4, 4),
             rng=rng,
         ).run()
-        assert maze == {
-            "obstacles": [
-                (0, 4),
-                (1, 2),
-                (2, 0),
-                (2, 4),
-                (3, 2),
-                (4, 0),
-            ]
-        }
+        assert maze == [
+            [
+                Entry(
+                    visited=True,
+                    start=True,
+                    goal=False,
+                    obstacle=False,
+                    path=False,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+                Entry(
+                    visited=True,
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                    path=True,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+                Entry(
+                    visited=True,
+                    start=False,
+                    goal=False,
+                    obstacle=True,
+                    path=False,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+            ],
+            [
+                Entry(
+                    visited=True,
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                    path=True,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+                Entry(
+                    visited=True,
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                    path=True,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+                Entry(
+                    visited=True,
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                    path=True,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+            ],
+            [
+                Entry(
+                    visited=True,
+                    start=False,
+                    goal=False,
+                    obstacle=True,
+                    path=False,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+                Entry(
+                    visited=True,
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                    path=True,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+                Entry(
+                    visited=True,
+                    start=False,
+                    goal=True,
+                    obstacle=False,
+                    path=False,
+                    walls=Walls(
+                        up=False,
+                        down=False,
+                        left=False,
+                        right=False,
+                    ),
+                    direction=None,
+                ),
+            ],
+        ]
