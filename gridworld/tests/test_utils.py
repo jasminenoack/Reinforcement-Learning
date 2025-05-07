@@ -10,6 +10,10 @@ class TestRenderHeatmap:
         mocker.patch.object(plt, "colorbar", autospec=True)
         mocker.patch.object(plt, "title", autospec=True)
         mocker.patch.object(plt, "show", autospec=True)
+        mocker.patch.object(plt, "pause", autospec=True)
+        mocker.patch.object(plt, "close", autospec=True)
+        mocker.patch("os.mkdir", autospec=True)
+        mocker.patch.object(plt, "savefig", autospec=True)
         visit_counts = {
             (0, 0): 1,
             (0, 1): 2,
@@ -30,3 +34,6 @@ class TestRenderHeatmap:
         plt.colorbar.assert_called_once_with(label="Visit Count")
         plt.title.assert_called_once_with("Gridworld Visit Count Heatmap")
         plt.show.assert_called_once()
+        plt.pause.assert_called_once_with(5)
+        plt.close.assert_called_once()
+        plt.savefig.assert_called_once()
