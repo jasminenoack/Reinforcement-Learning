@@ -22,3 +22,35 @@ It’s ideal for learning:
 * **Delayed rewards**
 * **Q-learning or policy learning**
 * **How an agent improves over time with feedback**
+
+# Agent Types: 
+
+
+## 🤖 Planned Agent Types
+
+We aim to test different agent strategies and compare their performance across various environment configurations.
+
+1. **Random Agent**  
+   - Chooses actions at random with no learning or memory.  
+   - Acts as a baseline for comparison.
+
+2. **Trained Agent (Default Penalties)**  
+   - Uses reinforcement learning (e.g., Q-learning).  
+   - Learns over multiple episodes using a standard rewar structure.
+
+3. **Trained Agent (Custom Penalties)**  
+   - Same algorithm as (2), but trained in an environment with different penalty values (e.g., higher wall penalties).  
+   - Used to explore how environment shaping affects learning.
+
+4. **Designed Agent**  
+   - A hardcoded or heuristic-based agent (e.g., always move right until blocked, then move down).  
+   - Useful for comparing against learned behavior without any training time.
+
+5. **Training Variants**  
+   - Investigate how different training parameters affect agent performance:
+     - Number of training episodes
+     - Maximum steps per episode
+     - Exploration rate (epsilon)
+     - Learning rate and discount factor
+     - what if the world was round
+     - Large worlds
