@@ -2,10 +2,8 @@ from functools import reduce
 from os import mkdir
 import os
 import shutil
-from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
 from gridworld.agents.q_learning_agent import QLearningAgent
-from gridworld.agents.random_agent import RandomAgent
 from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
 from rich.console import Console
 from gridworld.utils import render_heatmap
@@ -14,8 +12,9 @@ from gridworld.runner import Runner
 
 console = Console()
 
-folder = f"output/gridworld-simple-comparison"
+folder = f"output/gridworld-learing-history"
 output_file = f"{folder}/output.txt"
+
 if os.path.exists(folder):
     shutil.rmtree(folder)
 
@@ -31,7 +30,7 @@ def log(*message: list[str]):
         f.write(" ".join(str(m) for m in message) + "\n")
 
 
-def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
+def run_test(env: GridWorldEnv, agent: Agent, iteration: int, render: bool = False):
     runner = Runner(env, agent)
     results = runner.run_episodes(10, render=False)
     analysis = runner.analyze_results(results)
@@ -40,7 +39,7 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
     avg_visit_counts = VisitCounter.avg(*visit_counts)
     total_visit_counts = reduce(lambda x, y: x + y, visit_counts, VisitCounter())
 
-    log(f"Analysis of 10 episodes with {agent.__class__.__name__}:")
+    log(f"Analysis of 10 episodes with {agent.__class__.__name__} - {iteration}:")
     log("Average Reward:", analysis["reward"]["average"])
     log("Max Reward:", analysis["reward"]["max"])
     log("Min Reward:", analysis["reward"]["min"])
@@ -56,6 +55,7 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         stat=f"Avg Visit Count ({agent.__class__.__name__})",
         folder=folder,
         scale_max=5,
+        filename=f"avg_visit_count_{iteration}",
     )
     render_heatmap(
         visit_counts=total_visit_counts,
@@ -64,14 +64,12 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         stat=f"Total Visit Count ({agent.__class__.__name__})",
         folder=folder,
         scale_max=25,
+        filename=f"total_visit_count_{iteration}",
     )
     log()
 
 
-random_agent = RandomAgent()
 env = GridWorldEnv()
-run_test(env, random_agent, render=False)
-designed_agent = ManhattanAgent()
-run_test(env, designed_agent, render=False)
 learning_agent = QLearningAgent()
-run_test(env, learning_agent, render=False)
+for i in range(5):
+    run_test(env, learning_agent, iteration=i + 1, render=False)
