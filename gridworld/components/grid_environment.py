@@ -47,6 +47,8 @@ from dataclasses import dataclass
 from rich.console import Console
 from rich.text import Text
 
+from gridworld.constants import DOWN, LEFT, RIGHT, UP
+
 
 console = Console()
 
@@ -58,10 +60,10 @@ class ActionConfig:
 
 
 ACTIONS = {
-    "up": ActionConfig(-1, 0),
-    "down": ActionConfig(1, 0),
-    "left": ActionConfig(0, -1),
-    "right": ActionConfig(0, 1),
+    UP: ActionConfig(-1, 0),
+    DOWN: ActionConfig(1, 0),
+    LEFT: ActionConfig(0, -1),
+    RIGHT: ActionConfig(0, 1),
 }
 
 
