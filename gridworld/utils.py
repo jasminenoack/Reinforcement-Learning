@@ -16,6 +16,14 @@ OFF_BOARD = "off_board"
 OBSTACLE = "obstacle"
 GOAL = "goal"
 MOVEMENT = "movement"
+INTERIOR_WALL = "interior_wall"
+
+REVERSED_ACTIONS = {
+    UP: DOWN,
+    DOWN: UP,
+    LEFT: RIGHT,
+    RIGHT: LEFT,
+}
 
 
 class Step(NamedTuple):

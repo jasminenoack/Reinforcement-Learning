@@ -1,5 +1,6 @@
 import pytest
 
+from gridworld.components.maze_builders import Entry, Walls
 from gridworld.utils import DOWN, GOAL, LEFT, MOVEMENT, OFF_BOARD, RIGHT, UP, OBSTACLE
 from ..grid_environment import Cell, GridWorldEnv
 
@@ -50,12 +51,189 @@ class TestGridWorldEnvInit:
             for cell in row:
                 assert cell.obstacle is False
 
-    def test_can_set_specific_obstacles(self):
-        env = GridWorldEnv(obstacles=[(1, 1), (2, 2)])
-        assert env.grid[1][1].obstacle is True
-        assert env.grid[2][2].obstacle is True
-        assert env.grid[0][0].obstacle is False
-        assert env.grid[4][4].obstacle is False
+    def test_pulls_start_and_goal_from_grid(self):
+        grid = [
+            [
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+                Entry(
+                    start=False,
+                    goal=True,
+                    obstacle=False,
+                ),
+            ],
+            [
+                Entry(
+                    start=True,
+                    goal=False,
+                    obstacle=False,
+                ),
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+            ],
+        ]
+        env = GridWorldEnv(grid=grid)
+        assert env.start == (1, 0)
+        assert env.goal == (0, 2)
+        assert env.rows == 2
+        assert env.cols == 3
+
+    def test_handles_no_start_finish_in_grid(self):
+        grid = [
+            [
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+            ],
+            [
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+                Entry(
+                    start=False,
+                    goal=False,
+                    obstacle=False,
+                ),
+            ],
+        ]
+        env = GridWorldEnv(grid=grid)
+        assert env.start == (0, 0)
+        assert env.goal == (1, 2)
+        assert env.rows == 2
+        assert env.cols == 3
+
+    def test_can_pass_a_grid_with_obstacles(self):
+        grid = [
+            [
+                Entry(
+                    start=True,
+                    obstacle=False,
+                ),
+                Entry(
+                    obstacle=False,
+                ),
+                Entry(
+                    obstacle=True,
+                ),
+            ],
+            [
+                Entry(
+                    obstacle=False,
+                ),
+                Entry(
+                    obstacle=False,
+                ),
+                Entry(
+                    obstacle=False,
+                ),
+            ],
+            [
+                Entry(
+                    obstacle=True,
+                ),
+                Entry(
+                    obstacle=False,
+                ),
+                Entry(
+                    obstacle=False,
+                ),
+            ],
+        ]
+        env = GridWorldEnv(grid=grid)
+        assert env.get_cell((0, 0)).obstacle is False
+        assert env.get_cell((0, 1)).obstacle is False
+        assert env.get_cell((0, 2)).obstacle is True
+        assert env.get_cell((1, 0)).obstacle is False
+        assert env.get_cell((1, 1)).obstacle is False
+        assert env.get_cell((1, 2)).obstacle is False
+        assert env.get_cell((2, 0)).obstacle is True
+        assert env.get_cell((2, 1)).obstacle is False
+        assert env.get_cell((2, 2)).obstacle is False
+
+    def test_can_pass_a_grid_with_walls(self):
+        grid = [
+            [
+                Entry(
+                    walls=Walls(up=True, down=False, left=False, right=False),
+                ),
+                Entry(
+                    walls=Walls(up=False, down=False, left=False, right=False),
+                ),
+                Entry(
+                    walls=Walls(up=False, down=False, left=False, right=False),
+                ),
+            ],
+            [
+                Entry(
+                    walls=Walls(up=False, down=False, left=False, right=False),
+                ),
+                Entry(
+                    walls=Walls(up=False, down=False, left=False, right=False),
+                ),
+                Entry(
+                    walls=Walls(up=False, down=False, left=False, right=False),
+                ),
+            ],
+            [
+                Entry(
+                    walls=Walls(up=False, down=False, left=False, right=False),
+                ),
+                Entry(
+                    walls=Walls(up=False, down=False, left=False, right=False),
+                ),
+                Entry(
+                    walls=Walls(up=False, down=False, left=False, right=False),
+                ),
+            ],
+        ]
+        env = GridWorldEnv(grid=grid)
+        assert env.get_cell((0, 0)).walls == Walls(
+            up=True,
+            down=False,
+            left=False,
+            right=False,
+        )
+        assert env.get_cell((0, 1)).walls == Walls(
+            up=False,
+            down=False,
+            left=False,
+            right=False,
+        )
 
 
 class TestReset:
@@ -295,6 +473,118 @@ class TestStep:
         assert reward == -1
         assert done is True
         assert env.total_reward == -1
+
+    def test_handles_walking_into_wall_up(self):
+        env = GridWorldEnv()
+        env.agent_pos = (1, 1)
+        env.get_cell((1, 1)).walls = Walls(
+            up=True,
+        )
+        action = "up"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 1)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts[(1, 1)] == 2
+        assert env.visit_counts[(0, 1)] == 0
+
+    def test_handles_walking_into_wall_down(self):
+        env = GridWorldEnv()
+        env.agent_pos = (1, 1)
+        env.get_cell((1, 1)).walls = Walls(
+            down=True,
+        )
+        action = "down"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 1)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts[(1, 1)] == 2
+        assert env.visit_counts[(2, 1)] == 0
+
+    def test_handles_walking_into_wall_left(self):
+        env = GridWorldEnv()
+        env.agent_pos = (1, 1)
+        env.get_cell((1, 1)).walls = Walls(
+            left=True,
+        )
+        action = "left"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 1)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts[(1, 1)] == 2
+        assert env.visit_counts[(1, 0)] == 0
+
+    def test_handles_walking_into_wall_right(self):
+        env = GridWorldEnv()
+        env.agent_pos = (1, 2)
+        env.get_cell((1, 2)).walls = Walls(
+            right=True,
+        )
+        action = "right"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 2)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts[(1, 2)] == 2
+        assert env.visit_counts[(1, 3)] == 0
+
+    def test_other_cell_has_wall_up(self):
+        env = GridWorldEnv()
+        env.agent_pos = (1, 1)
+        env.get_cell((0, 1)).walls = Walls(
+            down=True,
+        )
+        action = "up"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 1)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts[(1, 1)] == 2
+        assert env.visit_counts[(0, 1)] == 0
+
+    def test_other_cell_has_wall_down(self):
+        env = GridWorldEnv()
+        env.agent_pos = (1, 1)
+        env.get_cell((2, 1)).walls = Walls(
+            up=True,
+        )
+        action = "down"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 1)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts[(1, 1)] == 2
+        assert env.visit_counts[(2, 1)] == 0
+
+    def test_other_cell_has_wall_left(self):
+        env = GridWorldEnv()
+        env.agent_pos = (1, 1)
+        env.get_cell((1, 0)).walls = Walls(
+            right=True,
+        )
+        action = "left"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 1)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts[(1, 1)] == 2
+        assert env.visit_counts[(1, 0)] == 0
+
+    def test_other_cell_has_wall_right(self):
+        env = GridWorldEnv()
+        env.agent_pos = (1, 1)
+        env.get_cell((1, 2)).walls = Walls(
+            left=True,
+        )
+        action = "right"
+        new_state, reward, done = env.step(action)
+        assert new_state == (1, 1)
+        assert reward == -10
+        assert done is False
+        assert env.visit_counts[(1, 1)] == 2
+        assert env.visit_counts[(1, 2)] == 0
 
 
 class TestVisitCounts:

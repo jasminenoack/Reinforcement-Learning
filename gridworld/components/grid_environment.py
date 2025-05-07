@@ -49,12 +49,15 @@ from unittest.mock import ANY
 from rich.console import Console
 from rich.text import Text
 
+from gridworld.components.maze_builders import Entry, Walls
 from gridworld.utils import (
     DOWN,
     GOAL,
+    INTERIOR_WALL,
     LEFT,
     MOVEMENT,
     OFF_BOARD,
+    REVERSED_ACTIONS,
     RIGHT,
     UP,
     OBSTACLE,
@@ -82,6 +85,7 @@ STEP_RESULT_REWARD = {
     OBSTACLE: -10,
     GOAL: 100,
     MOVEMENT: -1,
+    INTERIOR_WALL: -10,
 }
 
 
@@ -162,6 +166,7 @@ class Cell:
     goal: bool = False
     _obstacle: bool = False
     visited: int = 0
+    walls: Walls | None = None
 
     @property
     def obstacle(self) -> bool:
@@ -175,6 +180,20 @@ class Cell:
             raise ValueError("Cannot set obstacle on a cell with a goal.")
         self._obstacle = value
 
+    def has_door(self, direction: str) -> bool:
+        if self.walls is None:
+            return True
+        if direction == UP:
+            return not self.walls.up
+        elif direction == DOWN:
+            return not self.walls.down
+        elif direction == LEFT:
+            return not self.walls.left
+        elif direction == RIGHT:
+            return not self.walls.right
+        else:
+            raise ValueError(f"Invalid direction: {direction}")
+
 
 class GridWorldEnv:
     def __init__(
@@ -183,22 +202,61 @@ class GridWorldEnv:
         max_steps: int = 100,
         rows: int = 5,
         cols: int = 5,
-        obstacles: list[tuple] | None = None,
+        grid: list[list[Entry]] = None,
     ) -> None:
-        self.rows = rows
-        self.cols = cols
-        self.start = (0, 0)
-        self.goal = (rows - 1, cols - 1)
+        found_start = None
+        found_goal = None
+        if grid:
+            self.rows = len(grid)
+            self.cols = len(grid[0])
+
+            for i, row in enumerate(grid):
+                for j, entry in enumerate(row):
+                    if entry.start:
+                        if found_start is not None:
+                            raise ValueError("Multiple start positions found.")
+                        found_start = (i, j)
+                    if entry.goal:
+                        if found_goal is not None:
+                            raise ValueError("Multiple goal positions found.")
+                        found_goal = (i, j)
+
+        else:
+            self.rows = rows
+            self.cols = cols
+
         self.reward_config = STEP_RESULT_REWARD
         self.max_steps = max_steps
+
+        if found_start is None:
+            self.start = (0, 0)
+        else:
+            self.start = found_start
+        if found_goal is None:
+            self.goal = (self.rows - 1, self.cols - 1)
+        else:
+            self.goal = found_goal
+        self._config_grid = grid
         self._setup()
-        for coordinate in obstacles or []:
-            self.get_cell(coordinate).obstacle = True
 
     def _setup(self) -> None:
         self.total_reward = 0
         self.current_step = 0
-        self.grid = [[Cell() for _ in range(self.cols)] for _ in range(self.rows)]
+        if self._config_grid:
+            self.grid = []
+            for row in self._config_grid:
+                row_cells = []
+                for entry in row:
+                    cell = Cell(
+                        agent=entry.start,
+                        goal=entry.goal,
+                        _obstacle=entry.obstacle,
+                        walls=entry.walls,
+                    )
+                    row_cells.append(cell)
+                self.grid.append(row_cells)
+        else:
+            self.grid = [[Cell() for _ in range(self.cols)] for _ in range(self.rows)]
         self.get_cell(self.start).agent = True
         self.get_cell(self.goal).goal = True
         self.visit(new_pos=self.agent_pos)
@@ -283,12 +341,22 @@ class GridWorldEnv:
     def next_cell(self, action: str) -> tuple[tuple[int, int], str]:
         pos = self.agent_pos
         action_config = ACTIONS[action]
+
+        current_cell = self.get_cell(pos)
+        print(f"Has door: {current_cell.has_door(action)}")
+        if not current_cell.has_door(action):
+            return (pos, INTERIOR_WALL)
+
         new_row = pos[0] + action_config.row_movement
         new_col = pos[1] + action_config.col_movement
         if not (0 <= new_row < self.rows and 0 <= new_col < self.cols):
             return (pos, OFF_BOARD)
 
         new_cell = self.get_cell((new_row, new_col))
+        revered_action = REVERSED_ACTIONS[action]
+        if not new_cell.has_door(revered_action):
+            return (pos, INTERIOR_WALL)
+
         if new_cell.obstacle:
             return (pos, OBSTACLE)
         elif new_cell.goal:
