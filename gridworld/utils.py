@@ -2,6 +2,7 @@ from re import L
 from typing import NamedTuple, TypedDict
 
 from matplotlib import pyplot as plt
+from matplotlib.table import Cell
 import numpy as np
 
 
@@ -61,8 +62,7 @@ class RunnerReturn(TypedDict):
     visit_counts: dict[tuple[int, int], int]
 
 
-def render_heatmap(
-    *,
+def _base_heatmap(
     visit_counts: dict[tuple[int, int], int],
     rows: int,
     cols: int,
@@ -70,13 +70,42 @@ def render_heatmap(
     folder: str = "output",
     filename: str | None = None,
     scale_max: int = 20,
-) -> None:
+    grid: list[list[Cell]] | None = None,
+):
     numpy_map = np.zeros((rows, cols))
     for (x, y), count in visit_counts.items():
+        if grid:
+            cell = grid[x][y]
+            if cell.obstacle:
+                numpy_map[x, y] = np.nan
+                continue
         numpy_map[x, y] = count
 
     name = f"Gridworld {stat} Heatmap"
-    plt.imshow(numpy_map, cmap="Blues", interpolation="nearest", vmax=scale_max)
+    cmap = plt.cm.Oranges
+    cmap.set_bad(color="black")
+    plt.imshow(
+        numpy_map,
+        cmap=cmap,
+        interpolation="nearest",
+        vmax=scale_max,
+        extent=[0, cols, rows, 0],
+    )
+
+    if grid:
+        for r in range(rows):
+            for c in range(cols):
+                cell = grid[r][c]
+                x, y = c, r  # note: matplotlib has (x=cols, y=rows)
+
+                if cell.walls.up:
+                    plt.plot([x, x + 1], [y, y], color="black", linewidth=2)
+                if cell.walls.down:
+                    plt.plot([x, x + 1], [y + 1, y + 1], color="black", linewidth=2)
+                if cell.walls.left:
+                    plt.plot([x, x], [y, y + 1], color="black", linewidth=2)
+                if cell.walls.right:
+                    plt.plot([x + 1, x + 1], [y, y + 1], color="black", linewidth=2)
     plt.colorbar(label=stat)
     plt.title(name)
     plt.show(block=False)
@@ -87,6 +116,29 @@ def render_heatmap(
     )
     plt.savefig(f"{folder}/{filename}.png")
     plt.close()
+
+
+def render_heatmap(
+    *,
+    visit_counts: dict[tuple[int, int], int],
+    rows: int,
+    cols: int,
+    stat="Visit Count",
+    folder: str = "output",
+    filename: str | None = None,
+    scale_max: int = 20,
+    grid: list[list[Cell]] | None = None,
+) -> None:
+    _base_heatmap(
+        visit_counts=visit_counts,
+        rows=rows,
+        cols=cols,
+        stat=stat,
+        folder=folder,
+        filename=filename,
+        scale_max=scale_max,
+        grid=grid,
+    )
 
 
 def render_directional_heatmap_for_q_table(

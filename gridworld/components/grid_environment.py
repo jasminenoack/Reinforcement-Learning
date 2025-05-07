@@ -343,7 +343,6 @@ class GridWorldEnv:
         action_config = ACTIONS[action]
 
         current_cell = self.get_cell(pos)
-        print(f"Has door: {current_cell.has_door(action)}")
         if not current_cell.has_door(action):
             return (pos, INTERIOR_WALL)
 
