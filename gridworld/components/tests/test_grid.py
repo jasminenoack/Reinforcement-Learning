@@ -22,6 +22,10 @@ class TestGridWorldEnvInit:
         assert env.reward_config.off_board_penalty == -10
         assert env.reward_config.goal_reward == 100
 
+    def test_can_set_max_steps(self):
+        env = GridWorldEnv(max_steps=37)
+        assert env.max_steps == 37
+
 
 class TestReset:
     def test_moves_robot_back_to_start(self):

@@ -175,6 +175,7 @@ def line_plot(
     plt.title(title)
     plt.xlabel(x_label)
     plt.grid()
+    plt.legend()
     filename = filename or f"{title.lower().replace(' ', '_')}"
     plt.savefig(f"{folder}/{filename}.png")
     plt.close()
