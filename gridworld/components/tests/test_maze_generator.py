@@ -1,10 +1,29 @@
 from gridworld.components.maze_builders import (
-    PATH,
-    START,
-    UNKNOWN,
-    GOAL,
-    OBSTACLE,
+    Entry,
     MazeGenerator,
+)
+
+
+PATH = Entry(
+    visited=True,
+    path=True,
+)
+
+UNKNOWN = Entry()
+
+OBSTACLE = Entry(
+    visited=True,
+    obstacle=True,
+)
+
+GOAL = Entry(
+    visited=True,
+    goal=True,
+)
+
+START = Entry(
+    visited=True,
+    start=True,
 )
 
 
@@ -79,7 +98,7 @@ class TestGetEmptyCoordinates:
             [OBSTACLE, UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN],
             [UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN, GOAL],
         ]
-        empty_coords = maze.get_empty_coordinates()
+        empty_coords = maze.get_unvisited_coordinates()
         assert empty_coords == [
             (0, 2),
             (0, 3),
@@ -109,5 +128,5 @@ class TestGetEmptyNeighbors:
             [OBSTACLE, UNKNOWN, UNKNOWN, OBSTACLE, UNKNOWN],
             [UNKNOWN, OBSTACLE, UNKNOWN, UNKNOWN, GOAL],
         ]
-        empty_neighbors = maze.get_empty_neighbors((2, 2))
+        empty_neighbors = maze.get_unvisited_neighbors((2, 2))
         assert empty_neighbors == [(1, 2), (2, 1), (3, 1), (2, 3), (3, 2)]
