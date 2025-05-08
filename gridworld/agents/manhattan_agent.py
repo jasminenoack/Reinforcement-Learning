@@ -1,9 +1,7 @@
-from collections import defaultdict
 import random
 from gridworld.agents.generic_agent import Agent
 from gridworld.utils import (
     DOWN,
-    REVERSED_ACTIONS,
     RIGHT,
     SIMPLE_ACTIONS,
     UP,
@@ -15,55 +13,37 @@ from gridworld.utils import (
 class ManhattanAgent(Agent):
 
     def reset(self, **kwargs):
-        self._action_cache = defaultdict(set)
-        self._backtrack = []
+        self._tried = {}  # maps (state) -> set(actions tried)
 
     def act(self, state):
-        row = state[0]
-        col = state[1]
-        row_goal = self.goal[0]
-        col_goal = self.goal[1]
+        row, col = state
+        row_goal, col_goal = self.goal
 
-        best_options = []
-
+        # Preferred directions (Manhattan-style)
+        preferred = []
         if row < row_goal:
-            best_options.append(DOWN)
+            preferred.append(DOWN)
         if row > row_goal:
-            best_options.append(UP)
+            preferred.append(UP)
         if col < col_goal:
-            best_options.append(RIGHT)
+            preferred.append(RIGHT)
         if col > col_goal:
-            best_options.append(LEFT)
+            preferred.append(LEFT)
 
-        previously_attempted = self._action_cache[state]
-        best_options = list(set(best_options) - previously_attempted)
-        any_options = list(set(SIMPLE_ACTIONS) - previously_attempted)
+        tried = self._tried.get(state, set())
+        options = [a for a in preferred if a not in tried]
 
-        action = None
-        if best_options:
-            action = random.choice(best_options)
-            self._action_cache[state].add(action)
+        # Fallback to any untried direction
+        if not options:
+            options = [a for a in SIMPLE_ACTIONS if a not in tried]
 
-        elif any_options:
-            action = random.choice(any_options)
-            self._action_cache[state].add(action)
-            self._backtrack.append(REVERSED_ACTIONS[action])
-        elif self._backtrack:
-            action = self._backtrack.pop()
-
-        if action:
+        if options:
+            action = random.choice(options)
+            self._tried.setdefault(state, set()).add(action)
             return action
 
-        # if something is wrong
-        raise ValueError(
-            f"Agent is at {state} it believes this is the goal: {self.goal}. ",
-            "Please check the agent's config.",
-        )
+        raise ValueError(f"No available moves from {state}; stuck or misconfigured.")
 
     def observe(self, step: Step):
-        self._action_cache[step.start].add(step.action)
-
-        # if we aren't trying to go backwards
-        reversed_action = REVERSED_ACTIONS[step.action]
-        if reversed_action not in self._action_cache[step.new_state]:
-            self._backtrack.append(REVERSED_ACTIONS[step.action])
+        # Optional: reinforce that this action was tried (may be redundant)
+        self._tried.setdefault(step.start, set()).add(step.action)
