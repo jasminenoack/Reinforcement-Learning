@@ -71,7 +71,9 @@ def _base_heatmap(
     filename: str | None = None,
     scale_max: int = 20,
     grid: list[list[Cell]] | None = None,
-):
+    q_table: dict[tuple[int, int], dict[str, float]] | None = None,
+    show: bool = True,
+) -> str:
     numpy_map = np.zeros((rows, cols))
     for (x, y), count in visit_counts.items():
         if grid:
@@ -92,30 +94,112 @@ def _base_heatmap(
         extent=[0, cols, rows, 0],
     )
 
+    if q_table:
+        all_confidences = [
+            max(actions.values()) - sorted(actions.values())[-2]
+            for actions in q_table.values()
+            if len(set(actions.values())) > 1
+        ]
+        max_conf = max(all_confidences) if all_confidences else 1.0
+        if not max_conf:
+            max_conf = 1.0
+        for (x, y), actions in q_table.items():
+            q_values = sorted(list(actions.values()))
+            max_action_value = q_values[-1]
+            second_highest_action_value = q_values[-2]
+            confidence = (max_action_value - second_highest_action_value) / max_conf
+
+            if confidence == 0:
+                continue
+            scale = max(0.2, min(confidence, 1.0))
+
+            max_actions = [
+                action for action, value in actions.items() if value == max_action_value
+            ]
+
+            if max_action_value < 0:
+                color = "red"
+            elif max_action_value > 0:
+                color = "green"
+            else:
+                color = "yellow"
+
+            if len(max_actions) > 1:
+                continue
+
+            cx, cy = y + 0.5, x + 0.5  # center of the cell
+
+            if UP in max_actions:
+                plt.arrow(
+                    cx,
+                    cy,
+                    0,
+                    -scale,
+                    head_width=0.1 * scale,
+                    head_length=0.2 * scale,
+                    fc=color,
+                    ec=color,
+                )
+            elif DOWN in max_actions:
+                plt.arrow(
+                    cx,
+                    cy,
+                    0,
+                    scale,
+                    head_width=0.1 * scale,
+                    head_length=0.2 * scale,
+                    fc=color,
+                    ec=color,
+                )
+            elif LEFT in max_actions:
+                plt.arrow(
+                    cx,
+                    cy,
+                    -scale,
+                    0,
+                    head_width=0.1 * scale,
+                    head_length=0.2 * scale,
+                    fc=color,
+                    ec=color,
+                )
+            elif RIGHT in max_actions:
+                plt.arrow(
+                    cx,
+                    cy,
+                    scale,
+                    0,
+                    head_width=0.1 * scale,
+                    head_length=0.2 * scale,
+                    fc=color,
+                    ec=color,
+                )
+
     if grid:
         for r in range(rows):
             for c in range(cols):
                 cell = grid[r][c]
                 x, y = c, r  # note: matplotlib has (x=cols, y=rows)
 
-                if cell.walls.up:
+                if cell.walls and cell.walls.up:
                     plt.plot([x, x + 1], [y, y], color="black", linewidth=2)
-                if cell.walls.down:
+                if cell.walls and cell.walls.down:
                     plt.plot([x, x + 1], [y + 1, y + 1], color="black", linewidth=2)
-                if cell.walls.left:
+                if cell.walls and cell.walls.left:
                     plt.plot([x, x], [y, y + 1], color="black", linewidth=2)
-                if cell.walls.right:
+                if cell.walls and cell.walls.right:
                     plt.plot([x + 1, x + 1], [y, y + 1], color="black", linewidth=2)
     plt.colorbar(label=stat)
     plt.title(name)
-    plt.show(block=False)
-    plt.pause(2)
+    if show:
+        plt.show(block=False)
+        plt.pause(2)
     filename = (
         filename
         or f'{name.lower().replace(" ", "_").replace("(", "_").replace(")", "_")}'
     )
     plt.savefig(f"{folder}/{filename}.png")
     plt.close()
+    return f"{filename}.png"
 
 
 def render_heatmap(
@@ -128,8 +212,10 @@ def render_heatmap(
     filename: str | None = None,
     scale_max: int = 20,
     grid: list[list[Cell]] | None = None,
-) -> None:
-    _base_heatmap(
+    q_table: dict[tuple[int, int], dict[str, float]] | None = None,
+    show: bool = True,
+) -> str:
+    return _base_heatmap(
         visit_counts=visit_counts,
         rows=rows,
         cols=cols,
@@ -138,6 +224,8 @@ def render_heatmap(
         filename=filename,
         scale_max=scale_max,
         grid=grid,
+        q_table=q_table,
+        show=show,
     )
 
 
