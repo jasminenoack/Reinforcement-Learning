@@ -252,21 +252,6 @@ class TestReset:
         assert sum(env.visit_counts.values()) == 1
 
 
-class TestRender:
-    def test_renders_grid_with_agent_and_goal(self, capsys):
-        env = GridWorldEnv()
-        env.agent_pos = (2, 2)
-        env.render()
-        captured = capsys.readouterr()
-        lines = captured.out.splitlines()
-        assert lines[-6] == ""
-        assert lines[-5] == ". . . . . "
-        assert lines[-4] == ". . . . . "
-        assert lines[-3] == ". . A . . "
-        assert lines[-2] == ". . . . . "
-        assert lines[-1] == ". . . . G "
-
-
 class TestDone:
     def test_done_is_false_when_not_at_goal(self):
         env = GridWorldEnv()

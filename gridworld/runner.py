@@ -2,11 +2,15 @@ from functools import reduce
 import os
 import shutil
 import time
-from gridworld.agents.lost_agent import LostAgent
+from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
 from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
 from rich.console import Console
 
+from gridworld.components.maze_builders import (
+    RecursiveBacktracking,
+    SparseObstacleMazeGenerator,
+)
 from gridworld.utils import RunnerReturn, Step, render_heatmap
 
 
@@ -61,6 +65,20 @@ class Runner:
             state = new_state
             if render:
                 time.sleep(sleep)
+        if render:
+            if clear_render:
+                console.clear()
+            self.env.render()
+            console.print(
+                f"Total reward: {self.env.total_reward}, Steps: {len(trajectory)}"
+            )
+            console.print(f"Visit counts: {self.env.visit_counts}")
+            render_heatmap(
+                visit_counts=self.env.visit_counts,
+                rows=self.env.rows,
+                cols=self.env.cols,
+                scale_max=3,
+            )
 
         return RunnerReturn(
             total_reward=self.env.total_reward,
@@ -117,7 +135,16 @@ if __name__ == "__main__":
     except FileExistsError:
         pass
 
-    env = GridWorldEnv(rows=10, cols=10)
-    agent = LostAgent(goal=env.goal)
+    obstacle_maze = SparseObstacleMazeGenerator(
+        rows=10,
+        cols=10,
+    )
+    maze = RecursiveBacktracking(
+        rows=10,
+        cols=10,
+    )
+
+    env = GridWorldEnv(rows=5, cols=5, grid=maze.run())
+    agent = ManhattanAgent(goal=env.goal)
     runner = Runner(env, agent)
     runner.run_episode(render=True, clear_render=False, sleep=0.5)

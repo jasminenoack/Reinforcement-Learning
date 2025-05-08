@@ -12,6 +12,7 @@ class Agent(ABC):
         self.rows = rows
         self.cols = cols
         self.goal = goal
+        self.reset()
 
     @abstractmethod
     def act(self, *args: Any, **kwargs: Any) -> str: ...

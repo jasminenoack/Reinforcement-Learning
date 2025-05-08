@@ -317,20 +317,45 @@ class GridWorldEnv:
 
     def render(self) -> None:
         console.print(f"Step: {self.current_step} of {self.max_steps}")
-        console.print(f"Total Reward: {round(self.total_reward, 2)}")
-        console.print()
+        console.print(f"Total Reward: {round(self.total_reward, 2)}\n")
+
         agent_pos = self.agent_pos
         goal_pos = self.goal
+
         for i in range(self.rows):
-            line = Text()
+            # Top walls
+            top_line = Text()
             for j in range(self.cols):
+                cell = self.grid[i][j]
+                top_line.append("┌" if cell.walls and cell.walls.up else " ")
+                top_line.append("─ " if cell.walls and cell.walls.up else "  ")
+            top_line.append("┐")
+            console.print(top_line)
+
+            # Middle row
+            mid_line = Text()
+            for j in range(self.cols):
+                cell = self.grid[i][j]
+                left_wall = "│" if cell.walls and cell.walls.left else " "
                 if (i, j) == agent_pos:
-                    line.append("A ", style="bold blue")
+                    mid_line.append(left_wall + "A ", style="bold blue")
                 elif (i, j) == goal_pos:
-                    line.append("G ", style="bold green")
+                    mid_line.append(left_wall + "G ", style="bold green")
+                elif cell.obstacle:
+                    mid_line.append(left_wall + "█ ", style="dim white")
                 else:
-                    line.append(". ", style="white")
-            console.print(line)
+                    mid_line.append(left_wall + "  ", style="white")
+            mid_line.append("│")
+            console.print(mid_line)
+
+        # Bottom wall
+        bottom_line = Text()
+        for j in range(self.cols):
+            cell = self.grid[-1][j]
+            bottom_line.append("└" if cell.walls and cell.walls.down else " ")
+            bottom_line.append("─ " if cell.walls and cell.walls.down else "  ")
+        bottom_line.append("┘")
+        console.print(bottom_line)
 
     def get_state(self) -> tuple[int, int]:
         return self.agent_pos
