@@ -4,3 +4,5 @@ rich
 matplotlib
 numpy
 pytest-mock
+black
+flake8
