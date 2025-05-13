@@ -202,3 +202,52 @@ class TestSimpleScore:
         full_board = np.array(board)
         grid = Grid(full_board)
         assert grid.simple_score == 0
+
+
+class TestPlace:
+    def test_place_queen(self):
+        board = build_board_array([])
+        full_board = np.array(board)
+        grid = Grid(full_board)
+        grid.place(0, 1)
+        assert int(grid.board[0][1]) == 1
+        print(grid.board)
+        assert int(grid.board[0][0]) == 0
+        assert grid.moves == 1
+
+    def errors_if_fully_played(self):
+        board = build_board_array(correct)
+        full_board = np.array(board)
+        grid = Grid(full_board)
+        with pytest.raises(ValueError):
+            grid.place(0, 1)
+
+    def test_place_queen_on_existing_queen(self):
+        board = build_board_array([(0, 0)])
+        full_board = np.array(board)
+        grid = Grid(full_board)
+        grid.place(0, 0)
+        assert int(grid.board[0][0]) == 1
+        assert grid.moves == 1
+        grid.place(0, 0)
+        assert int(grid.board[0][0]) == 1
+        assert grid.moves == 2
+
+
+class TestReset:
+    def test_resets_moves(self):
+        board = build_board_array(correct)
+        full_board = np.array(board)
+        grid = Grid(full_board)
+        grid.moves = 5
+        grid.reset()
+        assert grid.moves == 0
+
+
+class TestIsQueen:
+    def test_is_queen(self):
+        board = build_board_array(correct)
+        full_board = np.array(board)
+        grid = Grid(full_board)
+        assert grid.is_queen(0, 0) is True
+        assert grid.is_queen(1, 1) is False

@@ -5,6 +5,7 @@ from numpy.typing import NDArray
 class Grid:
     def __init__(self, board: NDArray[np.int_]):
         self.board = board
+        self.reset()
 
     @property
     def _two_in_row(self) -> bool:
@@ -75,3 +76,15 @@ class Grid:
             return -100
         else:
             return 0
+
+    def reset(self):
+        self.moves = 0
+
+    def place(self, row: int, column: int):
+        if self.fully_played:
+            raise ValueError("The board is already full.")
+        self.board[row][column] = 1
+        self.moves += 1
+
+    def is_queen(self, row: int, column: int) -> bool:
+        return bool(self.board[row][column] == 1)
