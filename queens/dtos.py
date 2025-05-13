@@ -24,3 +24,4 @@ class RunnerReturn:
     solved: bool
     board: NDArray[np.int_]
     moves: int
+    score: int

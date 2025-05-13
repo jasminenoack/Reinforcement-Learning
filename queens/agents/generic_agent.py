@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import random
 from typing import Any
 
-from queens.dtos import Observation, Result
+from queens.dtos import Observation, Result, RunnerReturn
 
 
 class Agent(ABC):
@@ -18,9 +18,13 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def observe(self, result: Result):
+    def observe_step(self, result: Result):
         pass
 
     @abstractmethod
     def reset(self, **kwargs: Any):
+        pass
+
+    @abstractmethod
+    def observe_result(self, result: RunnerReturn):
         pass

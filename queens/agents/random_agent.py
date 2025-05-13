@@ -1,7 +1,7 @@
 from typing import Any
 
 from queens.agents.generic_agent import Agent
-from queens.dtos import Observation, Result
+from queens.dtos import Observation, Result, RunnerReturn
 
 
 class RandomAgent(Agent):
@@ -10,10 +10,13 @@ class RandomAgent(Agent):
         col = self.rng.randint(0, 7)
         return row, col
 
-    def observe(self, result: Result):
+    def observe_step(self, result: Result):
         pass
 
     def reset(self, **kwargs: Any):
+        pass
+
+    def observe_result(self, result: RunnerReturn):
         pass
 
 

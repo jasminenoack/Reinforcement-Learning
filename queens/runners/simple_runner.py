@@ -1,9 +1,11 @@
 from time import sleep
 from queens.agents.generic_agent import Agent
+from queens.agents.reinforcement_agents import SimpleRandomReinforcementAgent
 from queens.components.grid import Grid
 from queens.dtos import Observation, Result, RunnerReturn
 from queens.utils import build_board_array
-from queens.agents.random_agent import RandomAgent
+
+# from queens.agents.random_agent import RandomAgent
 
 
 RENDER_DELAY = 0.5
@@ -16,7 +18,9 @@ class Runner:
         self.agent.reset()
         self.env.reset()
 
-    def run_episode(self, *, render: bool = False):
+    def run_episode(
+        self, *, render: bool = False, render_result: bool = False
+    ) -> RunnerReturn:
         self.agent.reset()
         self.env.reset()
         trajectory: list[Result] = []
@@ -33,12 +37,19 @@ class Runner:
                 self.env.render()
                 sleep(RENDER_DELAY)
 
-        return RunnerReturn(
+        if render_result:
+            self.env.render()
+            sleep(RENDER_DELAY)
+        result = RunnerReturn(
             trajectory=trajectory,
             solved=self.env.solved,
             board=self.env.board,
             moves=self.env.moves,
+            score=self.env.simple_score,
         )
+        self.agent.observe_result(result)
+
+        return result
 
     def run_episodes(
         self,
@@ -48,7 +59,7 @@ class Runner:
     ) -> list[RunnerReturn]:
         results: list[RunnerReturn] = []
         for _ in range(num_episodes):
-            result = self.run_episode(render=render)
+            result = self.run_episode(render=False, render_result=render)
             results.append(result)
         return results
 
@@ -62,8 +73,10 @@ class Runner:
 
 
 if __name__ == "__main__":
-    runner = Runner(env=Grid(build_board_array([])), agent=RandomAgent())
+    runner = Runner(
+        env=Grid(build_board_array([])), agent=SimpleRandomReinforcementAgent()
+    )
     # runner.run_episode(render=True)
 
-    results = runner.run_episodes(num_episodes=100)
+    results = runner.run_episodes(num_episodes=10000, render=False)
     runner.render_analytics(results)

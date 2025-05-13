@@ -10,28 +10,38 @@ class Grid:
         self.reset()
 
     @property
+    def _values_in_rows(self) -> NDArray[np.int_]:
+        return np.sum(self.board, axis=1)
+
+    @property
     def _two_in_row(self) -> bool:
-        return bool(np.any(np.sum(self.board, axis=1) > 1))
+        return bool(np.any(self._values_in_rows > 1))
+
+    @property
+    def _values_in_columns(self) -> NDArray[np.int_]:
+        return np.sum(self.board, axis=0)
 
     @property
     def _two_in_column(self) -> bool:
-        return bool(np.any(np.sum(self.board, axis=0) > 1))
+        return bool(np.any(self._values_in_columns > 1))
+
+    @property
+    def values_in_diagonals(self) -> NDArray[np.int_]:
+        return np.array([np.sum(np.diag(self.board, k)) for k in range(-7, 8)])
 
     @property
     def _two_on_diagonal(self) -> bool:
-        for k in range(-7, 8):
-            diag = np.diag(self.board, k)
-            if np.sum(diag) > 1:
-                return True
-        return False
+        return bool(np.any(self.values_in_diagonals > 1))
+
+    @property
+    def _values_in_reverse_diagonals(self) -> NDArray[np.int_]:
+        return np.array(
+            [np.sum(np.diag(np.fliplr(self.board), k)) for k in range(-7, 8)]
+        )
 
     @property
     def _two_on_reverse_diagonal(self) -> bool:
-        for k in range(-7, 8):
-            diag = np.diag(np.fliplr(self.board), k)
-            if np.sum(diag) > 1:
-                return True
-        return False
+        return bool(np.any(self._values_in_reverse_diagonals > 1))
 
     @property
     def solved(self) -> bool:
