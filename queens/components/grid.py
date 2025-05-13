@@ -1,10 +1,12 @@
 import numpy as np
 from numpy.typing import NDArray
 
+from queens.dtos import BoardState
+
 
 class Grid:
     def __init__(self, board: NDArray[np.int_]):
-        self.board = board
+        self._org_board = board
         self.reset()
 
     @property
@@ -19,7 +21,6 @@ class Grid:
     def _two_on_diagonal(self) -> bool:
         for k in range(-7, 8):
             diag = np.diag(self.board, k)
-            print(diag)
             if np.sum(diag) > 1:
                 return True
         return False
@@ -28,7 +29,6 @@ class Grid:
     def _two_on_reverse_diagonal(self) -> bool:
         for k in range(-7, 8):
             diag = np.diag(np.fliplr(self.board), k)
-            print(diag)
             if np.sum(diag) > 1:
                 return True
         return False
@@ -79,8 +79,9 @@ class Grid:
 
     def reset(self):
         self.moves = 0
+        self.board = np.copy(self._org_board)
 
-    def place(self, row: int, column: int):
+    def step(self, row: int, column: int):
         if self.fully_played:
             raise ValueError("The board is already full.")
         self.board[row][column] = 1
@@ -88,3 +89,14 @@ class Grid:
 
     def is_queen(self, row: int, column: int) -> bool:
         return bool(self.board[row][column] == 1)
+
+    def get_state(self) -> BoardState:
+        return BoardState()
+
+    def render(self):
+        for row in self.board:
+            print(" ".join("Q" if cell else "." for cell in row))
+        print(f"Moves: {self.moves}")
+        print(f"Score: {self.simple_score}")
+        print(f"Failed: {self.failed}")
+        print(f"Solved: {self.solved}")
