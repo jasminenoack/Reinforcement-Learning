@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import random
 from typing import Any
 
-from queens.dtos import Observation, Result, RunnerReturn
+from queens.dtos import Observation, StepResult, RunnerReturn
 
 
 class Agent(ABC):
@@ -18,7 +18,7 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def observe_step(self, result: Result):
+    def observe_step(self, result: StepResult):
         pass
 
     @abstractmethod

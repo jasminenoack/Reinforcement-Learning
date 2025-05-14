@@ -1,6 +1,6 @@
 import numpy as np
 from queens.agents.reinforcement_agents import SimpleRandomReinforcementAgent
-from queens.dtos import BoardState, Observation, Result, RunnerReturn
+from queens.dtos import BoardState, Observation, StepResult, RunnerReturn
 import random
 
 
@@ -81,13 +81,13 @@ class TestObserveResult:
         agent.observe_result(
             RunnerReturn(
                 trajectory=[
-                    Result(
+                    StepResult(
                         action=(0, 0),
                     ),
-                    Result(
+                    StepResult(
                         action=(1, 7),
                     ),
-                    Result(
+                    StepResult(
                         action=(0, 2),
                     ),
                 ],
@@ -108,13 +108,13 @@ class TestObserveResult:
         agent.observe_result(
             RunnerReturn(
                 trajectory=[
-                    Result(
+                    StepResult(
                         action=(0, 0),
                     ),
-                    Result(
+                    StepResult(
                         action=(1, 7),
                     ),
-                    Result(
+                    StepResult(
                         action=(2, 7),
                     ),
                 ],
@@ -134,13 +134,13 @@ class TestObserveResult:
         agent.observe_result(
             RunnerReturn(
                 trajectory=[
-                    Result(
+                    StepResult(
                         action=(0, 0),
                     ),
-                    Result(
+                    StepResult(
                         action=(1, 7),
                     ),
-                    Result(
+                    StepResult(
                         action=(1, 1),
                     ),
                 ],
@@ -160,13 +160,13 @@ class TestObserveResult:
         agent.observe_result(
             RunnerReturn(
                 trajectory=[
-                    Result(
+                    StepResult(
                         action=(0, 0),
                     ),
-                    Result(
+                    StepResult(
                         action=(1, 7),
                     ),
-                    Result(
+                    StepResult(
                         action=(2, 6),
                     ),
                 ],

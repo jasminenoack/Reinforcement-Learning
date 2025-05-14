@@ -1,12 +1,29 @@
+import os
+import random
+import shutil
 from time import sleep
+from typing import Any
 from queens.agents.generic_agent import Agent
-from queens.agents.reinforcement_agents import SimpleRandomReinforcementAgent
-from queens.components.grid import Grid
-from queens.dtos import Observation, Result, RunnerReturn
+from queens.agents.reinforcement_agents import (
+    SimpleAgentHighAlpha,
+    SimpleAgentHighEpsilon,
+    SimpleAgentMidAlpha,
+    SimpleAgentMidEpsilon,
+    SimpleAgentNoEpsilon,
+    SimpleRandomReinforcementAgent,
+    SimpleReinforcementAgent,
+)
+from queens.components.grid import (
+    Grid,
+    EarlyExitGrid,
+)
+from queens.dtos import Observation, StepResult, RunnerReturn
 from queens.utils import build_board_array
+import matplotlib.pyplot as plt
 
-# from queens.agents.random_agent import RandomAgent
+from queens.agents.random_agent import RandomAgent
 
+plt: Any
 
 RENDER_DELAY = 0.5
 
@@ -23,16 +40,17 @@ class Runner:
     ) -> RunnerReturn:
         self.agent.reset()
         self.env.reset()
-        trajectory: list[Result] = []
+        trajectory: list[StepResult] = []
         if render:
             self.env.render()
             sleep(RENDER_DELAY)
 
-        while not self.env.fully_played:
+        while not self.env.done:
             state = self.env.get_state()
             action = self.agent.act(observation=Observation(board_state=state))
-            self.env.step(*action)
-            trajectory.append(Result(action=action))
+            result = self.env.step(*action)
+            trajectory.append(result)
+            self.agent.observe_step(result)
             if render:
                 self.env.render()
                 sleep(RENDER_DELAY)
@@ -45,7 +63,7 @@ class Runner:
             solved=self.env.solved,
             board=self.env.board,
             moves=self.env.moves,
-            score=self.env.simple_score,
+            score=self.env.score,
         )
         self.agent.observe_result(result)
 
@@ -71,12 +89,84 @@ class Runner:
         print(f"Total failed: {failed}")
         print(f"Average moves: {avg_moves:.2f}")
 
+    def build_heatmap(
+        self, results: list[RunnerReturn], folder: str, agent_name: str, cases: int
+    ):
+        board_size = len(results[0].board)
+        heatmap_data = [[0] * board_size for _ in range(board_size)]
+        for result in results:
+            for step in result.trajectory:
+                row, col = step.action
+                heatmap_data[row][col] += 1
+
+        plt.imshow(
+            heatmap_data, cmap="hot", interpolation="nearest", vmin=0, vmax=cases
+        )
+        plt.colorbar()
+        plt.title("Heatmap of Actions")
+        plt.xlabel("Column")
+        plt.ylabel("Row")
+        plt.savefig(f"{folder}/heatmap-{agent_name}.png")
+        plt.show()
+        sleep(2)
+        plt.close()
+
 
 if __name__ == "__main__":
-    runner = Runner(
-        env=Grid(build_board_array([])), agent=SimpleRandomReinforcementAgent()
-    )
-    # runner.run_episode(render=True)
+    folder = f"output/queens"
+    output_file = f"{folder}/output.txt"
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
 
-    results = runner.run_episodes(num_episodes=10000, render=False)
-    runner.render_analytics(results)
+    try:
+        os.mkdir(folder)
+    except FileExistsError:
+        pass
+
+    cases = 100
+    agents = [
+        RandomAgent(rng=random.Random(42)),
+        SimpleRandomReinforcementAgent(rng=random.Random(42)),
+        SimpleReinforcementAgent(rng=random.Random(42)),
+        SimpleAgentNoEpsilon(rng=random.Random(42)),
+        SimpleAgentMidEpsilon(rng=random.Random(42)),
+        SimpleAgentHighEpsilon(rng=random.Random(42)),
+        SimpleAgentMidAlpha(rng=random.Random(42)),
+        SimpleAgentHighAlpha(rng=random.Random(42)),
+    ]
+    grid = EarlyExitGrid(build_board_array([], size=4))
+
+    for agent in agents:
+        agent.rng.seed(42)
+        runner = Runner(
+            env=grid,
+            agent=agent,
+        )
+
+        print(f"Running {agent.__class__.__name__}")
+        results = runner.run_episodes(num_episodes=cases, render=False)
+        runner.render_analytics(results)
+        runner.build_heatmap(
+            results, folder=folder, agent_name=agent.__class__.__name__, cases=cases
+        )
+        print("")
+
+    # compare across cases
+    all_results: dict[str, list[RunnerReturn]] = {
+        agent.__class__.__name__: [] for agent in agents
+    }
+    grids = [EarlyExitGrid(build_board_array([], size=4)) for _ in range(cases)]
+    for agent in agents:
+        for grid in grids:
+            agent.rng.seed(42)
+            runner = Runner(
+                env=grid,
+                agent=agent,
+            )
+            result = runner.run_episode(render=False, render_result=False)
+            all_results[agent.__class__.__name__].append(result)
+        runner = Runner(
+            env=grid,
+            agent=agent,
+        )
+        runner.render_analytics(all_results[agent.__class__.__name__])

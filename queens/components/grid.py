@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.typing import NDArray
 
-from queens.dtos import BoardState
+from queens.dtos import BoardState, StepResult, FailureType
 
 
 class Grid:
@@ -56,7 +56,7 @@ class Grid:
 
     @property
     def fully_played(self) -> bool:
-        return bool(np.sum(self.board) == 8)
+        return bool(np.sum(self.board) == len(self.board))
 
     @property
     def done(self) -> bool:
@@ -74,7 +74,7 @@ class Grid:
         return False
 
     @property
-    def simple_score(self) -> int:
+    def score(self) -> int:
         """
         If you have solved + 100 points
         If you have failed - 100 points
@@ -91,11 +91,12 @@ class Grid:
         self.moves = 0
         self.board = np.copy(self._org_board)
 
-    def step(self, row: int, column: int):
+    def step(self, row: int, column: int) -> StepResult:
         if self.fully_played:
             raise ValueError("The board is already full.")
         self.board[row][column] = 1
         self.moves += 1
+        return StepResult(action=(row, column))
 
     def is_queen(self, row: int, column: int) -> bool:
         return bool(self.board[row][column] == 1)
@@ -107,6 +108,52 @@ class Grid:
         for row in self.board:
             print(" ".join("Q" if cell else "." for cell in row))
         print(f"Moves: {self.moves}")
-        print(f"Score: {self.simple_score}")
+        print(f"Score: {self.score}")
         print(f"Failed: {self.failed}")
         print(f"Solved: {self.solved}")
+
+
+class EarlyExitGrid(Grid):
+    def __init__(self, board: NDArray[np.int_]):
+        super().__init__(board)
+        self._org_board = board
+        self.reset()
+
+    @property
+    def score(self) -> int:
+        score = super().score
+        placed = int(np.sum(self.board))
+        score += placed * 10
+        return score
+
+    @property
+    def done(self) -> bool:
+        return super().done or self.failed
+
+    def step(self, row: int, column: int) -> StepResult:
+        previous_score = self.score
+        if self.failed:
+            raise ValueError("The board is already failed.")
+        result = super().step(row, column)
+        final_score = self.score
+        result.reward = final_score - previous_score
+
+        failure_type: FailureType | None = None
+        if self._two_in_row:
+            failure_type = FailureType.ROW
+        elif self._two_in_column:
+            failure_type = FailureType.COLUMN
+        elif self._two_on_diagonal:
+            failure_type = FailureType.DIAGONAL
+        elif self._two_on_reverse_diagonal:
+            failure_type = FailureType.REVERSE_DIAGONAL
+        failure_type = failure_type
+        result.failure_type = failure_type
+        result.board_state = BoardState(board=self.board)
+
+        return result
+
+    def get_state(self):
+        state = super().get_state()
+        state.board = np.copy(self.board)
+        return state

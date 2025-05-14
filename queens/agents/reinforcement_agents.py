@@ -121,7 +121,9 @@ from collections import defaultdict
 import random
 from typing import Any
 from queens.agents.random_agent import RandomAgent
-from queens.dtos import Observation, Result, RunnerReturn
+from queens.dtos import Observation, StepResult, RunnerReturn
+from numpy.typing import NDArray
+import numpy as np
 
 
 class SimpleRandomReinforcementAgent(RandomAgent):
@@ -144,7 +146,7 @@ class SimpleRandomReinforcementAgent(RandomAgent):
         self.current.append(move)
         return move
 
-    def observe_step(self, result: Result):
+    def observe_step(self, result: StepResult):
         pass
 
     def _best_score(self) -> int:
@@ -201,3 +203,141 @@ class SimpleRandomReinforcementAgent(RandomAgent):
         ):
             best = path.copy()
             self.best_options[modified_score].append(best)
+
+
+# class ThoughtfulReinforcementAgent(SimpleRandomReinforcementAgent):
+#     """
+#     This is an interesting idea, but it's not really working in a learning way
+#     it's just an overly complex heuristic forumlization.
+#     """
+
+#     def __init__(self, *args: Any, **kwargs: Any):
+#         super().__init__(*args, **kwargs)
+#         self.q_table = {
+#             0: {
+#                 FailureType.ROW: 0,
+#                 FailureType.COLUMN: 0,
+#                 FailureType.DIAGONAL: 0,
+#                 FailureType.REVERSE_DIAGONAL: 0,
+#             },
+#             1: {
+#                 FailureType.ROW: 0,
+#                 FailureType.COLUMN: 0,
+#                 FailureType.DIAGONAL: 0,
+#                 FailureType.REVERSE_DIAGONAL: 0,
+#             },
+#         }
+
+#     def _select_row(self, board: NDArray[np.int_]) -> int:
+#         by_score: dict[int, int] = {}
+#         for i in range(8):
+#             row_sum = np.sum(board[i])
+#             by_score[i] = self.q_table[int(row_sum)][FailureType.ROW]
+#         highest_score = max(by_score.values())
+#         best_rows = [k for k, v in by_score.items() if v == highest_score]
+#         return self.rng.choice(best_rows)
+
+#     def _select_column(self, board: NDArray[np.int_]) -> int:
+#         by_score: dict[int, int] = {}
+#         for i in range(8):
+#             column_sum = np.sum(board[:, i])
+#             by_score[i] = self.q_table[int(column_sum)][FailureType.COLUMN]
+#         highest_score = max(by_score.values())
+#         best_columns = [k for k, v in by_score.items() if v == highest_score]
+#         return self.rng.choice(best_columns)
+
+#     def observe_step(self, result: StepResult):
+#         # no epsilon here.
+#         reward = result.reward
+#         failure_type = result.failure_type
+#         if failure_type == FailureType.ROW:
+#             row_sum = np.sum(result.board_state.board[result.action[0]]) - 1
+#             self.q_table[row_sum][failure_type] += reward
+#         elif failure_type == FailureType.COLUMN:
+#             column_sum = np.sum(result.board_state.board[:, result.action[1]]) - 1
+#             self.q_table[int(column_sum)][failure_type] += reward
+
+
+class SimpleReinforcementAgent(RandomAgent):
+    """
+    This is a simple reinforcement agent that uses a Q-table to learn from its actions.
+    It uses a simple epsilon-greedy strategy to explore the action space.
+    """
+
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        self.q_table: dict[tuple[int, int], float] = defaultdict(float)
+        self.alpha = 0.1  # Learning rate
+        self.epsilon = 0.1
+
+    def _random_unseen_location(self, observation: Observation) -> tuple[int, int]:
+        options = [
+            (r, c)
+            for r in range(observation.board_state.board.shape[0])
+            for c in range(observation.board_state.board.shape[0])
+            if (r, c) not in self.seen
+        ]
+        return self.rng.choice(options)
+
+    def _select_location(self, board: NDArray[np.int_]) -> tuple[int, int]:
+        by_score: dict[tuple[int, int], float] = {}
+        for row in range(board.shape[0]):
+            for column in range(board.shape[0]):
+                if (row, column) in self.seen:
+                    continue
+                by_score[(row, column)] = self.q_table[(row, column)]
+        highest_score = max(by_score.values())
+        best_locations = [k for k, v in by_score.items() if v == highest_score]
+        return self.rng.choice(best_locations)
+
+    def act(self, observation: Observation) -> tuple[int, int]:
+        if self.rng.random() < self.epsilon:
+            location = self._random_unseen_location(observation)
+        else:
+            location = self._select_location(observation.board_state.board)
+        self.seen.add(location)
+        return location
+
+    def observe_step(self, result: StepResult):
+        # Update Q-value based on the action taken and the reward received
+        state = result.action
+        reward = result.reward
+        self.q_table[state] += self.alpha * (reward - self.q_table[state])
+
+    def reset(self, **kwargs: Any):
+        self.seen: set[tuple[int, int]] = set()
+
+
+class SimpleAgentMidEpsilon(SimpleReinforcementAgent):
+    """
+    This is a simple reinforcement agent that uses a Q-table to learn from its actions.
+    It uses a simple epsilon-greedy strategy to explore the action space.
+    """
+
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        self.epsilon = 0.5
+
+
+class SimpleAgentNoEpsilon(SimpleReinforcementAgent):
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        self.epsilon = 0.0
+
+
+class SimpleAgentHighEpsilon(SimpleReinforcementAgent):
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        self.epsilon = 0.9
+
+
+class SimpleAgentMidAlpha(SimpleReinforcementAgent):
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        self.alpha = 0.5
+
+
+class SimpleAgentHighAlpha(SimpleReinforcementAgent):
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        self.alpha = 0.9

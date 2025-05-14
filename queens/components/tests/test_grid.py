@@ -1,7 +1,7 @@
 import pytest
 from queens.components.grid import Grid
 import numpy as np
-from queens.dtos import BoardState
+from queens.dtos import BoardState, StepResult
 from queens.utils import build_board_array
 
 correct = [
@@ -183,26 +183,26 @@ class TestFailed:
         assert grid.failed is False
 
 
-class TestSimpleScore:
+class TestScore:
     def test_100_points_for_winning(self):
         board = build_board_array(
             [(0, 0), (1, 4), (2, 7), (3, 5), (4, 2), (5, 6), (6, 1), (7, 3)]
         )
         full_board = np.array(board)
         grid = Grid(full_board)
-        assert grid.simple_score == 100
+        assert grid.score == 100
 
     def test_0_points_for_losing(self):
         board = build_board_array(two_in_row)
         full_board = np.array(board)
         grid = Grid(full_board)
-        assert grid.simple_score == -100
+        assert grid.score == -100
 
     def test_0_points_for_not_complete(self):
         board = build_board_array([(0, 0)])
         full_board = np.array(board)
         grid = Grid(full_board)
-        assert grid.simple_score == 0
+        assert grid.score == 0
 
 
 class TestStep:
@@ -210,9 +210,10 @@ class TestStep:
         board = build_board_array([])
         full_board = np.array(board)
         grid = Grid(full_board)
-        grid.step(0, 1)
+        assert grid.step(0, 1) == StepResult(
+            action=(0, 1),
+        )
         assert int(grid.board[0][1]) == 1
-        print(grid.board)
         assert int(grid.board[0][0]) == 0
         assert grid.moves == 1
 

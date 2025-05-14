@@ -28,3 +28,13 @@ class TestBuildBoardArray:
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
         ]
+
+    def test_can_build_another_size_board(self):
+        queens = [(0, 0), (1, 2), (3, 3)]
+        board = build_board_array(queens, size=4)
+        assert board.tolist() == [
+            [1, 0, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 1],
+        ]
