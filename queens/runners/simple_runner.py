@@ -5,13 +5,14 @@ from time import sleep
 from typing import Any
 from queens.agents.generic_agent import Agent
 from queens.agents.reinforcement_agents import (
-    SimpleAgentHighAlpha,
-    SimpleAgentHighEpsilon,
-    SimpleAgentMidAlpha,
-    SimpleAgentMidEpsilon,
-    SimpleAgentNoEpsilon,
-    SimpleRandomReinforcementAgent,
-    SimpleReinforcementAgent,
+    DynamicEpsilonAgent,
+    # SimpleAgentHighAlpha,
+    # SimpleAgentHighEpsilon,
+    # SimpleAgentMidAlpha,
+    # SimpleAgentMidEpsilon,
+    # SimpleAgentNoEpsilon,
+    # SimpleRandomReinforcementAgent,
+    # SimpleReinforcementAgent,
 )
 from queens.components.grid import (
     Grid,
@@ -21,7 +22,7 @@ from queens.dtos import Observation, StepResult, RunnerReturn
 from queens.utils import build_board_array
 import matplotlib.pyplot as plt
 
-from queens.agents.random_agent import RandomAgent
+# from queens.agents.random_agent import RandomAgent
 
 plt: Any
 
@@ -108,11 +109,11 @@ class Runner:
         plt.ylabel("Row")
         plt.savefig(f"{folder}/heatmap-{agent_name}.png")
         plt.show()
-        sleep(2)
-        plt.close()
 
 
 if __name__ == "__main__":
+    size = 4
+    seed = random.randint(0, 100)
     folder = f"output/queens"
     output_file = f"{folder}/output.txt"
     if os.path.exists(folder):
@@ -125,48 +126,101 @@ if __name__ == "__main__":
 
     cases = 100
     agents = [
-        RandomAgent(rng=random.Random(42)),
-        SimpleRandomReinforcementAgent(rng=random.Random(42)),
-        SimpleReinforcementAgent(rng=random.Random(42)),
-        SimpleAgentNoEpsilon(rng=random.Random(42)),
-        SimpleAgentMidEpsilon(rng=random.Random(42)),
-        SimpleAgentHighEpsilon(rng=random.Random(42)),
-        SimpleAgentMidAlpha(rng=random.Random(42)),
-        SimpleAgentHighAlpha(rng=random.Random(42)),
+        # RandomAgent(rng=random.Random(seed)),
+        # SimpleRandomReinforcementAgent(rng=random.Random(seed)),
+        # SimpleReinforcementAgent(rng=random.Random(seed)),
+        # SimpleAgentNoEpsilon(rng=random.Random(seed)),
+        # SimpleAgentMidEpsilon(rng=random.Random(seed)),
+        # SimpleAgentHighEpsilon(rng=random.Random(seed)),
+        # SimpleAgentMidAlpha(rng=random.Random(seed)),
+        # SimpleAgentHighAlpha(rng=random.Random(seed)),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.02,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.04,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.06,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.08,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.1,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.12,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.14,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.16,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.18,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.20,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.22,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.24,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.26,
+        ),
+        DynamicEpsilonAgent(
+            rng=random.Random(seed),
+            alpha=0.28,
+        ),
     ]
-    grid = EarlyExitGrid(build_board_array([], size=4))
+    grid = EarlyExitGrid(build_board_array([], size=size))
 
-    for agent in agents:
-        agent.rng.seed(42)
-        runner = Runner(
-            env=grid,
-            agent=agent,
-        )
+    # for agent in agents:
+    #     agent.rng.seed(seed)
+    #     runner = Runner(
+    #         env=grid,
+    #         agent=agent,
+    #     )
 
-        print(f"Running {agent.__class__.__name__}")
-        results = runner.run_episodes(num_episodes=cases, render=False)
-        runner.render_analytics(results)
-        runner.build_heatmap(
-            results, folder=folder, agent_name=agent.__class__.__name__, cases=cases
-        )
-        print("")
+    #     print(f"Running {agent.__class__.__name__}")
+    #     results = runner.run_episodes(num_episodes=cases, render=True)
+    #     runner.render_analytics(results)
+    #     runner.build_heatmap(
+    #         results, folder=folder, agent_name=agent.__class__.__name__, cases=cases
+    #     )
+    #     print("")
 
     # compare across cases
-    all_results: dict[str, list[RunnerReturn]] = {
-        agent.__class__.__name__: [] for agent in agents
-    }
-    grids = [EarlyExitGrid(build_board_array([], size=4)) for _ in range(cases)]
+    all_results: dict[str, list[RunnerReturn]] = {str(agent): [] for agent in agents}
+    grids = [EarlyExitGrid(build_board_array([], size=size)) for _ in range(cases)]
     for agent in agents:
         for grid in grids:
-            agent.rng.seed(42)
-            runner = Runner(
-                env=grid,
-                agent=agent,
-            )
-            result = runner.run_episode(render=False, render_result=False)
-            all_results[agent.__class__.__name__].append(result)
+            agent.rng.seed(seed)
+            runner = Runner(env=grid, agent=agent)
+            results = runner.run_episodes(num_episodes=cases, render=False)
+            all_results[str(agent)].extend(results)
         runner = Runner(
             env=grid,
             agent=agent,
         )
-        runner.render_analytics(all_results[agent.__class__.__name__])
+        print(f"Running {str(agent)}")
+        runner.render_analytics(all_results[str(agent)])
+        print("")

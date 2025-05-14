@@ -124,6 +124,7 @@ from queens.agents.random_agent import RandomAgent
 from queens.dtos import Observation, StepResult, RunnerReturn
 from numpy.typing import NDArray
 import numpy as np
+from collections import defaultdict
 
 
 class SimpleRandomReinforcementAgent(RandomAgent):
@@ -341,3 +342,49 @@ class SimpleAgentHighAlpha(SimpleReinforcementAgent):
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
         self.alpha = 0.9
+
+
+class DynamicEpsilonAgent(SimpleReinforcementAgent):
+    """
+    This agent uses a dynamic epsilon value that decreases over time.
+    It starts with a high epsilon value and gradually decreases it to encourage exploration.
+    """
+
+    def __init__(
+        self,
+        *args: Any,
+        epsilon: float = 0.3,
+        epsilon_min: float = 0.01,
+        epsilon_max: float = 0.5,
+        epsilon_decay: float = 0.95,
+        epsilon_increase: float = 1.01,
+        alpha: float = 0.1,
+        **kwargs: Any,
+    ):
+        super().__init__(
+            *args,
+            **kwargs,
+        )
+        self.epsilon = epsilon
+        self.epsilon_min = epsilon_min
+        self.epsilon_max = epsilon_max
+        self.epsilon_decay = epsilon_decay
+        self.epsilon_increase = epsilon_increase
+        self.failure_count = 0
+        self.alpha = alpha
+
+    def __str__(self) -> str:
+        return f"DynamicEpsilonAgent(alpha={self.alpha:.2f})"
+
+    def epsilon_final_increase(self) -> float:
+        return self.epsilon * max(self.epsilon_increase, self.epsilon_increase)
+
+    def observe_result(self, result: RunnerReturn):
+        super().observe_result(result)
+        if result.solved:
+            self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
+            self.failure_count = 0
+            self.last_failure_minus_one = []
+        else:
+            self.epsilon = min(self.epsilon_max, self.epsilon_final_increase())
+            self.failure_count += 1

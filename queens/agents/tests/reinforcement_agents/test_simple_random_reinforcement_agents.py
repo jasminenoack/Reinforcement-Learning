@@ -3,6 +3,10 @@ from queens.agents.reinforcement_agents import SimpleRandomReinforcementAgent
 from queens.dtos import BoardState, Observation, StepResult, RunnerReturn
 import random
 
+from queens.utils import build_board_array
+
+board = build_board_array([])
+
 
 class TestAct:
     def test_act_follows_path_most_of_times(self):
@@ -10,47 +14,77 @@ class TestAct:
         agent = SimpleRandomReinforcementAgent(rng=rng)
         agent.following_path = [(0, 0), (1, 1), (2, 2)]
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
 
     def test_act_follows_random_path_without_options(self):
         rng = random.Random(1)
         agent = SimpleRandomReinforcementAgent(rng=rng)
         agent.following_path = []
         agent.current = []
-        assert agent.act(observation=Observation(board_state=BoardState())) == (1, 4)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (1, 4)
 
     def test_will_sometimes_follow_random_path(self):
         rng = random.Random(1)
         agent = SimpleRandomReinforcementAgent(rng=rng)
         agent.following_path = [(0, 0), (1, 1), (2, 2)]
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
         # epsilon
-        assert agent.act(observation=Observation(board_state=BoardState())) == (0, 6)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (0, 6)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
         agent.current = [(0, 0), (1, 1)]
         #  epsilon
-        assert agent.act(observation=Observation(board_state=BoardState())) == (7, 4)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (7, 4)
         agent.current = [(0, 0), (1, 1)]
-        assert agent.act(observation=Observation(board_state=BoardState())) == (2, 2)
+        assert agent.act(
+            observation=Observation(board_state=BoardState(board=board))
+        ) == (2, 2)
 
 
 class TestObserveStep:
