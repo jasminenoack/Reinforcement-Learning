@@ -1,18 +1,22 @@
 import os
-import random
 import shutil
 from time import sleep
 from typing import Any
 from queens.agents.generic_agent import Agent
+from queens.agents.random_agent import (
+    RandomAgent,  # type: ignore
+    RandomAgentAlsoByColumn,  # type: ignore
+    RandomAgentByRow,  # type: ignore
+)
 from queens.agents.reinforcement_agents import (
-    DynamicEpsilonAgent,
-    # SimpleAgentHighAlpha,
-    # SimpleAgentHighEpsilon,
-    # SimpleAgentMidAlpha,
-    # SimpleAgentMidEpsilon,
-    # SimpleAgentNoEpsilon,
-    # SimpleRandomReinforcementAgent,
-    # SimpleReinforcementAgent,
+    DynamicEpsilonAgent,  # type: ignore
+    SimpleAgentHighAlpha,  # type: ignore
+    SimpleAgentHighEpsilon,  # type: ignore
+    SimpleAgentMidAlpha,  # type: ignore
+    SimpleAgentMidEpsilon,  # type: ignore
+    SimpleAgentNoEpsilon,  # type: ignore
+    SimpleRandomReinforcementAgent,  # type: ignore
+    SimpleReinforcementAgent,  # type: ignore
 )
 from queens.components.grid import (
     Grid,
@@ -86,9 +90,13 @@ class Runner:
         solved = sum(1 for result in results if result.solved)
         failed = sum(1 for result in results if not result.solved)
         avg_moves = sum(result.moves for result in results) / len(results)
+        max_moves = max(result.moves for result in results)
+        min_moves = min(result.moves for result in results)
         print(f"Total solved: {solved}")
         print(f"Total failed: {failed}")
         print(f"Average moves: {avg_moves:.2f}")
+        print(f"Max moves: {max_moves}")
+        print(f"Min moves: {min_moves}")
 
     def build_heatmap(
         self, results: list[RunnerReturn], folder: str, agent_name: str, cases: int
@@ -112,8 +120,7 @@ class Runner:
 
 
 if __name__ == "__main__":
-    size = 4
-    seed = random.randint(0, 100)
+    size = 8
     folder = f"output/queens"
     output_file = f"{folder}/output.txt"
     if os.path.exists(folder):
@@ -126,75 +133,76 @@ if __name__ == "__main__":
 
     cases = 100
     agents = [
-        # RandomAgent(rng=random.Random(seed)),
-        # SimpleRandomReinforcementAgent(rng=random.Random(seed)),
-        # SimpleReinforcementAgent(rng=random.Random(seed)),
-        # SimpleAgentNoEpsilon(rng=random.Random(seed)),
-        # SimpleAgentMidEpsilon(rng=random.Random(seed)),
-        # SimpleAgentHighEpsilon(rng=random.Random(seed)),
-        # SimpleAgentMidAlpha(rng=random.Random(seed)),
-        # SimpleAgentHighAlpha(rng=random.Random(seed)),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.02,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.04,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.06,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.08,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.1,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.12,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.14,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.16,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.18,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.20,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.22,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.24,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.26,
-        ),
-        DynamicEpsilonAgent(
-            rng=random.Random(seed),
-            alpha=0.28,
-        ),
+        RandomAgent(),
+        RandomAgentByRow(),
+        RandomAgentAlsoByColumn(),
+        # SimpleRandomReinforcementAgent(),
+        # SimpleReinforcementAgent(),
+        # SimpleAgentNoEpsilon(),
+        # SimpleAgentMidEpsilon(),
+        # SimpleAgentHighEpsilon(),
+        # SimpleAgentMidAlpha(),
+        # SimpleAgentHighAlpha(),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.02,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.04,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.06,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.08,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.1,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.12,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.14,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.16,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.18,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.20,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.22,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.24,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.26,
+        # ),
+        # DynamicEpsilonAgent(
+        #
+        #     alpha=0.28,
+        # ),
     ]
     grid = EarlyExitGrid(build_board_array([], size=size))
 
     # for agent in agents:
-    #     agent.rng.seed(seed)
     #     runner = Runner(
     #         env=grid,
     #         agent=agent,
@@ -213,7 +221,6 @@ if __name__ == "__main__":
     grids = [EarlyExitGrid(build_board_array([], size=size)) for _ in range(cases)]
     for agent in agents:
         for grid in grids:
-            agent.rng.seed(seed)
             runner = Runner(env=grid, agent=agent)
             results = runner.run_episodes(num_episodes=cases, render=False)
             all_results[str(agent)].extend(results)

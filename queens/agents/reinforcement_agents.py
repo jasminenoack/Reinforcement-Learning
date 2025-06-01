@@ -206,59 +206,6 @@ class SimpleRandomReinforcementAgent(RandomAgent):
             self.best_options[modified_score].append(best)
 
 
-# class ThoughtfulReinforcementAgent(SimpleRandomReinforcementAgent):
-#     """
-#     This is an interesting idea, but it's not really working in a learning way
-#     it's just an overly complex heuristic forumlization.
-#     """
-
-#     def __init__(self, *args: Any, **kwargs: Any):
-#         super().__init__(*args, **kwargs)
-#         self.q_table = {
-#             0: {
-#                 FailureType.ROW: 0,
-#                 FailureType.COLUMN: 0,
-#                 FailureType.DIAGONAL: 0,
-#                 FailureType.REVERSE_DIAGONAL: 0,
-#             },
-#             1: {
-#                 FailureType.ROW: 0,
-#                 FailureType.COLUMN: 0,
-#                 FailureType.DIAGONAL: 0,
-#                 FailureType.REVERSE_DIAGONAL: 0,
-#             },
-#         }
-
-#     def _select_row(self, board: NDArray[np.int_]) -> int:
-#         by_score: dict[int, int] = {}
-#         for i in range(8):
-#             row_sum = np.sum(board[i])
-#             by_score[i] = self.q_table[int(row_sum)][FailureType.ROW]
-#         highest_score = max(by_score.values())
-#         best_rows = [k for k, v in by_score.items() if v == highest_score]
-#         return self.rng.choice(best_rows)
-
-#     def _select_column(self, board: NDArray[np.int_]) -> int:
-#         by_score: dict[int, int] = {}
-#         for i in range(8):
-#             column_sum = np.sum(board[:, i])
-#             by_score[i] = self.q_table[int(column_sum)][FailureType.COLUMN]
-#         highest_score = max(by_score.values())
-#         best_columns = [k for k, v in by_score.items() if v == highest_score]
-#         return self.rng.choice(best_columns)
-
-#     def observe_step(self, result: StepResult):
-#         # no epsilon here.
-#         reward = result.reward
-#         failure_type = result.failure_type
-#         if failure_type == FailureType.ROW:
-#             row_sum = np.sum(result.board_state.board[result.action[0]]) - 1
-#             self.q_table[row_sum][failure_type] += reward
-#         elif failure_type == FailureType.COLUMN:
-#             column_sum = np.sum(result.board_state.board[:, result.action[1]]) - 1
-#             self.q_table[int(column_sum)][failure_type] += reward
-
-
 class SimpleReinforcementAgent(RandomAgent):
     """
     This is a simple reinforcement agent that uses a Q-table to learn from its actions.
