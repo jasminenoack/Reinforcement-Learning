@@ -1,4 +1,3 @@
-from re import L
 from typing import NamedTuple, TypedDict
 
 from matplotlib import pyplot as plt
