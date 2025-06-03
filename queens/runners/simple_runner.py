@@ -1,5 +1,6 @@
 import os
 import shutil
+import random
 from time import sleep
 from typing import Any
 from queens.agents.generic_agent import Agent
@@ -16,6 +17,7 @@ from queens.agents.reinforcement_agents import (
     SimpleAgentMidEpsilon,  # type: ignore
     SimpleAgentNoEpsilon,  # type: ignore
     SimpleRandomReinforcementAgent,  # type: ignore
+    DecayFailingPaths,  # type: ignore
     SimpleReinforcementAgent,  # type: ignore
 )
 from queens.components.grid import (
@@ -41,7 +43,7 @@ class Runner:
         self.env.reset()
 
     def run_episode(
-        self, *, render: bool = False, render_result: bool = False
+        self, *, render: bool = False, render_result: bool = False, train: bool = True
     ) -> RunnerReturn:
         self.agent.reset()
         self.env.reset()
@@ -55,7 +57,8 @@ class Runner:
             action = self.agent.act(observation=Observation(board_state=state))
             result = self.env.step(*action)
             trajectory.append(result)
-            self.agent.observe_step(result)
+            if train:
+                self.agent.observe_step(result)
             if render:
                 self.env.render()
                 sleep(RENDER_DELAY)
@@ -70,7 +73,8 @@ class Runner:
             moves=self.env.moves,
             score=self.env.score,
         )
-        self.agent.observe_result(result)
+        if train:
+            self.agent.observe_result(result)
 
         return result
 
@@ -79,10 +83,11 @@ class Runner:
         num_episodes: int,
         *,
         render: bool = False,
+        train: bool = True,
     ) -> list[RunnerReturn]:
         results: list[RunnerReturn] = []
         for _ in range(num_episodes):
-            result = self.run_episode(render=False, render_result=render)
+            result = self.run_episode(render=False, render_result=render, train=train)
             results.append(result)
         return results
 
@@ -131,12 +136,21 @@ if __name__ == "__main__":
     except FileExistsError:
         pass
 
+    training_cases = [
+        10,
+        100,
+        1000,
+        5_000,
+        10_000,
+        20_000,
+    ]
     cases = 100
-    agents = [
-        RandomAgent(),
-        RandomAgentByRow(),
-        RandomAgentAlsoByColumn(),
-        # SimpleRandomReinforcementAgent(),
+    agent_classes = [
+        # RandomAgent,
+        # RandomAgentByRow,
+        # RandomAgentAlsoByColumn,
+        # SimpleRandomReinforcementAgent,
+        DecayFailingPaths,
         # SimpleReinforcementAgent(),
         # SimpleAgentNoEpsilon(),
         # SimpleAgentMidEpsilon(),
@@ -200,34 +214,48 @@ if __name__ == "__main__":
         #     alpha=0.28,
         # ),
     ]
-    grid = EarlyExitGrid(build_board_array([], size=size))
 
+    for agent_class in agent_classes:
+        for training_case_count in training_cases:
+            agent = agent_class(rng=random.Random(1))
+            print(f"Training {agent} {training_case_count} cases")
+            grid = EarlyExitGrid(build_board_array([], size=size))
+            runner = Runner(env=grid, agent=agent)
+            _ = runner.run_episodes(num_episodes=training_case_count, render=False)
+            print(f"Finished training {agent} {training_case_count} cases")
+            print(f"Running {agent} {cases} cases")
+            grid = EarlyExitGrid(build_board_array([], size=size))
+            results = runner.run_episodes(num_episodes=cases, render=False, train=False)
+            runner.render_analytics(results)
+            print("")
+
+    #         # training agents:
+    #         for agent in agents:
+    #             print(f"Training {str(agent)}")
+    #             runner = Runner(env=grid, agent=agent)
+    #             results = runner.run_episodes(
+    #                 num_episodes=training_case_count, render=False
+    #             )
+
+    # grid = EarlyExitGrid(build_board_array([], size=size))
+    # # training agents:
     # for agent in agents:
+    #     print(f"Training {str(agent)}")
+    #     runner = Runner(env=grid, agent=agent)
+    #     results = runner.run_episodes(num_episodes=cases, render=False)
+
+    # # compare across cases
+    # all_results: dict[str, list[RunnerReturn]] = {str(agent): [] for agent in agents}
+    # grids = [EarlyExitGrid(build_board_array([], size=size)) for _ in range(cases)]
+    # for agent in agents:
+    #     for grid in grids:
+    #         runner = Runner(env=grid, agent=agent)
+    #         results = runner.run_episodes(num_episodes=cases, render=False)
+    #         all_results[str(agent)].extend(results)
     #     runner = Runner(
     #         env=grid,
     #         agent=agent,
     #     )
-
-    #     print(f"Running {agent.__class__.__name__}")
-    #     results = runner.run_episodes(num_episodes=cases, render=True)
-    #     runner.render_analytics(results)
-    #     runner.build_heatmap(
-    #         results, folder=folder, agent_name=agent.__class__.__name__, cases=cases
-    #     )
+    #     print(f"Running {str(agent)}")
+    #     runner.render_analytics(all_results[str(agent)])
     #     print("")
-
-    # compare across cases
-    all_results: dict[str, list[RunnerReturn]] = {str(agent): [] for agent in agents}
-    grids = [EarlyExitGrid(build_board_array([], size=size)) for _ in range(cases)]
-    for agent in agents:
-        for grid in grids:
-            runner = Runner(env=grid, agent=agent)
-            results = runner.run_episodes(num_episodes=cases, render=False)
-            all_results[str(agent)].extend(results)
-        runner = Runner(
-            env=grid,
-            agent=agent,
-        )
-        print(f"Running {str(agent)}")
-        runner.render_analytics(all_results[str(agent)])
-        print("")

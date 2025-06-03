@@ -137,6 +137,9 @@ class SimpleRandomReinforcementAgent(RandomAgent):
             list
         )
 
+    def __str__(self) -> str:
+        return f"SimpleRandomReinforcementAgent(epsilon={self.epsilon:.2f})"
+
     def act(self, observation: Observation) -> Any:
         random_num = self.rng.random()
         if len(self.following_path) > len(self.current) and random_num > self.epsilon:
@@ -204,6 +207,53 @@ class SimpleRandomReinforcementAgent(RandomAgent):
         ):
             best = path.copy()
             self.best_options[modified_score].append(best)
+
+
+class DecayFailingPaths(SimpleRandomReinforcementAgent):
+
+    def __str__(self) -> str:
+        return f"DecayFailingPaths()"
+
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
+        # count the number of failures on a given path
+        self.failing_paths: defaultdict[tuple[tuple[int, int], ...], float] = (
+            defaultdict(float)
+        )
+
+    def observe_result(self, result: RunnerReturn):
+        super().observe_result(result)
+        if not result.solved:
+            self.failing_paths[tuple(self.current[:-1])] += 1
+
+    def _rebuild_scores(self):
+        best_scores: defaultdict[float, list[list[tuple[int, int]]]] = defaultdict(list)
+        for score, paths in self.best_options.items():
+            for path in paths:
+                penalty = (1 + self.failing_paths[tuple(path)]) * (1 - len(path) / 8)
+                decayed_score = score - penalty
+                best_scores[decayed_score].append(path)
+        return best_scores
+
+    def _best_score(self, best_scores: defaultdict[float, list[list[tuple[int, int]]]] | None = None) -> float:  # type: ignore
+        best_scores = best_scores or self.best_options  # type: ignore
+        if not best_scores:
+            return -10000000000
+        return max(best_scores.keys())
+
+    def _sample_best_paths(self) -> list[tuple[int, int]]:
+        best_options = self._rebuild_scores()
+        if not best_options:
+            return []
+
+        scores: list[float] = sorted(best_options.keys(), reverse=True)
+        if len(scores) == 1:
+            best_path = self.rng.choice(best_options[self._best_score(best_options)])
+        else:
+            best_path = self.rng.choice(
+                best_options[scores[0]] + best_options[scores[1]]
+            )
+        return best_path
 
 
 class SimpleReinforcementAgent(RandomAgent):
