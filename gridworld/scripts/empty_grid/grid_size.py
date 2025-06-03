@@ -14,7 +14,7 @@ from gridworld.runner import Runner
 
 console = Console()
 
-folder = f"output/gridworld-learing-by-grid-size"
+folder = f"output/gridworld-learning-by-grid-size"
 output_file = f"{folder}/output.md"
 
 if os.path.exists(folder):

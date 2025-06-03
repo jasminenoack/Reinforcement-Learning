@@ -14,7 +14,7 @@ from gridworld.runner import Runner
 
 console = Console()
 
-folder = f"output/gridworld-learing-by-steps"
+folder = f"output/gridworld-learning-by-steps"
 output_file = f"{folder}/output.md"
 
 if os.path.exists(folder):
