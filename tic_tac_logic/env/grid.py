@@ -10,6 +10,11 @@ class Grid:
             raise ValueError("All rows in the grid must have the same length.")
         if len(grid[0]) % 2 != 0:
             raise ValueError("Grid must have an even number of columns.")
+        self.reset()
+
+    def reset(self) -> None:
+        self.score = 0
+        self.actions = 0
 
     def lost(self) -> tuple[bool, str]:
         row_width = len(self.grid[0])
@@ -123,22 +128,30 @@ class Grid:
     def act(self, coordinate: tuple[int, int], symbol: str) -> StepResult:
         row, col = coordinate
         if self.grid[row][col] != E:
-            raise ValueError("Cell is already occupied.")
-        self.grid[row][col] = symbol
-
-        lost = self.lost()
-        if lost[0]:
-            return StepResult(
+            result = StepResult(
                 coordinate=coordinate,
-                score=-100,
+                score=-10,
                 symbol=symbol,
-                loss_reason=lost[1],
             )
-        won = self.won()
-        if won[0]:
-            return StepResult(coordinate=coordinate, score=100, symbol=symbol)
-        return StepResult(
-            coordinate=coordinate,
-            score=self.placement_confidence(coordinate),
-            symbol=symbol,
-        )
+        else:
+            self.grid[row][col] = symbol
+            lost = self.lost()
+            won = self.won()
+            if lost[0]:
+                result = StepResult(
+                    coordinate=coordinate,
+                    score=-100,
+                    symbol=symbol,
+                    loss_reason=lost[1],
+                )
+            elif won[0]:
+                result = StepResult(coordinate=coordinate, score=100, symbol=symbol)
+            else:
+                result = StepResult(
+                    coordinate=coordinate,
+                    score=self.placement_confidence(coordinate),
+                    symbol=symbol,
+                )
+        self.score += result.score
+        self.actions += 1
+        return result

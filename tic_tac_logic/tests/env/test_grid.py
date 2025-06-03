@@ -218,10 +218,14 @@ class TestWon:
 
 
 class TestAct:
-    def test_fails_if_full(self):
+    def test_sad_if_full(self):
         grid = Grid(get_one_off_grid())
-        with pytest.raises(ValueError, match="Cell is already occupied."):
-            grid.act((0, 0), X)
+        assert grid.act((0, 0), X) == StepResult(
+            coordinate=(0, 0),
+            score=-10,
+            symbol=X,
+            loss_reason="",
+        )
 
     def test_updates_grid(self):
         grid = Grid(get_one_off_grid())
@@ -249,6 +253,8 @@ class TestAct:
         assert result == StepResult(
             coordinate=(0, 1), score=10, symbol=O, loss_reason=""
         )
+        assert grid.actions == 1
+        assert grid.score == 10
 
     def test_handles_non_confidnet_move(self):
         grid = Grid(
