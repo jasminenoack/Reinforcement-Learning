@@ -16,7 +16,7 @@ from gridworld.runner import Runner
 
 console = Console()
 
-folder = f"output/gridworld-learing-history"
+folder = f"output/gridworld-learning-history"
 output_file = f"{folder}/output.md"
 
 if os.path.exists(folder):
