@@ -34,7 +34,7 @@ class Step(NamedTuple):
     new_state: tuple[int, int]
     done: bool
 
-    def get_reverse_action(self) -> "Step":
+    def get_reverse_action(self) -> "Step | None":
         if self.start == self.new_state:
             return None
         reverse_actions = {
