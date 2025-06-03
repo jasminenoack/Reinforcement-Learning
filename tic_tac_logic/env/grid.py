@@ -26,13 +26,13 @@ class Grid:
         complete_o_rows: list[tuple[int, ...]] = []
         for row in self.grid:
             if row.count(X) > expected_row_count:
-                return True, "Too many X in a row"
+                return True, "TOO_MANY_X_IN_ROW"
             if row.count(O) > expected_row_count:
-                return True, "Too many O in a row"
+                return True, "TOO_MANY_O_IN_ROW"
             if "".join([X, X, X]) in "".join(row):
-                return True, "More than 2 X next to each other in a row"
+                return True, "TOO_MANY_X_TOGETHER_IN_ROW"
             if "".join([O, O, O]) in "".join(row):
-                return True, "More than 2 O next to each other in a row"
+                return True, "TOO_MANY_O_TOGETHER_IN_ROW"
             if row.count(X) == expected_row_count:
                 complete_x_rows.append(
                     tuple(i for i, cell in enumerate(row) if cell == X)
@@ -56,16 +56,16 @@ class Grid:
             ]
             # if count X in column > column length / 2
             if column.count(X) > expected_column_count:
-                return True, "Too many X in a column"
+                return True, "TOO_MANY_X_IN_COLUMN"
             # # if count O in column > column length / 2
             if column.count(O) > expected_column_count:
-                return True, "Too many O in a column"
+                return True, "TOO_MANY_O_IN_COLUMN"
             # more than 2 X next to each other in a column
             if "".join([X, X, X]) in "".join(column):
-                return True, "More than 2 X next to each other in a column"
+                return True, "TOO_MANY_X_TOGETHER_IN_COLUMN"
             # more than 2 O next to each other in a column
             if "".join([O, O, O]) in "".join(column):
-                return True, "More than 2 O next to each other in a column"
+                return True, "TOO_MANY_O_TOGETHER_IN_COLUMN"
             if column.count(X) == expected_column_count:
                 complete_x_columns.append(
                     tuple(i for i, cell in enumerate(column) if cell == X)
@@ -132,12 +132,15 @@ class Grid:
         return 1
 
     def act(self, coordinate: tuple[int, int], symbol: str) -> StepResult:
+        pre_move_grid = [row.copy() for row in self.grid]
         row, col = coordinate
         if self.grid[row][col] != E:
             result = StepResult(
                 coordinate=coordinate,
                 score=-10,
                 symbol=symbol,
+                grid=self.grid,
+                pre_step_grid=pre_move_grid,
             )
         else:
             self.grid[row][col] = symbol
@@ -149,14 +152,24 @@ class Grid:
                     score=-10,
                     symbol=symbol,
                     loss_reason=lost[1],
+                    grid=self.grid,
+                    pre_step_grid=pre_move_grid,
                 )
             elif won[0]:
-                result = StepResult(coordinate=coordinate, score=100, symbol=symbol)
+                result = StepResult(
+                    coordinate=coordinate,
+                    score=100,
+                    symbol=symbol,
+                    grid=self.grid,
+                    pre_step_grid=pre_move_grid,
+                )
             else:
                 result = StepResult(
                     coordinate=coordinate,
                     score=self.placement_confidence(coordinate),
                     symbol=symbol,
+                    grid=self.grid,
+                    pre_step_grid=pre_move_grid,
                 )
         if result.score < 0:
             result.score = min(result.score + self.uncertainty, 0)

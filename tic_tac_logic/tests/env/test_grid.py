@@ -259,7 +259,7 @@ class TestWon:
                 [X, O, O, O],
             ]
         )
-        assert grid.won() == (False, "Too many O in a row")
+        assert grid.won() == (False, "TOO_MANY_O_IN_ROW")
 
 
 class TestAct:
@@ -270,6 +270,18 @@ class TestAct:
             score=-10,
             symbol=X,
             loss_reason="",
+            pre_step_grid=[
+                ["X", "O", "X", "O"],
+                ["O", " ", "O", "X"],
+                ["O", "X", "X", "O"],
+                ["X", "O", "O", "X"],
+            ],
+            grid=[
+                ["X", "O", "X", "O"],
+                ["O", " ", "O", "X"],
+                ["O", "X", "X", "O"],
+                ["X", "O", "O", "X"],
+            ],
         )
 
     def test_updates_grid(self):
@@ -278,7 +290,22 @@ class TestAct:
         assert grid.grid[1][1] == X
         assert grid.won()[0]
         assert result == StepResult(
-            coordinate=(1, 1), score=100, symbol=X, loss_reason=""
+            coordinate=(1, 1),
+            score=100,
+            symbol=X,
+            loss_reason="",
+            pre_step_grid=[
+                ["X", "O", "X", "O"],
+                ["O", " ", "O", "X"],
+                ["O", "X", "X", "O"],
+                ["X", "O", "O", "X"],
+            ],
+            grid=[
+                ["X", "O", "X", "O"],
+                ["O", "X", "O", "X"],
+                ["O", "X", "X", "O"],
+                ["X", "O", "O", "X"],
+            ],
         )
 
     def test_handles_confidnet_move(self):
@@ -296,7 +323,26 @@ class TestAct:
         assert grid.grid[0][1] == O
         assert not grid.won()[0]
         assert result == StepResult(
-            coordinate=(0, 1), score=10, symbol=O, loss_reason=""
+            coordinate=(0, 1),
+            score=10,
+            symbol=O,
+            loss_reason="",
+            pre_step_grid=[
+                ["X", " ", "X", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+            ],
+            grid=[
+                ["X", "O", "X", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+            ],
         )
         assert grid.actions == 1
         assert grid.score == 10
@@ -316,7 +362,26 @@ class TestAct:
         assert grid.grid[1][1] == O
         assert not grid.won()[0]
         assert result == StepResult(
-            coordinate=(1, 1), score=0, symbol=O, loss_reason=""
+            coordinate=(1, 1),
+            score=0,
+            symbol=O,
+            loss_reason="",
+            pre_step_grid=[
+                ["X", " ", "X", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+            ],
+            grid=[
+                ["X", " ", "X", " ", " ", " "],
+                [" ", "O", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " "],
+            ],
         )
 
 

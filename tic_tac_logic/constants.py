@@ -14,6 +14,8 @@ class StepResult:
     score: int
     symbol: str
     loss_reason: str = ""
+    pre_step_grid: list[list[str]] | None = None
+    grid: list[list[str]] | None = None
 
 
 @dataclass

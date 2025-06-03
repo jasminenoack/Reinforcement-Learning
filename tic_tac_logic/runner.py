@@ -4,7 +4,9 @@ from tic_tac_logic.sample_grids import (
     # get_one_off_grid,
     get_easy_grid,
 )
-from tic_tac_logic.agents.shaping_agents import RLShapingBasedAgent
+
+# from tic_tac_logic.agents.shaping_agents import RLShapingBasedAgent
+from tic_tac_logic.agents.failure_learning_agent import FailureAgent
 from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import Result
 import numpy as np
@@ -21,6 +23,7 @@ def run_episode(
 ) -> Result:
     # This function would contain the logic to run an episode with the agent
     # For now, we will just print the initial grid and agent's actions
+    grid.reset()
     if render:
         print("Running episode...")
         print_grid(grid)
@@ -41,9 +44,9 @@ def run_episode(
         won=grid.won()[0],
         q_table=agent.q_table if hasattr(agent, "q_table") else None,
     )
-    if render:
-        print(grid.lost()[1])
-        print(result)
+    # if render:
+    #     print(grid.lost()[1])
+    #     print(result)
     return result
 
 
@@ -112,7 +115,7 @@ def render_analytics(results: list[Result]) -> None:
 
 
 def run_episodes(
-    agent: RLShapingBasedAgent,
+    agent: Agent,
     grid: Grid,
     episodes: int = 10,
     render: bool = False,
@@ -132,10 +135,10 @@ def run_episodes(
 
 if __name__ == "__main__":
     training_count = 1000
-    training_rounds = 100
+    training_rounds = 20
     non_training_count = 100
     grid = get_easy_grid()
-    agent = RLShapingBasedAgent(grid)
+    # agent = RLShapingBasedAgent(grid)
     grid = Grid(grid)
     # for _ in range(3):
     #     grid.reset()
@@ -143,11 +146,29 @@ if __name__ == "__main__":
     #     sleep(5)
     #     print("")
     #     print("")
-    print(f"Running {non_training_count} episodes before training...")
-    _ = run_episodes(agent, grid, episodes=non_training_count, render=True, train=False)
-    for _ in range(training_rounds):
-        print(f"Running {training_count} Training episodes...")
-        agent.reset()
-        _ = run_episodes(agent, grid, episodes=training_count, render=True, train=True)
-    print(f"Running {non_training_count} episodes after training...")
-    _ = run_episodes(agent, grid, episodes=non_training_count, render=True, train=False)
+    # print(f"Running {non_training_count} episodes before training...")
+    # _ = run_episodes(agent, grid, episodes=non_training_count, render=True, train=False)
+    # for _ in range(training_rounds):
+    #     print(f"Running {training_count} Training episodes...")
+    #     agent.reset()
+    #     _ = run_episodes(agent, grid, episodes=training_count, render=True, train=True)
+    # print(f"Running {non_training_count} episodes after training...")
+    # _ = run_episodes(agent, grid, episodes=non_training_count, render=True, train=False)
+
+    agent = FailureAgent(grid.grid)
+    for _ in range(4):
+        run_episode(grid=grid, agent=agent, render=True, train=True)
+
+        print("Q Table failures:")
+        failures = agent.q_table["failures"]
+        for failure in failures:
+            print(
+                "    ",
+                failure.location,
+                "[",
+                failure.applicable_area,
+                "]",
+                failure.symbol,
+            )
+
+        print("--" * 20)
