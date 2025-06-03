@@ -36,7 +36,7 @@ We aim to test different agent strategies and compare their performance across v
 
 2. **Trained Agent (Default Penalties)**  
    - Uses reinforcement learning (e.g., Q-learning).  
-   - Learns over multiple episodes using a standard rewar structure.
+   - Learns over multiple episodes using a standard reward structure.
 
 3. **Trained Agent (Custom Penalties)**  
    - Same algorithm as (2), but trained in an environment with different penalty values (e.g., higher wall penalties).  
@@ -52,5 +52,5 @@ We aim to test different agent strategies and compare their performance across v
      - Maximum steps per episode
      - Exploration rate (epsilon)
      - Learning rate and discount factor
-     - what if the world was round
+     - What if the world was round
      - Large worlds
