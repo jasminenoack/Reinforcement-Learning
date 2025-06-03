@@ -438,7 +438,7 @@ class TestStep:
 
         assert env.visit_counts == {(1, 0): 1, (0, 0): 2}
 
-    def adds_visit_count_when_walking_into_obstacle(self):
+    def test_adds_visit_count_when_walking_into_obstacle(self):
         env = GridWorldEnv()
         env.agent_pos = (0, 0)
         action = "up"
