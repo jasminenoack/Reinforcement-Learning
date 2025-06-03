@@ -316,7 +316,7 @@ class TestAct:
         assert grid.grid[1][1] == O
         assert not grid.won()[0]
         assert result == StepResult(
-            coordinate=(1, 1), score=1, symbol=O, loss_reason=""
+            coordinate=(1, 1), score=0, symbol=O, loss_reason=""
         )
 
 

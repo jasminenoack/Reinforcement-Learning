@@ -4,7 +4,7 @@ from tic_tac_logic.constants import PLACEMENT_OPTIONS, StepResult, Observation, 
 from tic_tac_logic.agents.base_agent import Agent
 
 
-class RLAgent(Agent):
+class RLShapingBasedAgent(Agent):
     def __init__(self, grid: list[list[str]]) -> None:
         self.q_table: dict[tuple[int, int], dict[str, float]] = {}
         self.rows = len(grid)
@@ -32,7 +32,6 @@ class RLAgent(Agent):
     def has_neighboring_actions(
         self, coordinate: tuple[int, int], observation: Observation
     ) -> bool:
-        neighbors = []
         row, column = coordinate
         orthogonal_neighbors = [
             (row - 1, column),
