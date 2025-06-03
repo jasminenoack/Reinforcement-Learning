@@ -33,6 +33,26 @@ class TestInit:
             Grid([[X, O, X], [O, X, O]])
 
 
+class TestReset:
+    def test_resets_grid(self):
+        grid = Grid(get_one_off_grid())
+        grid.grid[0][0] = X
+        grid.reset()
+        assert grid.grid == get_one_off_grid()
+
+    def test_resets_score(self):
+        grid = Grid(get_one_off_grid())
+        grid.score = 100
+        grid.reset()
+        assert grid.score == 0
+
+    def test_resets_actions(self):
+        grid = Grid(get_one_off_grid())
+        grid.actions = 10
+        grid.reset()
+        assert grid.actions == 0
+
+
 class TestLost:
     @pytest.mark.parametrize(
         "grid, expected",
@@ -182,11 +202,36 @@ class TestLost:
                 ],
                 True,
             ),
+            # handles asymmetric grid wide
+            (
+                [
+                    [X, E, X, E, E, E],
+                    [E, E, E, E, E, E],
+                    [E, E, E, E, E, E],
+                    [E, E, E, E, E, E],
+                ],
+                False,
+            ),
+            # handles asymmetric grid tall
+            (
+                [
+                    [X, E],
+                    [E, E],
+                    [E, E],
+                    [E, E],
+                ],
+                False,
+            ),
         ],
     )
     def test_lost(self, grid: list[list[str]], expected: bool):
         grid_instance = Grid(grid)
         assert grid_instance.lost()[0] == expected
+
+    def test_lost_if_max_steps_reached(self):
+        grid = Grid(get_one_off_grid())
+        grid.actions = 1000
+        assert grid.lost() == (True, "Maximum number of steps reached")
 
 
 class TestWon:

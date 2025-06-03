@@ -1,9 +1,9 @@
-from tic_tac_logic.constants import X, O, E, StepResult
+from tic_tac_logic.constants import X, O, E, StepResult, Observation
 
 
 class Grid:
     def __init__(self, grid: list[list[str]]) -> None:
-        self.grid = grid
+        self.initial_grid = grid
         if len(grid) % 2 != 0:
             raise ValueError("Grid must have an even number of rows.")
         if not all(len(row) == len(grid[0]) for row in grid):
@@ -11,10 +11,13 @@ class Grid:
         if len(grid[0]) % 2 != 0:
             raise ValueError("Grid must have an even number of columns.")
         self.reset()
+        self.max_steps = 1000
 
     def reset(self) -> None:
         self.score = 0
         self.actions = 0
+        self.grid = [row.copy() for row in self.initial_grid]
+        self.uncertainty = 0
 
     def lost(self) -> tuple[bool, str]:
         row_width = len(self.grid[0])
@@ -47,7 +50,7 @@ class Grid:
         expected_column_count = column_width // 2
         complete_x_columns: list[tuple[int, ...]] = []
         complete_o_columns: list[tuple[int, ...]] = []
-        for col_index in range(column_width):
+        for col_index in range(row_width):
             column = [
                 self.grid[row_index][col_index] for row_index in range(len(self.grid))
             ]
@@ -75,6 +78,8 @@ class Grid:
             return True, "2 columns with complete X with X identical"
         if len(complete_o_columns) != len(set(complete_o_columns)):
             return True, "2 columns with complete O with O identical"
+        if self.actions >= self.max_steps:
+            return True, "Maximum number of steps reached"
         return False, ""
 
     def won(self) -> tuple[bool, str]:
@@ -123,6 +128,7 @@ class Grid:
         ):
             return 10
 
+        self.uncertainty += 1
         return 1
 
     def act(self, coordinate: tuple[int, int], symbol: str) -> StepResult:
@@ -140,7 +146,7 @@ class Grid:
             if lost[0]:
                 result = StepResult(
                     coordinate=coordinate,
-                    score=-100,
+                    score=-10,
                     symbol=symbol,
                     loss_reason=lost[1],
                 )
@@ -152,6 +158,15 @@ class Grid:
                     score=self.placement_confidence(coordinate),
                     symbol=symbol,
                 )
+        if result.score < 0:
+            result.score = min(result.score + self.uncertainty, 0)
+        else:
+            result.score = max(result.score - self.uncertainty, 0)
+        # if self.uncertainty > 0:
+        #     result.score = 0
         self.score += result.score
         self.actions += 1
         return result
+
+    def get_observation(self) -> Observation:
+        return Observation(grid=self.grid)
