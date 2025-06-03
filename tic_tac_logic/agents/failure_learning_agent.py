@@ -13,6 +13,14 @@ class FailureClass(Enum):
 
 # masks?
 
+"""
+So here were my thoughts. I was thinking we could get it sort of POC working. Then we could thing about a few things:
+
+1. back porting failure (if there are no remaining valid states your current state is also a failure)
+2. adding more validation (like column)
+3. trying to generate more like "masking" than just checking entire areas to lower the memory space
+"""
+
 
 @dataclass(frozen=True)
 class Move:
