@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
+from typing import Any
 from tic_tac_logic.constants import StepResult, Observation
 
 
 class Agent(ABC):
     @abstractmethod
     def __init__(self, grid: list[list[str]]) -> None:
-        pass
+        self.q_table: dict[Any, Any] = {}
 
     @abstractmethod
-    def act(self, observation: Observation) -> tuple[int, int]:
+    def act(self, observation: Observation) -> tuple[tuple[int, int], str]:
         """
         Decide on an action based on the current grid and the agent's symbol.
 

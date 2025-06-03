@@ -66,7 +66,7 @@ class RLShapingBasedAgent(Agent):
 
     def get_top_actions(
         self,
-        action_count: int,
+        action_count: int | float,
         action_by_values: dict[float, list[tuple[tuple[int, int], str]]],
     ):
         """

@@ -4,7 +4,8 @@ from tic_tac_logic.sample_grids import (
     # get_one_off_grid,
     get_easy_grid,
 )
-from tic_tac_logic.agents.simple_rl_agents import RLAgent
+from tic_tac_logic.agents.shaping_agents import RLShapingBasedAgent
+from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import Result
 import numpy as np
 
@@ -16,7 +17,7 @@ def print_grid(grid: Grid) -> None:
 
 
 def run_episode(
-    agent: RLAgent, grid: Grid, render: bool = False, train: bool = False
+    agent: Agent, grid: Grid, render: bool = False, train: bool = False
 ) -> Result:
     # This function would contain the logic to run an episode with the agent
     # For now, we will just print the initial grid and agent's actions
@@ -60,7 +61,6 @@ def create_ascii_heatmap(
     String of the ASCII heat map.
     """
     data = np.array(raw_data)
-    print(data)
     normalized_data = (data - np.min(data)) / (
         np.max(data) - (np.min(data)) + -0.000000000000001
     )
@@ -112,7 +112,7 @@ def render_analytics(results: list[Result]) -> None:
 
 
 def run_episodes(
-    agent: RLAgent,
+    agent: RLShapingBasedAgent,
     grid: Grid,
     episodes: int = 10,
     render: bool = False,
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     training_rounds = 100
     non_training_count = 100
     grid = get_easy_grid()
-    agent = RLAgent(grid)
+    agent = RLShapingBasedAgent(grid)
     grid = Grid(grid)
     # for _ in range(3):
     #     grid.reset()
