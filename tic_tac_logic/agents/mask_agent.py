@@ -5,6 +5,13 @@ from typing import TypedDict
 from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import StepResult, E, PLACEMENT_OPTIONS, Observation
 import logging
+from tic_tac_logic.agents.masks import (
+    AbstractMask,
+    MaskKey,
+    MaskHorizontal3Centered,
+    MaskHorizontal3CenteredX,
+    MaskHorizontal3CenteredO,
+)
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -12,91 +19,6 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
-
-
-@dataclass(frozen=True)
-class MaskKey:
-    mask_type: type["AbstractMask"]
-    pattern: str
-    symbol: str
-
-
-@dataclass(frozen=True)
-class MaskRules:
-    rows_above: int
-    rows_below: int
-    columns_left: int
-    columns_right: int
-
-    def get_pattern(
-        self, coord: tuple[int, int], grid: list[list[str]]
-    ) -> list[list[str]] | None:
-        print(grid)
-        row_i, col_i = coord
-
-        first_row = row_i - self.rows_above
-        if first_row < 0:
-            return None
-        last_row = row_i + self.rows_below
-        if last_row >= len(grid):
-            return None
-        first_col = col_i - self.columns_left
-        if first_col < 0:
-            return None
-        last_col = col_i + self.columns_right
-        if last_col >= len(grid[0]):
-            return None
-
-        rows = grid[first_row : last_row + 1]
-        mini_grid = [row[first_col : last_col + 1] for row in rows]
-        return mini_grid
-
-
-@dataclass
-class AbstractMask:
-    match_symbol: str | None = None
-    rule: MaskRules = NotImplemented
-    # I think this is not actually needed
-
-    def create_mask_key(self, value: list[list[str]], current: str) -> MaskKey:
-        rows = ["".join(row).replace(" ", "_") for row in value]
-        return MaskKey(
-            mask_type=self.__class__,
-            pattern=("\n").join(rows),
-            symbol=current,
-        )
-
-    def remove_non_matching(self, grid: list[list[str]]) -> list[list[str]]:
-        return [
-            [cell if cell == self.match_symbol else E for cell in row] for row in grid
-        ]
-
-    def get_mask(
-        self, coord: tuple[int, int], grid: list[list[str]], current: str
-    ) -> MaskKey | None:
-        if self.match_symbol:
-            grid = self.remove_non_matching(grid)
-        section = self.rule.get_pattern(coord, grid)
-        if section is None:
-            return None
-        return self.create_mask_key(section, current=current)
-
-
-@dataclass
-class MaskHorizontal3(AbstractMask):
-    rule: MaskRules = MaskRules(
-        rows_above=0, rows_below=0, columns_left=1, columns_right=1
-    )
-
-
-@dataclass
-class MaskHorizontal3X(MaskHorizontal3):
-    match_symbol: str | None = "X"
-
-
-@dataclass
-class MaskHorizontal3O(MaskHorizontal3):
-    match_symbol: str | None = "O"
 
 
 @dataclass
@@ -121,17 +43,19 @@ class QTable(TypedDict):
 class MaskAgent(Agent):
     confidence_threshold = 5
 
-    def __init__(self, grid: list[list[str]]) -> None:
+    def __init__(
+        self, grid: list[list[str]], masks: list[AbstractMask] | None = None
+    ) -> None:
         self.q_table: QTable = {  # pyright: ignore[reportIncompatibleVariableOverride]
             "masks": {}
         }
         self.rows = len(grid)
         self.columns = len(grid[0])
         self.epsilon = 0.1
-        self.masks = [
-            MaskHorizontal3(),
-            MaskHorizontal3X(),
-            MaskHorizontal3O(),
+        self.masks = masks or [
+            MaskHorizontal3Centered(),
+            MaskHorizontal3CenteredX(),
+            MaskHorizontal3CenteredO(),
         ]
 
     def log(self, message: str) -> None:
@@ -229,16 +153,21 @@ class MaskAgent(Agent):
             self.log(
                 f"    Found {move_count} possible moves, after removing failures {new_move_count} remain."
             )
+        else:
+            self.log("    Skipping failure checks, exploring options.")
 
         if self.do_not_discover():
             self.log("    Looking for best choices")
             best_options = self.options_with_one_choice(possible_moves)
             if best_options:
+                len_options = len(best_options)
                 result = best_options.pop()
                 self.log(
-                    f"        Returning best option {result[0]} with symbol {result[1]} from {len(best_options)} options."
+                    f"        Returning best option {result[0]} with symbol {result[1]} from {len_options} options."
                 )
                 return result
+        else:
+            self.log("    Skipping best choice, exploring options.")
 
         random_cell = random.choice(empty_cells)
         random_symbol = random.choice(PLACEMENT_OPTIONS)

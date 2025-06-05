@@ -1,0 +1,1460 @@
+2025-06-04 22:46:19,678 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,678 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,678 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,678 - INFO - O | X |   |   | O |   
+2025-06-04 22:46:19,678 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,678 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,678 - INFO -   |   |   | O |   | O 
+2025-06-04 22:46:19,678 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,678 - INFO - 
+2025-06-04 22:46:19,678 - INFO - Acting based on observation
+2025-06-04 22:46:19,679 - INFO -     Found 54 possible moves, after removing failures 48 remain.
+2025-06-04 22:46:19,679 - INFO -     Looking for best choices
+2025-06-04 22:46:19,679 - INFO -         Returning best option (4, 4) with symbol X from 6 options.
+2025-06-04 22:46:19,679 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,679 - INFO - O | X |   |   | O |   
+2025-06-04 22:46:19,679 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,679 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,679 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,679 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,679 - INFO - 
+2025-06-04 22:46:19,679 - INFO - Acting based on observation
+2025-06-04 22:46:19,681 - INFO -     Found 52 possible moves, after removing failures 47 remain.
+2025-06-04 22:46:19,681 - INFO -     Looking for best choices
+2025-06-04 22:46:19,681 - INFO -         Returning best option (2, 5) with symbol X from 5 options.
+2025-06-04 22:46:19,681 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,681 - INFO - O | X |   |   | O |   
+2025-06-04 22:46:19,681 - INFO - O |   |   |   |   | X*
+2025-06-04 22:46:19,681 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,681 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,681 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,681 - INFO - 
+2025-06-04 22:46:19,681 - INFO - Acting based on observation
+2025-06-04 22:46:19,682 - INFO -     Found 50 possible moves, after removing failures 46 remain.
+2025-06-04 22:46:19,682 - INFO -     Looking for best choices
+2025-06-04 22:46:19,682 - INFO -         Returning best option (0, 0) with symbol X from 4 options.
+2025-06-04 22:46:19,682 - INFO - X*| X |   |   |   |   
+2025-06-04 22:46:19,682 - INFO - O | X |   |   | O |   
+2025-06-04 22:46:19,682 - INFO - O |   |   |   |   | X*
+2025-06-04 22:46:19,682 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,682 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,682 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,682 - INFO - 
+2025-06-04 22:46:19,682 - INFO - Acting based on observation
+2025-06-04 22:46:19,683 - INFO -     Found 48 possible moves, after removing failures 44 remain.
+2025-06-04 22:46:19,683 - INFO -     Looking for best choices
+2025-06-04 22:46:19,683 - INFO -         Returning best option (5, 5) with symbol X from 4 options.
+2025-06-04 22:46:19,683 - INFO - X*| X |   |   |   |   
+2025-06-04 22:46:19,683 - INFO - O | X |   |   | O |   
+2025-06-04 22:46:19,684 - INFO - O |   |   |   |   | X*
+2025-06-04 22:46:19,684 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,684 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,684 - INFO - X |   |   |   |   | X*
+2025-06-04 22:46:19,684 - INFO - 
+2025-06-04 22:46:19,684 - INFO - Acting based on observation
+2025-06-04 22:46:19,685 - INFO -     Found 46 possible moves, after removing failures 43 remain.
+2025-06-04 22:46:19,685 - INFO -     Looking for best choices
+2025-06-04 22:46:19,685 - INFO -         Returning best option (3, 0) with symbol X from 3 options.
+2025-06-04 22:46:19,685 - INFO - X*| X |   |   |   |   
+2025-06-04 22:46:19,685 - INFO - O | X |   |   | O |   
+2025-06-04 22:46:19,685 - INFO - O |   |   |   |   | X*
+2025-06-04 22:46:19,685 - INFO - X*|   |   |   |   | O 
+2025-06-04 22:46:19,685 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,685 - INFO - X |   |   |   |   | X*
+2025-06-04 22:46:19,685 - INFO - 
+2025-06-04 22:46:19,685 - INFO - Acting based on observation
+2025-06-04 22:46:19,686 - INFO -     Found 44 possible moves, after removing failures 41 remain.
+2025-06-04 22:46:19,686 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,686 - INFO -     Returning random cell (2, 3) with symbol O
+2025-06-04 22:46:19,686 - INFO - X*| X |   |   |   |   
+2025-06-04 22:46:19,686 - INFO - O | X |   |   | O |   
+2025-06-04 22:46:19,686 - INFO - O |   |   | O*|   | X*
+2025-06-04 22:46:19,686 - INFO - X*|   |   |   |   | O 
+2025-06-04 22:46:19,686 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,686 - INFO - X |   |   |   |   | X*
+2025-06-04 22:46:19,686 - INFO - 
+2025-06-04 22:46:19,686 - INFO - Acting based on observation
+2025-06-04 22:46:19,687 - INFO -     Found 42 possible moves, after removing failures 38 remain.
+2025-06-04 22:46:19,687 - INFO -     Looking for best choices
+2025-06-04 22:46:19,687 - INFO -         Returning best option (4, 0) with symbol O from 4 options.
+2025-06-04 22:46:19,687 - INFO - X*| X |   |   |   |   
+2025-06-04 22:46:19,687 - INFO - O | X |   |   | O |   
+2025-06-04 22:46:19,687 - INFO - O |   |   | O*|   | X*
+2025-06-04 22:46:19,687 - INFO - X*|   |   |   |   | O 
+2025-06-04 22:46:19,687 - INFO - O*|   |   | O | X*| O 
+2025-06-04 22:46:19,687 - INFO - X |   |   |   |   | X*
+2025-06-04 22:46:19,687 - INFO - 
+2025-06-04 22:46:19,687 - INFO - Acting based on observation
+2025-06-04 22:46:19,688 - INFO -     Found 40 possible moves, after removing failures 37 remain.
+2025-06-04 22:46:19,688 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,688 - INFO -     Returning random cell (1, 5) with symbol O
+2025-06-04 22:46:19,688 - INFO - X*| X |   |   |   |   
+2025-06-04 22:46:19,688 - INFO - O | X |   |   | O | O*
+2025-06-04 22:46:19,688 - INFO - O |   |   | O*|   | X*
+2025-06-04 22:46:19,688 - INFO - X*|   |   |   |   | O 
+2025-06-04 22:46:19,688 - INFO - O*|   |   | O | X*| O 
+2025-06-04 22:46:19,688 - INFO - X |   |   |   |   | X*
+2025-06-04 22:46:19,688 - INFO - 
+2025-06-04 22:46:19,688 - INFO - Acting based on observation
+2025-06-04 22:46:19,688 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,688 - INFO -     Looking for best choices
+2025-06-04 22:46:19,688 - INFO -     Returning random cell (4, 1) with symbol O
+2025-06-04 22:46:19,688 - INFO - X*| X |   |   |   |   
+2025-06-04 22:46:19,688 - INFO - O | X |   |   | O | O*
+2025-06-04 22:46:19,688 - INFO - O |   |   | O*|   | X*
+2025-06-04 22:46:19,688 - INFO - X*|   |   |   |   | O 
+2025-06-04 22:46:19,688 - INFO - O*| O*|   | O | X*| O 
+2025-06-04 22:46:19,688 - INFO - X |   |   |   |   | X*
+2025-06-04 22:46:19,688 - INFO - 
+2025-06-04 22:46:19,688 - INFO - 
+2025-06-04 22:46:19,688 - INFO - 
+2025-06-04 22:46:19,689 - INFO - ----------------------------------------
+2025-06-04 22:46:19,689 - INFO - 
+2025-06-04 22:46:19,689 - INFO - 
+2025-06-04 22:46:19,689 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,689 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,689 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,689 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,689 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,689 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,689 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,689 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,689 - INFO - 
+2025-06-04 22:46:19,689 - INFO - Acting based on observation
+2025-06-04 22:46:19,690 - INFO -     Found 56 possible moves, after removing failures 54 remain.
+2025-06-04 22:46:19,690 - INFO -     Looking for best choices
+2025-06-04 22:46:19,690 - INFO -         Returning best option (3, 0) with symbol X from 2 options.
+2025-06-04 22:46:19,690 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,690 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,690 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,690 - INFO - X*| X |   |   |   |   
+2025-06-04 22:46:19,690 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,690 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,690 - INFO - 
+2025-06-04 22:46:19,690 - INFO - Acting based on observation
+2025-06-04 22:46:19,691 - INFO -     Found 54 possible moves, after removing failures 52 remain.
+2025-06-04 22:46:19,691 - INFO -     Looking for best choices
+2025-06-04 22:46:19,691 - INFO -         Returning best option (3, 2) with symbol O from 2 options.
+2025-06-04 22:46:19,692 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,692 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,692 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,692 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,692 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,692 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,692 - INFO - 
+2025-06-04 22:46:19,692 - INFO - Acting based on observation
+2025-06-04 22:46:19,693 - INFO -     Found 52 possible moves, after removing failures 51 remain.
+2025-06-04 22:46:19,693 - INFO -     Looking for best choices
+2025-06-04 22:46:19,693 - INFO -         Returning best option (2, 2) with symbol O from 1 options.
+2025-06-04 22:46:19,693 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,693 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,693 - INFO - O |   | O*| O |   |   
+2025-06-04 22:46:19,693 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,693 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,693 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,693 - INFO - 
+2025-06-04 22:46:19,693 - INFO - Acting based on observation
+2025-06-04 22:46:19,694 - INFO -     Found 50 possible moves, after removing failures 47 remain.
+2025-06-04 22:46:19,694 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,694 - INFO -     Returning random cell (0, 4) with symbol O
+2025-06-04 22:46:19,694 - INFO -   |   | X |   | O*|   
+2025-06-04 22:46:19,694 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,694 - INFO - O |   | O*| O |   |   
+2025-06-04 22:46:19,694 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,694 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,694 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,694 - INFO - 
+2025-06-04 22:46:19,694 - INFO - Acting based on observation
+2025-06-04 22:46:19,694 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,694 - INFO -     Looking for best choices
+2025-06-04 22:46:19,694 - INFO -     Returning random cell (2, 1) with symbol X
+2025-06-04 22:46:19,694 - INFO -   |   | X |   | O*|   
+2025-06-04 22:46:19,694 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,694 - INFO - O | X*| O*| O |   |   
+2025-06-04 22:46:19,694 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,694 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,694 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,694 - INFO - 
+2025-06-04 22:46:19,694 - INFO - Acting based on observation
+2025-06-04 22:46:19,696 - INFO -     Found 46 possible moves, after removing failures 42 remain.
+2025-06-04 22:46:19,696 - INFO -     Looking for best choices
+2025-06-04 22:46:19,696 - INFO -         Returning best option (4, 2) with symbol X from 4 options.
+2025-06-04 22:46:19,696 - INFO -   |   | X |   | O*|   
+2025-06-04 22:46:19,696 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,696 - INFO - O | X*| O*| O |   |   
+2025-06-04 22:46:19,696 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,696 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,696 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,696 - INFO - 
+2025-06-04 22:46:19,696 - INFO - Acting based on observation
+2025-06-04 22:46:19,697 - INFO -     Found 44 possible moves, after removing failures 41 remain.
+2025-06-04 22:46:19,697 - INFO -     Looking for best choices
+2025-06-04 22:46:19,697 - INFO -         Returning best option (2, 4) with symbol X from 3 options.
+2025-06-04 22:46:19,697 - INFO -   |   | X |   | O*|   
+2025-06-04 22:46:19,697 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,697 - INFO - O | X*| O*| O | X*|   
+2025-06-04 22:46:19,697 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,697 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,697 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,697 - INFO - 
+2025-06-04 22:46:19,697 - INFO - Acting based on observation
+2025-06-04 22:46:19,698 - INFO -     Found 42 possible moves, after removing failures 40 remain.
+2025-06-04 22:46:19,698 - INFO -     Looking for best choices
+2025-06-04 22:46:19,698 - INFO -         Returning best option (4, 1) with symbol O from 2 options.
+2025-06-04 22:46:19,698 - INFO -   |   | X |   | O*|   
+2025-06-04 22:46:19,698 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,698 - INFO - O | X*| O*| O | X*|   
+2025-06-04 22:46:19,698 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,698 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,698 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,698 - INFO - 
+2025-06-04 22:46:19,698 - INFO - Acting based on observation
+2025-06-04 22:46:19,699 - INFO -     Found 40 possible moves, after removing failures 39 remain.
+2025-06-04 22:46:19,699 - INFO -     Looking for best choices
+2025-06-04 22:46:19,699 - INFO -         Returning best option (1, 1) with symbol O from 1 options.
+2025-06-04 22:46:19,699 - INFO -   |   | X |   | O*|   
+2025-06-04 22:46:19,699 - INFO -   | O*| X |   |   | X 
+2025-06-04 22:46:19,699 - INFO - O | X*| O*| O | X*|   
+2025-06-04 22:46:19,699 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,699 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,699 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,699 - INFO - 
+2025-06-04 22:46:19,699 - INFO - Acting based on observation
+2025-06-04 22:46:19,700 - INFO -     Found 38 possible moves, after removing failures 38 remain.
+2025-06-04 22:46:19,700 - INFO -     Looking for best choices
+2025-06-04 22:46:19,700 - INFO -     Returning random cell (0, 3) with symbol O
+2025-06-04 22:46:19,700 - INFO -   |   | X | O*| O*|   
+2025-06-04 22:46:19,700 - INFO -   | O*| X |   |   | X 
+2025-06-04 22:46:19,700 - INFO - O | X*| O*| O | X*|   
+2025-06-04 22:46:19,700 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,700 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,700 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,700 - INFO - 
+2025-06-04 22:46:19,700 - INFO - Acting based on observation
+2025-06-04 22:46:19,701 - INFO -     Found 36 possible moves, after removing failures 34 remain.
+2025-06-04 22:46:19,701 - INFO -     Looking for best choices
+2025-06-04 22:46:19,701 - INFO -         Returning best option (1, 3) with symbol X from 2 options.
+2025-06-04 22:46:19,701 - INFO -   |   | X | O*| O*|   
+2025-06-04 22:46:19,701 - INFO -   | O*| X | X*|   | X 
+2025-06-04 22:46:19,701 - INFO - O | X*| O*| O | X*|   
+2025-06-04 22:46:19,701 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,701 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,701 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,701 - INFO - 
+2025-06-04 22:46:19,701 - INFO - Acting based on observation
+2025-06-04 22:46:19,701 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,701 - INFO -     Looking for best choices
+2025-06-04 22:46:19,701 - INFO -     Returning random cell (3, 5) with symbol X
+2025-06-04 22:46:19,701 - INFO -   |   | X | O*| O*|   
+2025-06-04 22:46:19,701 - INFO -   | O*| X | X*|   | X 
+2025-06-04 22:46:19,701 - INFO - O | X*| O*| O | X*|   
+2025-06-04 22:46:19,701 - INFO - X*| X | O*|   |   | X*
+2025-06-04 22:46:19,701 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,701 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,701 - INFO - 
+2025-06-04 22:46:19,701 - INFO - Acting based on observation
+2025-06-04 22:46:19,701 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,701 - INFO -     Looking for best choices
+2025-06-04 22:46:19,701 - INFO -     Returning random cell (1, 0) with symbol O
+2025-06-04 22:46:19,701 - INFO -   |   | X | O*| O*|   
+2025-06-04 22:46:19,701 - INFO - O*| O*| X | X*|   | X 
+2025-06-04 22:46:19,701 - INFO - O | X*| O*| O | X*|   
+2025-06-04 22:46:19,701 - INFO - X*| X | O*|   |   | X*
+2025-06-04 22:46:19,701 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,701 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,701 - INFO - 
+2025-06-04 22:46:19,701 - INFO - 
+2025-06-04 22:46:19,701 - INFO - 
+2025-06-04 22:46:19,701 - INFO - ----------------------------------------
+2025-06-04 22:46:19,701 - INFO - 
+2025-06-04 22:46:19,701 - INFO - 
+2025-06-04 22:46:19,701 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,701 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,701 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,701 - INFO - O |   |   | X | X |   
+2025-06-04 22:46:19,701 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,701 - INFO -   | O | O |   |   |   
+2025-06-04 22:46:19,701 - INFO -   |   |   |   | X | X 
+2025-06-04 22:46:19,701 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,701 - INFO - 
+2025-06-04 22:46:19,701 - INFO - Acting based on observation
+2025-06-04 22:46:19,703 - INFO -     Found 54 possible moves, after removing failures 48 remain.
+2025-06-04 22:46:19,703 - INFO -     Looking for best choices
+2025-06-04 22:46:19,703 - INFO -         Returning best option (4, 3) with symbol O from 6 options.
+2025-06-04 22:46:19,703 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,703 - INFO - O |   |   | X | X |   
+2025-06-04 22:46:19,703 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,703 - INFO -   | O | O |   |   |   
+2025-06-04 22:46:19,703 - INFO -   |   |   | O*| X | X 
+2025-06-04 22:46:19,703 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,703 - INFO - 
+2025-06-04 22:46:19,703 - INFO - Acting based on observation
+2025-06-04 22:46:19,704 - INFO -     Found 52 possible moves, after removing failures 47 remain.
+2025-06-04 22:46:19,704 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,704 - INFO -     Returning random cell (5, 0) with symbol X
+2025-06-04 22:46:19,704 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,704 - INFO - O |   |   | X | X |   
+2025-06-04 22:46:19,704 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,704 - INFO -   | O | O |   |   |   
+2025-06-04 22:46:19,704 - INFO -   |   |   | O*| X | X 
+2025-06-04 22:46:19,704 - INFO - X*|   |   |   |   |   
+2025-06-04 22:46:19,704 - INFO - 
+2025-06-04 22:46:19,704 - INFO - Acting based on observation
+2025-06-04 22:46:19,705 - INFO -     Found 50 possible moves, after removing failures 45 remain.
+2025-06-04 22:46:19,705 - INFO -     Looking for best choices
+2025-06-04 22:46:19,705 - INFO -         Returning best option (3, 3) with symbol X from 5 options.
+2025-06-04 22:46:19,705 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,705 - INFO - O |   |   | X | X |   
+2025-06-04 22:46:19,705 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,705 - INFO -   | O | O | X*|   |   
+2025-06-04 22:46:19,705 - INFO -   |   |   | O*| X | X 
+2025-06-04 22:46:19,705 - INFO - X*|   |   |   |   |   
+2025-06-04 22:46:19,705 - INFO - 
+2025-06-04 22:46:19,705 - INFO - Acting based on observation
+2025-06-04 22:46:19,706 - INFO -     Found 48 possible moves, after removing failures 43 remain.
+2025-06-04 22:46:19,706 - INFO -     Looking for best choices
+2025-06-04 22:46:19,706 - INFO -         Returning best option (2, 3) with symbol O from 5 options.
+2025-06-04 22:46:19,706 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,706 - INFO - O |   |   | X | X |   
+2025-06-04 22:46:19,706 - INFO -   |   |   | O*|   | X 
+2025-06-04 22:46:19,706 - INFO -   | O | O | X*|   |   
+2025-06-04 22:46:19,706 - INFO -   |   |   | O*| X | X 
+2025-06-04 22:46:19,706 - INFO - X*|   |   |   |   |   
+2025-06-04 22:46:19,706 - INFO - 
+2025-06-04 22:46:19,706 - INFO - Acting based on observation
+2025-06-04 22:46:19,708 - INFO -     Found 46 possible moves, after removing failures 42 remain.
+2025-06-04 22:46:19,708 - INFO -     Looking for best choices
+2025-06-04 22:46:19,708 - INFO -         Returning best option (3, 0) with symbol X from 4 options.
+2025-06-04 22:46:19,708 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,708 - INFO - O |   |   | X | X |   
+2025-06-04 22:46:19,708 - INFO -   |   |   | O*|   | X 
+2025-06-04 22:46:19,708 - INFO - X*| O | O | X*|   |   
+2025-06-04 22:46:19,708 - INFO -   |   |   | O*| X | X 
+2025-06-04 22:46:19,708 - INFO - X*|   |   |   |   |   
+2025-06-04 22:46:19,708 - INFO - 
+2025-06-04 22:46:19,708 - INFO - Acting based on observation
+2025-06-04 22:46:19,709 - INFO -     Found 44 possible moves, after removing failures 40 remain.
+2025-06-04 22:46:19,709 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,709 - INFO -     Returning random cell (0, 2) with symbol O
+2025-06-04 22:46:19,709 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,709 - INFO - O |   |   | X | X |   
+2025-06-04 22:46:19,709 - INFO -   |   |   | O*|   | X 
+2025-06-04 22:46:19,709 - INFO - X*| O | O | X*|   |   
+2025-06-04 22:46:19,709 - INFO -   |   |   | O*| X | X 
+2025-06-04 22:46:19,709 - INFO - X*|   |   |   |   |   
+2025-06-04 22:46:19,709 - INFO - 
+2025-06-04 22:46:19,709 - INFO - Acting based on observation
+2025-06-04 22:46:19,710 - INFO -     Found 42 possible moves, after removing failures 38 remain.
+2025-06-04 22:46:19,710 - INFO -     Looking for best choices
+2025-06-04 22:46:19,710 - INFO -         Returning best option (4, 0) with symbol O from 4 options.
+2025-06-04 22:46:19,710 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,710 - INFO - O |   |   | X | X |   
+2025-06-04 22:46:19,710 - INFO -   |   |   | O*|   | X 
+2025-06-04 22:46:19,710 - INFO - X*| O | O | X*|   |   
+2025-06-04 22:46:19,710 - INFO - O*|   |   | O*| X | X 
+2025-06-04 22:46:19,710 - INFO - X*|   |   |   |   |   
+2025-06-04 22:46:19,710 - INFO - 
+2025-06-04 22:46:19,710 - INFO - Acting based on observation
+2025-06-04 22:46:19,711 - INFO -     Found 40 possible moves, after removing failures 37 remain.
+2025-06-04 22:46:19,711 - INFO -     Looking for best choices
+2025-06-04 22:46:19,711 - INFO -         Returning best option (1, 2) with symbol O from 3 options.
+2025-06-04 22:46:19,711 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,711 - INFO - O |   | O*| X | X |   
+2025-06-04 22:46:19,711 - INFO -   |   |   | O*|   | X 
+2025-06-04 22:46:19,711 - INFO - X*| O | O | X*|   |   
+2025-06-04 22:46:19,711 - INFO - O*|   |   | O*| X | X 
+2025-06-04 22:46:19,711 - INFO - X*|   |   |   |   |   
+2025-06-04 22:46:19,711 - INFO - 
+2025-06-04 22:46:19,711 - INFO - Acting based on observation
+2025-06-04 22:46:19,711 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,711 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,711 - INFO -     Returning random cell (5, 5) with symbol O
+2025-06-04 22:46:19,711 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,711 - INFO - O |   | O*| X | X |   
+2025-06-04 22:46:19,711 - INFO -   |   |   | O*|   | X 
+2025-06-04 22:46:19,711 - INFO - X*| O | O | X*|   |   
+2025-06-04 22:46:19,711 - INFO - O*|   |   | O*| X | X 
+2025-06-04 22:46:19,711 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,711 - INFO - 
+2025-06-04 22:46:19,711 - INFO - Acting based on observation
+2025-06-04 22:46:19,712 - INFO -     Found 36 possible moves, after removing failures 32 remain.
+2025-06-04 22:46:19,712 - INFO -     Looking for best choices
+2025-06-04 22:46:19,712 - INFO -         Returning best option (2, 2) with symbol X from 4 options.
+2025-06-04 22:46:19,712 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,712 - INFO - O |   | O*| X | X |   
+2025-06-04 22:46:19,712 - INFO -   |   | X*| O*|   | X 
+2025-06-04 22:46:19,712 - INFO - X*| O | O | X*|   |   
+2025-06-04 22:46:19,712 - INFO - O*|   |   | O*| X | X 
+2025-06-04 22:46:19,712 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,712 - INFO - 
+2025-06-04 22:46:19,712 - INFO - Acting based on observation
+2025-06-04 22:46:19,713 - INFO -     Found 34 possible moves, after removing failures 31 remain.
+2025-06-04 22:46:19,713 - INFO -     Looking for best choices
+2025-06-04 22:46:19,713 - INFO -         Returning best option (3, 5) with symbol O from 3 options.
+2025-06-04 22:46:19,713 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,713 - INFO - O |   | O*| X | X |   
+2025-06-04 22:46:19,713 - INFO -   |   | X*| O*|   | X 
+2025-06-04 22:46:19,713 - INFO - X*| O | O | X*|   | O*
+2025-06-04 22:46:19,713 - INFO - O*|   |   | O*| X | X 
+2025-06-04 22:46:19,713 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,713 - INFO - 
+2025-06-04 22:46:19,713 - INFO - Acting based on observation
+2025-06-04 22:46:19,714 - INFO -     Found 32 possible moves, after removing failures 30 remain.
+2025-06-04 22:46:19,714 - INFO -     Looking for best choices
+2025-06-04 22:46:19,714 - INFO -         Returning best option (1, 1) with symbol X from 2 options.
+2025-06-04 22:46:19,714 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,714 - INFO - O | X*| O*| X | X |   
+2025-06-04 22:46:19,714 - INFO -   |   | X*| O*|   | X 
+2025-06-04 22:46:19,714 - INFO - X*| O | O | X*|   | O*
+2025-06-04 22:46:19,714 - INFO - O*|   |   | O*| X | X 
+2025-06-04 22:46:19,714 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,714 - INFO - 
+2025-06-04 22:46:19,714 - INFO - Acting based on observation
+2025-06-04 22:46:19,714 - INFO -     Found 30 possible moves, after removing failures 28 remain.
+2025-06-04 22:46:19,714 - INFO -     Looking for best choices
+2025-06-04 22:46:19,714 - INFO -         Returning best option (1, 5) with symbol O from 2 options.
+2025-06-04 22:46:19,714 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,714 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,714 - INFO -   |   | X*| O*|   | X 
+2025-06-04 22:46:19,715 - INFO - X*| O | O | X*|   | O*
+2025-06-04 22:46:19,715 - INFO - O*|   |   | O*| X | X 
+2025-06-04 22:46:19,715 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,715 - INFO - 
+2025-06-04 22:46:19,715 - INFO - Acting based on observation
+2025-06-04 22:46:19,715 - INFO -     Found 28 possible moves, after removing failures 27 remain.
+2025-06-04 22:46:19,715 - INFO -     Looking for best choices
+2025-06-04 22:46:19,715 - INFO -         Returning best option (2, 1) with symbol O from 1 options.
+2025-06-04 22:46:19,715 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,715 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,715 - INFO -   | O*| X*| O*|   | X 
+2025-06-04 22:46:19,715 - INFO - X*| O | O | X*|   | O*
+2025-06-04 22:46:19,715 - INFO - O*|   |   | O*| X | X 
+2025-06-04 22:46:19,715 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,715 - INFO - 
+2025-06-04 22:46:19,715 - INFO - Acting based on observation
+2025-06-04 22:46:19,716 - INFO -     Found 26 possible moves, after removing failures 25 remain.
+2025-06-04 22:46:19,716 - INFO -     Looking for best choices
+2025-06-04 22:46:19,716 - INFO -         Returning best option (4, 1) with symbol X from 1 options.
+2025-06-04 22:46:19,716 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,716 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,716 - INFO -   | O*| X*| O*|   | X 
+2025-06-04 22:46:19,716 - INFO - X*| O | O | X*|   | O*
+2025-06-04 22:46:19,716 - INFO - O*| X*|   | O*| X | X 
+2025-06-04 22:46:19,716 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,716 - INFO - 
+2025-06-04 22:46:19,716 - INFO - Acting based on observation
+2025-06-04 22:46:19,717 - INFO -     Found 24 possible moves, after removing failures 24 remain.
+2025-06-04 22:46:19,717 - INFO -     Looking for best choices
+2025-06-04 22:46:19,717 - INFO -     Returning random cell (3, 4) with symbol X
+2025-06-04 22:46:19,717 - INFO -   | X | O*|   |   |   
+2025-06-04 22:46:19,717 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,717 - INFO -   | O*| X*| O*|   | X 
+2025-06-04 22:46:19,717 - INFO - X*| O | O | X*| X*| O*
+2025-06-04 22:46:19,717 - INFO - O*| X*|   | O*| X | X 
+2025-06-04 22:46:19,717 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,717 - INFO - 
+2025-06-04 22:46:19,717 - INFO - Acting based on observation
+2025-06-04 22:46:19,717 - INFO -     Found 22 possible moves, after removing failures 20 remain.
+2025-06-04 22:46:19,717 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,717 - INFO -     Returning random cell (0, 0) with symbol X
+2025-06-04 22:46:19,717 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,717 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,717 - INFO -   | O*| X*| O*|   | X 
+2025-06-04 22:46:19,717 - INFO - X*| O | O | X*| X*| O*
+2025-06-04 22:46:19,717 - INFO - O*| X*|   | O*| X | X 
+2025-06-04 22:46:19,717 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,717 - INFO - 
+2025-06-04 22:46:19,717 - INFO - Acting based on observation
+2025-06-04 22:46:19,718 - INFO -     Found 20 possible moves, after removing failures 18 remain.
+2025-06-04 22:46:19,718 - INFO -     Looking for best choices
+2025-06-04 22:46:19,718 - INFO -         Returning best option (2, 4) with symbol O from 2 options.
+2025-06-04 22:46:19,718 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,718 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,718 - INFO -   | O*| X*| O*| O*| X 
+2025-06-04 22:46:19,718 - INFO - X*| O | O | X*| X*| O*
+2025-06-04 22:46:19,718 - INFO - O*| X*|   | O*| X | X 
+2025-06-04 22:46:19,718 - INFO - X*|   |   |   |   | O*
+2025-06-04 22:46:19,718 - INFO - 
+2025-06-04 22:46:19,718 - INFO - Acting based on observation
+2025-06-04 22:46:19,718 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,718 - INFO -     Looking for best choices
+2025-06-04 22:46:19,718 - INFO -     Returning random cell (5, 1) with symbol O
+2025-06-04 22:46:19,718 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,718 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,718 - INFO -   | O*| X*| O*| O*| X 
+2025-06-04 22:46:19,718 - INFO - X*| O | O | X*| X*| O*
+2025-06-04 22:46:19,718 - INFO - O*| X*|   | O*| X | X 
+2025-06-04 22:46:19,718 - INFO - X*| O*|   |   |   | O*
+2025-06-04 22:46:19,718 - INFO - 
+2025-06-04 22:46:19,718 - INFO - Acting based on observation
+2025-06-04 22:46:19,719 - INFO -     Found 16 possible moves, after removing failures 15 remain.
+2025-06-04 22:46:19,719 - INFO -     Looking for best choices
+2025-06-04 22:46:19,719 - INFO -         Returning best option (5, 4) with symbol O from 1 options.
+2025-06-04 22:46:19,719 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,719 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,719 - INFO -   | O*| X*| O*| O*| X 
+2025-06-04 22:46:19,719 - INFO - X*| O | O | X*| X*| O*
+2025-06-04 22:46:19,719 - INFO - O*| X*|   | O*| X | X 
+2025-06-04 22:46:19,719 - INFO - X*| O*|   |   | O*| O*
+2025-06-04 22:46:19,719 - INFO - 
+2025-06-04 22:46:19,719 - INFO - Acting based on observation
+2025-06-04 22:46:19,719 - INFO -     Found 14 possible moves, after removing failures 13 remain.
+2025-06-04 22:46:19,719 - INFO -     Looking for best choices
+2025-06-04 22:46:19,719 - INFO -         Returning best option (5, 3) with symbol X from 1 options.
+2025-06-04 22:46:19,719 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,719 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,719 - INFO -   | O*| X*| O*| O*| X 
+2025-06-04 22:46:19,719 - INFO - X*| O | O | X*| X*| O*
+2025-06-04 22:46:19,719 - INFO - O*| X*|   | O*| X | X 
+2025-06-04 22:46:19,719 - INFO - X*| O*|   | X*| O*| O*
+2025-06-04 22:46:19,719 - INFO - 
+2025-06-04 22:46:19,719 - INFO - Acting based on observation
+2025-06-04 22:46:19,719 - INFO -     Found 12 possible moves, after removing failures 12 remain.
+2025-06-04 22:46:19,719 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,719 - INFO -     Returning random cell (4, 2) with symbol O
+2025-06-04 22:46:19,719 - INFO - X*| X | O*|   |   |   
+2025-06-04 22:46:19,719 - INFO - O | X*| O*| X | X | O*
+2025-06-04 22:46:19,719 - INFO -   | O*| X*| O*| O*| X 
+2025-06-04 22:46:19,719 - INFO - X*| O | O | X*| X*| O*
+2025-06-04 22:46:19,719 - INFO - O*| X*| O*| O*| X | X 
+2025-06-04 22:46:19,719 - INFO - X*| O*|   | X*| O*| O*
+2025-06-04 22:46:19,719 - INFO - 
+2025-06-04 22:46:19,719 - INFO - 
+2025-06-04 22:46:19,719 - INFO - 
+2025-06-04 22:46:19,719 - INFO - ----------------------------------------
+2025-06-04 22:46:19,719 - INFO - 
+2025-06-04 22:46:19,719 - INFO - 
+2025-06-04 22:46:19,719 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,719 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,719 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,719 - INFO -   |   | X |   |   | O 
+2025-06-04 22:46:19,719 - INFO -   |   |   | X |   |   
+2025-06-04 22:46:19,719 - INFO - O |   | O |   |   | O 
+2025-06-04 22:46:19,719 - INFO -   |   |   |   | X |   
+2025-06-04 22:46:19,719 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,719 - INFO - 
+2025-06-04 22:46:19,720 - INFO - Acting based on observation
+2025-06-04 22:46:19,721 - INFO -     Found 54 possible moves, after removing failures 51 remain.
+2025-06-04 22:46:19,721 - INFO -     Looking for best choices
+2025-06-04 22:46:19,721 - INFO -         Returning best option (3, 1) with symbol X from 3 options.
+2025-06-04 22:46:19,721 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,721 - INFO -   |   | X |   |   | O 
+2025-06-04 22:46:19,721 - INFO -   |   |   | X |   |   
+2025-06-04 22:46:19,721 - INFO - O | X*| O |   |   | O 
+2025-06-04 22:46:19,721 - INFO -   |   |   |   | X |   
+2025-06-04 22:46:19,721 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,721 - INFO - 
+2025-06-04 22:46:19,721 - INFO - Acting based on observation
+2025-06-04 22:46:19,722 - INFO -     Found 52 possible moves, after removing failures 50 remain.
+2025-06-04 22:46:19,722 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,722 - INFO -     Returning random cell (2, 4) with symbol X
+2025-06-04 22:46:19,722 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,722 - INFO -   |   | X |   |   | O 
+2025-06-04 22:46:19,722 - INFO -   |   |   | X | X*|   
+2025-06-04 22:46:19,722 - INFO - O | X*| O |   |   | O 
+2025-06-04 22:46:19,722 - INFO -   |   |   |   | X |   
+2025-06-04 22:46:19,722 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,722 - INFO - 
+2025-06-04 22:46:19,722 - INFO - Acting based on observation
+2025-06-04 22:46:19,724 - INFO -     Found 50 possible moves, after removing failures 45 remain.
+2025-06-04 22:46:19,724 - INFO -     Looking for best choices
+2025-06-04 22:46:19,724 - INFO -         Returning best option (3, 4) with symbol O from 3 options.
+2025-06-04 22:46:19,724 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,724 - INFO -   |   | X |   |   | O 
+2025-06-04 22:46:19,724 - INFO -   |   |   | X | X*|   
+2025-06-04 22:46:19,724 - INFO - O | X*| O |   | O*| O 
+2025-06-04 22:46:19,724 - INFO -   |   |   |   | X |   
+2025-06-04 22:46:19,724 - INFO -   |   |   |   |   | O 
+2025-06-04 22:46:19,724 - INFO - 
+2025-06-04 22:46:19,724 - INFO - 
+2025-06-04 22:46:19,724 - INFO - 
+2025-06-04 22:46:19,724 - INFO - ----------------------------------------
+2025-06-04 22:46:19,724 - INFO - 
+2025-06-04 22:46:19,724 - INFO - 
+2025-06-04 22:46:19,724 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,724 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,724 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,724 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,724 - INFO -   | X |   | X |   |   
+2025-06-04 22:46:19,724 - INFO - O |   | O |   | O |   
+2025-06-04 22:46:19,724 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,724 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,724 - INFO - 
+2025-06-04 22:46:19,724 - INFO - Acting based on observation
+2025-06-04 22:46:19,725 - INFO -     Found 54 possible moves, after removing failures 50 remain.
+2025-06-04 22:46:19,725 - INFO -     Looking for best choices
+2025-06-04 22:46:19,725 - INFO -         Returning best option (3, 1) with symbol X from 4 options.
+2025-06-04 22:46:19,725 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,725 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,725 - INFO -   | X |   | X |   |   
+2025-06-04 22:46:19,725 - INFO - O | X*| O |   | O |   
+2025-06-04 22:46:19,725 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,725 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,725 - INFO - 
+2025-06-04 22:46:19,725 - INFO - Acting based on observation
+2025-06-04 22:46:19,726 - INFO -     Found 52 possible moves, after removing failures 47 remain.
+2025-06-04 22:46:19,726 - INFO -     Looking for best choices
+2025-06-04 22:46:19,726 - INFO -         Returning best option (2, 0) with symbol X from 5 options.
+2025-06-04 22:46:19,726 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,726 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,726 - INFO - X*| X |   | X |   |   
+2025-06-04 22:46:19,726 - INFO - O | X*| O |   | O |   
+2025-06-04 22:46:19,726 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,726 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,726 - INFO - 
+2025-06-04 22:46:19,726 - INFO - Acting based on observation
+2025-06-04 22:46:19,728 - INFO -     Found 50 possible moves, after removing failures 46 remain.
+2025-06-04 22:46:19,728 - INFO -     Looking for best choices
+2025-06-04 22:46:19,728 - INFO -         Returning best option (2, 2) with symbol O from 4 options.
+2025-06-04 22:46:19,728 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,728 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,728 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,728 - INFO - O | X*| O |   | O |   
+2025-06-04 22:46:19,728 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,728 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,728 - INFO - 
+2025-06-04 22:46:19,728 - INFO - Acting based on observation
+2025-06-04 22:46:19,729 - INFO -     Found 48 possible moves, after removing failures 43 remain.
+2025-06-04 22:46:19,729 - INFO -     Looking for best choices
+2025-06-04 22:46:19,729 - INFO -         Returning best option (1, 2) with symbol X from 5 options.
+2025-06-04 22:46:19,729 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,729 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,729 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,729 - INFO - O | X*| O |   | O |   
+2025-06-04 22:46:19,729 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,729 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,729 - INFO - 
+2025-06-04 22:46:19,729 - INFO - Acting based on observation
+2025-06-04 22:46:19,730 - INFO -     Found 46 possible moves, after removing failures 42 remain.
+2025-06-04 22:46:19,730 - INFO -     Looking for best choices
+2025-06-04 22:46:19,730 - INFO -         Returning best option (4, 2) with symbol X from 4 options.
+2025-06-04 22:46:19,730 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,730 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,730 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,730 - INFO - O | X*| O |   | O |   
+2025-06-04 22:46:19,730 - INFO -   |   | X*|   |   |   
+2025-06-04 22:46:19,730 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,730 - INFO - 
+2025-06-04 22:46:19,730 - INFO - Acting based on observation
+2025-06-04 22:46:19,731 - INFO -     Found 44 possible moves, after removing failures 41 remain.
+2025-06-04 22:46:19,731 - INFO -     Looking for best choices
+2025-06-04 22:46:19,731 - INFO -         Returning best option (3, 3) with symbol X from 3 options.
+2025-06-04 22:46:19,731 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,731 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,731 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,731 - INFO - O | X*| O | X*| O |   
+2025-06-04 22:46:19,731 - INFO -   |   | X*|   |   |   
+2025-06-04 22:46:19,731 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,731 - INFO - 
+2025-06-04 22:46:19,731 - INFO - Acting based on observation
+2025-06-04 22:46:19,732 - INFO -     Found 42 possible moves, after removing failures 38 remain.
+2025-06-04 22:46:19,732 - INFO -     Looking for best choices
+2025-06-04 22:46:19,732 - INFO -         Returning best option (1, 3) with symbol O from 4 options.
+2025-06-04 22:46:19,732 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,732 - INFO - O |   | X*| O*|   |   
+2025-06-04 22:46:19,732 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,732 - INFO - O | X*| O | X*| O |   
+2025-06-04 22:46:19,732 - INFO -   |   | X*|   |   |   
+2025-06-04 22:46:19,732 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,732 - INFO - 
+2025-06-04 22:46:19,732 - INFO - Acting based on observation
+2025-06-04 22:46:19,733 - INFO -     Found 40 possible moves, after removing failures 37 remain.
+2025-06-04 22:46:19,733 - INFO -     Looking for best choices
+2025-06-04 22:46:19,733 - INFO -         Returning best option (4, 3) with symbol O from 3 options.
+2025-06-04 22:46:19,733 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,733 - INFO - O |   | X*| O*|   |   
+2025-06-04 22:46:19,733 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,733 - INFO - O | X*| O | X*| O |   
+2025-06-04 22:46:19,733 - INFO -   |   | X*| O*|   |   
+2025-06-04 22:46:19,733 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,733 - INFO - 
+2025-06-04 22:46:19,733 - INFO - Acting based on observation
+2025-06-04 22:46:19,734 - INFO -     Found 38 possible moves, after removing failures 36 remain.
+2025-06-04 22:46:19,734 - INFO -     Looking for best choices
+2025-06-04 22:46:19,734 - INFO -         Returning best option (4, 1) with symbol O from 2 options.
+2025-06-04 22:46:19,734 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,734 - INFO - O |   | X*| O*|   |   
+2025-06-04 22:46:19,734 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,734 - INFO - O | X*| O | X*| O |   
+2025-06-04 22:46:19,734 - INFO -   | O*| X*| O*|   |   
+2025-06-04 22:46:19,734 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,734 - INFO - 
+2025-06-04 22:46:19,734 - INFO - Acting based on observation
+2025-06-04 22:46:19,735 - INFO -     Found 36 possible moves, after removing failures 35 remain.
+2025-06-04 22:46:19,735 - INFO -     Looking for best choices
+2025-06-04 22:46:19,735 - INFO -         Returning best option (1, 1) with symbol O from 1 options.
+2025-06-04 22:46:19,735 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,735 - INFO - O | O*| X*| O*|   |   
+2025-06-04 22:46:19,735 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,735 - INFO - O | X*| O | X*| O |   
+2025-06-04 22:46:19,735 - INFO -   | O*| X*| O*|   |   
+2025-06-04 22:46:19,735 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,735 - INFO - 
+2025-06-04 22:46:19,735 - INFO - Acting based on observation
+2025-06-04 22:46:19,736 - INFO -     Found 34 possible moves, after removing failures 34 remain.
+2025-06-04 22:46:19,736 - INFO -     Looking for best choices
+2025-06-04 22:46:19,736 - INFO -     Returning random cell (5, 3) with symbol O
+2025-06-04 22:46:19,736 - INFO - O |   |   | O |   |   
+2025-06-04 22:46:19,736 - INFO - O | O*| X*| O*|   |   
+2025-06-04 22:46:19,736 - INFO - X*| X | O*| X |   |   
+2025-06-04 22:46:19,736 - INFO - O | X*| O | X*| O |   
+2025-06-04 22:46:19,736 - INFO -   | O*| X*| O*|   |   
+2025-06-04 22:46:19,736 - INFO -   |   | X | O*|   |   
+2025-06-04 22:46:19,736 - INFO - 
+2025-06-04 22:46:19,736 - INFO - 
+2025-06-04 22:46:19,736 - INFO - 
+2025-06-04 22:46:19,736 - INFO - ----------------------------------------
+2025-06-04 22:46:19,736 - INFO - 
+2025-06-04 22:46:19,736 - INFO - 
+2025-06-04 22:46:19,736 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,736 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,736 - INFO -   |   |   | X | X |   
+2025-06-04 22:46:19,736 - INFO - O |   | X |   |   |   
+2025-06-04 22:46:19,736 - INFO - X |   |   | O |   |   
+2025-06-04 22:46:19,736 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,736 - INFO -   |   |   | O |   | O 
+2025-06-04 22:46:19,736 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,736 - INFO - 
+2025-06-04 22:46:19,736 - INFO - Acting based on observation
+2025-06-04 22:46:19,738 - INFO -     Found 50 possible moves, after removing failures 45 remain.
+2025-06-04 22:46:19,738 - INFO -     Looking for best choices
+2025-06-04 22:46:19,738 - INFO -         Returning best option (0, 5) with symbol O from 5 options.
+2025-06-04 22:46:19,738 - INFO -   |   |   | X | X | O*
+2025-06-04 22:46:19,738 - INFO - O |   | X |   |   |   
+2025-06-04 22:46:19,738 - INFO - X |   |   | O |   |   
+2025-06-04 22:46:19,738 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,738 - INFO -   |   |   | O |   | O 
+2025-06-04 22:46:19,738 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,738 - INFO - 
+2025-06-04 22:46:19,738 - INFO - Acting based on observation
+2025-06-04 22:46:19,739 - INFO -     Found 48 possible moves, after removing failures 44 remain.
+2025-06-04 22:46:19,739 - INFO -     Looking for best choices
+2025-06-04 22:46:19,739 - INFO -         Returning best option (3, 3) with symbol X from 4 options.
+2025-06-04 22:46:19,739 - INFO -   |   |   | X | X | O*
+2025-06-04 22:46:19,739 - INFO - O |   | X |   |   |   
+2025-06-04 22:46:19,739 - INFO - X |   |   | O |   |   
+2025-06-04 22:46:19,739 - INFO -   |   | X | X*|   |   
+2025-06-04 22:46:19,739 - INFO -   |   |   | O |   | O 
+2025-06-04 22:46:19,739 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,739 - INFO - 
+2025-06-04 22:46:19,739 - INFO - Acting based on observation
+2025-06-04 22:46:19,740 - INFO -     Found 46 possible moves, after removing failures 41 remain.
+2025-06-04 22:46:19,740 - INFO -     Looking for best choices
+2025-06-04 22:46:19,740 - INFO -         Returning best option (4, 4) with symbol X from 5 options.
+2025-06-04 22:46:19,740 - INFO -   |   |   | X | X | O*
+2025-06-04 22:46:19,740 - INFO - O |   | X |   |   |   
+2025-06-04 22:46:19,740 - INFO - X |   |   | O |   |   
+2025-06-04 22:46:19,740 - INFO -   |   | X | X*|   |   
+2025-06-04 22:46:19,740 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,740 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,740 - INFO - 
+2025-06-04 22:46:19,740 - INFO - Acting based on observation
+2025-06-04 22:46:19,741 - INFO -     Found 44 possible moves, after removing failures 40 remain.
+2025-06-04 22:46:19,741 - INFO -     Looking for best choices
+2025-06-04 22:46:19,741 - INFO -         Returning best option (3, 1) with symbol O from 4 options.
+2025-06-04 22:46:19,741 - INFO -   |   |   | X | X | O*
+2025-06-04 22:46:19,741 - INFO - O |   | X |   |   |   
+2025-06-04 22:46:19,741 - INFO - X |   |   | O |   |   
+2025-06-04 22:46:19,741 - INFO -   | O*| X | X*|   |   
+2025-06-04 22:46:19,741 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,741 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,741 - INFO - 
+2025-06-04 22:46:19,741 - INFO - Acting based on observation
+2025-06-04 22:46:19,742 - INFO -     Found 42 possible moves, after removing failures 39 remain.
+2025-06-04 22:46:19,742 - INFO -     Looking for best choices
+2025-06-04 22:46:19,742 - INFO -         Returning best option (3, 4) with symbol O from 3 options.
+2025-06-04 22:46:19,742 - INFO -   |   |   | X | X | O*
+2025-06-04 22:46:19,742 - INFO - O |   | X |   |   |   
+2025-06-04 22:46:19,742 - INFO - X |   |   | O |   |   
+2025-06-04 22:46:19,742 - INFO -   | O*| X | X*| O*|   
+2025-06-04 22:46:19,742 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,742 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,742 - INFO - 
+2025-06-04 22:46:19,742 - INFO - Acting based on observation
+2025-06-04 22:46:19,743 - INFO -     Found 40 possible moves, after removing failures 38 remain.
+2025-06-04 22:46:19,743 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,743 - INFO -     Returning random cell (1, 4) with symbol O
+2025-06-04 22:46:19,743 - INFO -   |   |   | X | X | O*
+2025-06-04 22:46:19,743 - INFO - O |   | X |   | O*|   
+2025-06-04 22:46:19,743 - INFO - X |   |   | O |   |   
+2025-06-04 22:46:19,743 - INFO -   | O*| X | X*| O*|   
+2025-06-04 22:46:19,743 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,743 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,743 - INFO - 
+2025-06-04 22:46:19,743 - INFO - Acting based on observation
+2025-06-04 22:46:19,744 - INFO -     Found 38 possible moves, after removing failures 35 remain.
+2025-06-04 22:46:19,744 - INFO -     Looking for best choices
+2025-06-04 22:46:19,744 - INFO -         Returning best option (2, 4) with symbol X from 3 options.
+2025-06-04 22:46:19,744 - INFO -   |   |   | X | X | O*
+2025-06-04 22:46:19,744 - INFO - O |   | X |   | O*|   
+2025-06-04 22:46:19,744 - INFO - X |   |   | O | X*|   
+2025-06-04 22:46:19,744 - INFO -   | O*| X | X*| O*|   
+2025-06-04 22:46:19,744 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,744 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,744 - INFO - 
+2025-06-04 22:46:19,744 - INFO - Acting based on observation
+2025-06-04 22:46:19,745 - INFO -     Found 36 possible moves, after removing failures 34 remain.
+2025-06-04 22:46:19,745 - INFO -     Looking for best choices
+2025-06-04 22:46:19,745 - INFO -         Returning best option (0, 2) with symbol O from 2 options.
+2025-06-04 22:46:19,745 - INFO -   |   | O*| X | X | O*
+2025-06-04 22:46:19,745 - INFO - O |   | X |   | O*|   
+2025-06-04 22:46:19,745 - INFO - X |   |   | O | X*|   
+2025-06-04 22:46:19,745 - INFO -   | O*| X | X*| O*|   
+2025-06-04 22:46:19,745 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,745 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,745 - INFO - 
+2025-06-04 22:46:19,745 - INFO - Acting based on observation
+2025-06-04 22:46:19,746 - INFO -     Found 34 possible moves, after removing failures 33 remain.
+2025-06-04 22:46:19,746 - INFO -     Looking for best choices
+2025-06-04 22:46:19,746 - INFO -         Returning best option (2, 2) with symbol O from 1 options.
+2025-06-04 22:46:19,746 - INFO -   |   | O*| X | X | O*
+2025-06-04 22:46:19,746 - INFO - O |   | X |   | O*|   
+2025-06-04 22:46:19,746 - INFO - X |   | O*| O | X*|   
+2025-06-04 22:46:19,746 - INFO -   | O*| X | X*| O*|   
+2025-06-04 22:46:19,746 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,746 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,746 - INFO - 
+2025-06-04 22:46:19,746 - INFO - Acting based on observation
+2025-06-04 22:46:19,747 - INFO -     Found 32 possible moves, after removing failures 31 remain.
+2025-06-04 22:46:19,747 - INFO -     Looking for best choices
+2025-06-04 22:46:19,747 - INFO -         Returning best option (2, 1) with symbol X from 1 options.
+2025-06-04 22:46:19,747 - INFO -   |   | O*| X | X | O*
+2025-06-04 22:46:19,747 - INFO - O |   | X |   | O*|   
+2025-06-04 22:46:19,747 - INFO - X | X*| O*| O | X*|   
+2025-06-04 22:46:19,747 - INFO -   | O*| X | X*| O*|   
+2025-06-04 22:46:19,747 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,747 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,747 - INFO - 
+2025-06-04 22:46:19,747 - INFO - Acting based on observation
+2025-06-04 22:46:19,748 - INFO -     Found 30 possible moves, after removing failures 30 remain.
+2025-06-04 22:46:19,748 - INFO -     Looking for best choices
+2025-06-04 22:46:19,748 - INFO -     Returning random cell (2, 5) with symbol O
+2025-06-04 22:46:19,748 - INFO -   |   | O*| X | X | O*
+2025-06-04 22:46:19,748 - INFO - O |   | X |   | O*|   
+2025-06-04 22:46:19,748 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,748 - INFO -   | O*| X | X*| O*|   
+2025-06-04 22:46:19,748 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,748 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,748 - INFO - 
+2025-06-04 22:46:19,748 - INFO - Acting based on observation
+2025-06-04 22:46:19,749 - INFO -     Found 28 possible moves, after removing failures 26 remain.
+2025-06-04 22:46:19,749 - INFO -     Looking for best choices
+2025-06-04 22:46:19,749 - INFO -         Returning best option (3, 5) with symbol X from 2 options.
+2025-06-04 22:46:19,749 - INFO -   |   | O*| X | X | O*
+2025-06-04 22:46:19,749 - INFO - O |   | X |   | O*|   
+2025-06-04 22:46:19,749 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,749 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,749 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,749 - INFO - X |   | O |   |   |   
+2025-06-04 22:46:19,749 - INFO - 
+2025-06-04 22:46:19,749 - INFO - Acting based on observation
+2025-06-04 22:46:19,749 - INFO -     Found 26 possible moves, after removing failures 25 remain.
+2025-06-04 22:46:19,749 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,749 - INFO -     Returning random cell (5, 5) with symbol X
+2025-06-04 22:46:19,749 - INFO -   |   | O*| X | X | O*
+2025-06-04 22:46:19,749 - INFO - O |   | X |   | O*|   
+2025-06-04 22:46:19,749 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,749 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,749 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,749 - INFO - X |   | O |   |   | X*
+2025-06-04 22:46:19,749 - INFO - 
+2025-06-04 22:46:19,749 - INFO - Acting based on observation
+2025-06-04 22:46:19,750 - INFO -     Found 24 possible moves, after removing failures 23 remain.
+2025-06-04 22:46:19,750 - INFO -     Looking for best choices
+2025-06-04 22:46:19,750 - INFO -         Returning best option (1, 5) with symbol X from 1 options.
+2025-06-04 22:46:19,750 - INFO -   |   | O*| X | X | O*
+2025-06-04 22:46:19,750 - INFO - O |   | X |   | O*| X*
+2025-06-04 22:46:19,750 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,750 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,750 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,750 - INFO - X |   | O |   |   | X*
+2025-06-04 22:46:19,750 - INFO - 
+2025-06-04 22:46:19,750 - INFO - Acting based on observation
+2025-06-04 22:46:19,751 - INFO -     Found 22 possible moves, after removing failures 22 remain.
+2025-06-04 22:46:19,751 - INFO -     Looking for best choices
+2025-06-04 22:46:19,751 - INFO -     Returning random cell (1, 1) with symbol X
+2025-06-04 22:46:19,751 - INFO -   |   | O*| X | X | O*
+2025-06-04 22:46:19,751 - INFO - O | X*| X |   | O*| X*
+2025-06-04 22:46:19,751 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,751 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,751 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,751 - INFO - X |   | O |   |   | X*
+2025-06-04 22:46:19,751 - INFO - 
+2025-06-04 22:46:19,751 - INFO - Acting based on observation
+2025-06-04 22:46:19,751 - INFO -     Found 20 possible moves, after removing failures 18 remain.
+2025-06-04 22:46:19,751 - INFO -     Looking for best choices
+2025-06-04 22:46:19,751 - INFO -         Returning best option (0, 1) with symbol O from 2 options.
+2025-06-04 22:46:19,751 - INFO -   | O*| O*| X | X | O*
+2025-06-04 22:46:19,751 - INFO - O | X*| X |   | O*| X*
+2025-06-04 22:46:19,751 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,751 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,751 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,751 - INFO - X |   | O |   |   | X*
+2025-06-04 22:46:19,751 - INFO - 
+2025-06-04 22:46:19,751 - INFO - Acting based on observation
+2025-06-04 22:46:19,752 - INFO -     Found 18 possible moves, after removing failures 16 remain.
+2025-06-04 22:46:19,752 - INFO -     Looking for best choices
+2025-06-04 22:46:19,752 - INFO -         Returning best option (0, 0) with symbol X from 2 options.
+2025-06-04 22:46:19,752 - INFO - X*| O*| O*| X | X | O*
+2025-06-04 22:46:19,752 - INFO - O | X*| X |   | O*| X*
+2025-06-04 22:46:19,752 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,752 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,752 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,752 - INFO - X |   | O |   |   | X*
+2025-06-04 22:46:19,752 - INFO - 
+2025-06-04 22:46:19,752 - INFO - Acting based on observation
+2025-06-04 22:46:19,752 - INFO -     Found 16 possible moves, after removing failures 15 remain.
+2025-06-04 22:46:19,752 - INFO -     Looking for best choices
+2025-06-04 22:46:19,752 - INFO -         Returning best option (1, 3) with symbol O from 1 options.
+2025-06-04 22:46:19,752 - INFO - X*| O*| O*| X | X | O*
+2025-06-04 22:46:19,752 - INFO - O | X*| X | O*| O*| X*
+2025-06-04 22:46:19,752 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,752 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,752 - INFO -   |   |   | O | X*| O 
+2025-06-04 22:46:19,752 - INFO - X |   | O |   |   | X*
+2025-06-04 22:46:19,752 - INFO - 
+2025-06-04 22:46:19,752 - INFO - Acting based on observation
+2025-06-04 22:46:19,753 - INFO -     Found 14 possible moves, after removing failures 14 remain.
+2025-06-04 22:46:19,753 - INFO -     Looking for best choices
+2025-06-04 22:46:19,753 - INFO -     Returning random cell (4, 1) with symbol X
+2025-06-04 22:46:19,753 - INFO - X*| O*| O*| X | X | O*
+2025-06-04 22:46:19,753 - INFO - O | X*| X | O*| O*| X*
+2025-06-04 22:46:19,753 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,753 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,753 - INFO -   | X*|   | O | X*| O 
+2025-06-04 22:46:19,753 - INFO - X |   | O |   |   | X*
+2025-06-04 22:46:19,753 - INFO - 
+2025-06-04 22:46:19,753 - INFO - Acting based on observation
+2025-06-04 22:46:19,753 - INFO -     Found 12 possible moves, after removing failures 12 remain.
+2025-06-04 22:46:19,753 - INFO -     Looking for best choices
+2025-06-04 22:46:19,753 - INFO -     Returning random cell (4, 0) with symbol O
+2025-06-04 22:46:19,753 - INFO - X*| O*| O*| X | X | O*
+2025-06-04 22:46:19,753 - INFO - O | X*| X | O*| O*| X*
+2025-06-04 22:46:19,753 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,753 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,753 - INFO - O*| X*|   | O | X*| O 
+2025-06-04 22:46:19,753 - INFO - X |   | O |   |   | X*
+2025-06-04 22:46:19,753 - INFO - 
+2025-06-04 22:46:19,753 - INFO - Acting based on observation
+2025-06-04 22:46:19,753 - INFO -     Found 10 possible moves, after removing failures 10 remain.
+2025-06-04 22:46:19,753 - INFO -     Looking for best choices
+2025-06-04 22:46:19,753 - INFO -     Returning random cell (5, 3) with symbol O
+2025-06-04 22:46:19,753 - INFO - X*| O*| O*| X | X | O*
+2025-06-04 22:46:19,753 - INFO - O | X*| X | O*| O*| X*
+2025-06-04 22:46:19,753 - INFO - X | X*| O*| O | X*| O*
+2025-06-04 22:46:19,753 - INFO -   | O*| X | X*| O*| X*
+2025-06-04 22:46:19,753 - INFO - O*| X*|   | O | X*| O 
+2025-06-04 22:46:19,753 - INFO - X |   | O | O*|   | X*
+2025-06-04 22:46:19,753 - INFO - 
+2025-06-04 22:46:19,753 - INFO - 
+2025-06-04 22:46:19,753 - INFO - 
+2025-06-04 22:46:19,753 - INFO - ----------------------------------------
+2025-06-04 22:46:19,753 - INFO - 
+2025-06-04 22:46:19,753 - INFO - 
+2025-06-04 22:46:19,753 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,753 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,753 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,753 - INFO - O | X |   |   | X |   
+2025-06-04 22:46:19,754 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,754 - INFO -   |   |   | X |   |   
+2025-06-04 22:46:19,754 - INFO -   |   |   |   | O |   
+2025-06-04 22:46:19,754 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,754 - INFO - 
+2025-06-04 22:46:19,754 - INFO - Acting based on observation
+2025-06-04 22:46:19,755 - INFO -     Found 54 possible moves, after removing failures 48 remain.
+2025-06-04 22:46:19,755 - INFO -     Looking for best choices
+2025-06-04 22:46:19,755 - INFO -         Returning best option (4, 3) with symbol O from 6 options.
+2025-06-04 22:46:19,755 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,755 - INFO - O | X |   |   | X |   
+2025-06-04 22:46:19,755 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,755 - INFO -   |   |   | X |   |   
+2025-06-04 22:46:19,755 - INFO -   |   |   | O*| O |   
+2025-06-04 22:46:19,755 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,755 - INFO - 
+2025-06-04 22:46:19,755 - INFO - Acting based on observation
+2025-06-04 22:46:19,755 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,755 - INFO -     Looking for best choices
+2025-06-04 22:46:19,755 - INFO -     Returning random cell (4, 2) with symbol X
+2025-06-04 22:46:19,755 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,755 - INFO - O | X |   |   | X |   
+2025-06-04 22:46:19,755 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,755 - INFO -   |   |   | X |   |   
+2025-06-04 22:46:19,755 - INFO -   |   | X*| O*| O |   
+2025-06-04 22:46:19,755 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,755 - INFO - 
+2025-06-04 22:46:19,755 - INFO - Acting based on observation
+2025-06-04 22:46:19,756 - INFO -     Found 50 possible moves, after removing failures 43 remain.
+2025-06-04 22:46:19,756 - INFO -     Looking for best choices
+2025-06-04 22:46:19,756 - INFO -         Returning best option (4, 5) with symbol X from 7 options.
+2025-06-04 22:46:19,756 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,756 - INFO - O | X |   |   | X |   
+2025-06-04 22:46:19,756 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,756 - INFO -   |   |   | X |   |   
+2025-06-04 22:46:19,756 - INFO -   |   | X*| O*| O | X*
+2025-06-04 22:46:19,756 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,756 - INFO - 
+2025-06-04 22:46:19,756 - INFO - Acting based on observation
+2025-06-04 22:46:19,758 - INFO -     Found 48 possible moves, after removing failures 42 remain.
+2025-06-04 22:46:19,758 - INFO -     Looking for best choices
+2025-06-04 22:46:19,758 - INFO -         Returning best option (3, 2) with symbol O from 6 options.
+2025-06-04 22:46:19,758 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,758 - INFO - O | X |   |   | X |   
+2025-06-04 22:46:19,758 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,758 - INFO -   |   | O*| X |   |   
+2025-06-04 22:46:19,758 - INFO -   |   | X*| O*| O | X*
+2025-06-04 22:46:19,758 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,758 - INFO - 
+2025-06-04 22:46:19,758 - INFO - Acting based on observation
+2025-06-04 22:46:19,759 - INFO -     Found 46 possible moves, after removing failures 41 remain.
+2025-06-04 22:46:19,759 - INFO -     Looking for best choices
+2025-06-04 22:46:19,759 - INFO -         Returning best option (2, 1) with symbol O from 5 options.
+2025-06-04 22:46:19,759 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,759 - INFO - O | X |   |   | X |   
+2025-06-04 22:46:19,759 - INFO - O | O*|   |   |   |   
+2025-06-04 22:46:19,759 - INFO -   |   | O*| X |   |   
+2025-06-04 22:46:19,759 - INFO -   |   | X*| O*| O | X*
+2025-06-04 22:46:19,759 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,759 - INFO - 
+2025-06-04 22:46:19,759 - INFO - Acting based on observation
+2025-06-04 22:46:19,760 - INFO -     Found 44 possible moves, after removing failures 39 remain.
+2025-06-04 22:46:19,760 - INFO -     Looking for best choices
+2025-06-04 22:46:19,760 - INFO -         Returning best option (2, 2) with symbol X from 5 options.
+2025-06-04 22:46:19,760 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,760 - INFO - O | X |   |   | X |   
+2025-06-04 22:46:19,760 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,760 - INFO -   |   | O*| X |   |   
+2025-06-04 22:46:19,760 - INFO -   |   | X*| O*| O | X*
+2025-06-04 22:46:19,760 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,760 - INFO - 
+2025-06-04 22:46:19,760 - INFO - Acting based on observation
+2025-06-04 22:46:19,760 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,760 - INFO -     Looking for best choices
+2025-06-04 22:46:19,760 - INFO -     Returning random cell (1, 5) with symbol X
+2025-06-04 22:46:19,760 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,760 - INFO - O | X |   |   | X | X*
+2025-06-04 22:46:19,760 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,760 - INFO -   |   | O*| X |   |   
+2025-06-04 22:46:19,760 - INFO -   |   | X*| O*| O | X*
+2025-06-04 22:46:19,760 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,760 - INFO - 
+2025-06-04 22:46:19,760 - INFO - Acting based on observation
+2025-06-04 22:46:19,761 - INFO -     Found 40 possible moves, after removing failures 35 remain.
+2025-06-04 22:46:19,761 - INFO -     Looking for best choices
+2025-06-04 22:46:19,761 - INFO -         Returning best option (1, 3) with symbol O from 5 options.
+2025-06-04 22:46:19,761 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,761 - INFO - O | X |   | O*| X | X*
+2025-06-04 22:46:19,761 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,761 - INFO -   |   | O*| X |   |   
+2025-06-04 22:46:19,761 - INFO -   |   | X*| O*| O | X*
+2025-06-04 22:46:19,761 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,761 - INFO - 
+2025-06-04 22:46:19,761 - INFO - Acting based on observation
+2025-06-04 22:46:19,761 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,761 - INFO -     Looking for best choices
+2025-06-04 22:46:19,761 - INFO -     Returning random cell (3, 0) with symbol O
+2025-06-04 22:46:19,761 - INFO -   | X |   |   |   |   
+2025-06-04 22:46:19,761 - INFO - O | X |   | O*| X | X*
+2025-06-04 22:46:19,761 - INFO - O | O*| X*|   |   |   
+2025-06-04 22:46:19,761 - INFO - O*|   | O*| X |   |   
+2025-06-04 22:46:19,761 - INFO -   |   | X*| O*| O | X*
+2025-06-04 22:46:19,761 - INFO -   |   | X | X |   |   
+2025-06-04 22:46:19,761 - INFO - 
+2025-06-04 22:46:19,761 - INFO - 
+2025-06-04 22:46:19,761 - INFO - 
+2025-06-04 22:46:19,761 - INFO - ----------------------------------------
+2025-06-04 22:46:19,761 - INFO - 
+2025-06-04 22:46:19,761 - INFO - 
+2025-06-04 22:46:19,761 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,761 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,761 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,761 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,761 - INFO -   | X |   | X |   | X 
+2025-06-04 22:46:19,761 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,761 - INFO -   |   | O |   |   | X 
+2025-06-04 22:46:19,761 - INFO - O |   | O |   |   |   
+2025-06-04 22:46:19,761 - INFO - 
+2025-06-04 22:46:19,761 - INFO - Acting based on observation
+2025-06-04 22:46:19,763 - INFO -     Found 54 possible moves, after removing failures 47 remain.
+2025-06-04 22:46:19,763 - INFO -     Looking for best choices
+2025-06-04 22:46:19,763 - INFO -         Returning best option (3, 2) with symbol X from 7 options.
+2025-06-04 22:46:19,763 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,763 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,763 - INFO -   | X |   | X |   | X 
+2025-06-04 22:46:19,763 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,763 - INFO -   |   | O |   |   | X 
+2025-06-04 22:46:19,763 - INFO - O |   | O |   |   |   
+2025-06-04 22:46:19,763 - INFO - 
+2025-06-04 22:46:19,763 - INFO - Acting based on observation
+2025-06-04 22:46:19,763 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,763 - INFO -     Looking for best choices
+2025-06-04 22:46:19,763 - INFO -     Returning random cell (0, 1) with symbol X
+2025-06-04 22:46:19,763 - INFO -   | X*|   |   |   |   
+2025-06-04 22:46:19,763 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,763 - INFO -   | X |   | X |   | X 
+2025-06-04 22:46:19,763 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,763 - INFO -   |   | O |   |   | X 
+2025-06-04 22:46:19,763 - INFO - O |   | O |   |   |   
+2025-06-04 22:46:19,763 - INFO - 
+2025-06-04 22:46:19,763 - INFO - Acting based on observation
+2025-06-04 22:46:19,764 - INFO -     Found 50 possible moves, after removing failures 43 remain.
+2025-06-04 22:46:19,764 - INFO -     Looking for best choices
+2025-06-04 22:46:19,764 - INFO -         Returning best option (0, 5) with symbol O from 7 options.
+2025-06-04 22:46:19,764 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,764 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,764 - INFO -   | X |   | X |   | X 
+2025-06-04 22:46:19,764 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,764 - INFO -   |   | O |   |   | X 
+2025-06-04 22:46:19,764 - INFO - O |   | O |   |   |   
+2025-06-04 22:46:19,764 - INFO - 
+2025-06-04 22:46:19,764 - INFO - Acting based on observation
+2025-06-04 22:46:19,764 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,764 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,764 - INFO -     Returning random cell (2, 4) with symbol O
+2025-06-04 22:46:19,764 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,764 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,764 - INFO -   | X |   | X | O*| X 
+2025-06-04 22:46:19,764 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,764 - INFO -   |   | O |   |   | X 
+2025-06-04 22:46:19,764 - INFO - O |   | O |   |   |   
+2025-06-04 22:46:19,764 - INFO - 
+2025-06-04 22:46:19,764 - INFO - Acting based on observation
+2025-06-04 22:46:19,765 - INFO -     Found 46 possible moves, after removing failures 41 remain.
+2025-06-04 22:46:19,765 - INFO -     Looking for best choices
+2025-06-04 22:46:19,765 - INFO -         Returning best option (4, 0) with symbol X from 5 options.
+2025-06-04 22:46:19,765 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,765 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,765 - INFO -   | X |   | X | O*| X 
+2025-06-04 22:46:19,765 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,765 - INFO - X*|   | O |   |   | X 
+2025-06-04 22:46:19,765 - INFO - O |   | O |   |   |   
+2025-06-04 22:46:19,765 - INFO - 
+2025-06-04 22:46:19,765 - INFO - Acting based on observation
+2025-06-04 22:46:19,766 - INFO -     Found 44 possible moves, after removing failures 40 remain.
+2025-06-04 22:46:19,766 - INFO -     Looking for best choices
+2025-06-04 22:46:19,766 - INFO -         Returning best option (5, 1) with symbol X from 4 options.
+2025-06-04 22:46:19,766 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,766 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,766 - INFO -   | X |   | X | O*| X 
+2025-06-04 22:46:19,766 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,766 - INFO - X*|   | O |   |   | X 
+2025-06-04 22:46:19,766 - INFO - O | X*| O |   |   |   
+2025-06-04 22:46:19,766 - INFO - 
+2025-06-04 22:46:19,766 - INFO - Acting based on observation
+2025-06-04 22:46:19,767 - INFO -     Found 42 possible moves, after removing failures 39 remain.
+2025-06-04 22:46:19,767 - INFO -     Looking for best choices
+2025-06-04 22:46:19,767 - INFO -         Returning best option (2, 2) with symbol O from 3 options.
+2025-06-04 22:46:19,767 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,767 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,768 - INFO -   | X | O*| X | O*| X 
+2025-06-04 22:46:19,768 - INFO - O |   | X*|   |   |   
+2025-06-04 22:46:19,768 - INFO - X*|   | O |   |   | X 
+2025-06-04 22:46:19,768 - INFO - O | X*| O |   |   |   
+2025-06-04 22:46:19,768 - INFO - 
+2025-06-04 22:46:19,768 - INFO - Acting based on observation
+2025-06-04 22:46:19,769 - INFO -     Found 40 possible moves, after removing failures 38 remain.
+2025-06-04 22:46:19,769 - INFO -     Looking for best choices
+2025-06-04 22:46:19,769 - INFO -         Returning best option (3, 5) with symbol O from 2 options.
+2025-06-04 22:46:19,769 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,769 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,769 - INFO -   | X | O*| X | O*| X 
+2025-06-04 22:46:19,769 - INFO - O |   | X*|   |   | O*
+2025-06-04 22:46:19,769 - INFO - X*|   | O |   |   | X 
+2025-06-04 22:46:19,769 - INFO - O | X*| O |   |   |   
+2025-06-04 22:46:19,769 - INFO - 
+2025-06-04 22:46:19,769 - INFO - Acting based on observation
+2025-06-04 22:46:19,770 - INFO -     Found 38 possible moves, after removing failures 37 remain.
+2025-06-04 22:46:19,770 - INFO -     Looking for best choices
+2025-06-04 22:46:19,770 - INFO -         Returning best option (1, 1) with symbol O from 1 options.
+2025-06-04 22:46:19,770 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,770 - INFO -   | O*|   |   |   | X 
+2025-06-04 22:46:19,770 - INFO -   | X | O*| X | O*| X 
+2025-06-04 22:46:19,770 - INFO - O |   | X*|   |   | O*
+2025-06-04 22:46:19,770 - INFO - X*|   | O |   |   | X 
+2025-06-04 22:46:19,770 - INFO - O | X*| O |   |   |   
+2025-06-04 22:46:19,770 - INFO - 
+2025-06-04 22:46:19,770 - INFO - Acting based on observation
+2025-06-04 22:46:19,771 - INFO -     Found 36 possible moves, after removing failures 36 remain.
+2025-06-04 22:46:19,771 - INFO -     Looking for best choices
+2025-06-04 22:46:19,771 - INFO -     Returning random cell (5, 3) with symbol X
+2025-06-04 22:46:19,771 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,771 - INFO -   | O*|   |   |   | X 
+2025-06-04 22:46:19,771 - INFO -   | X | O*| X | O*| X 
+2025-06-04 22:46:19,771 - INFO - O |   | X*|   |   | O*
+2025-06-04 22:46:19,771 - INFO - X*|   | O |   |   | X 
+2025-06-04 22:46:19,771 - INFO - O | X*| O | X*|   |   
+2025-06-04 22:46:19,771 - INFO - 
+2025-06-04 22:46:19,771 - INFO - Acting based on observation
+2025-06-04 22:46:19,772 - INFO -     Found 34 possible moves, after removing failures 34 remain.
+2025-06-04 22:46:19,772 - INFO -     Looking for best choices
+2025-06-04 22:46:19,772 - INFO -     Returning random cell (4, 4) with symbol X
+2025-06-04 22:46:19,772 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,772 - INFO -   | O*|   |   |   | X 
+2025-06-04 22:46:19,772 - INFO -   | X | O*| X | O*| X 
+2025-06-04 22:46:19,772 - INFO - O |   | X*|   |   | O*
+2025-06-04 22:46:19,772 - INFO - X*|   | O |   | X*| X 
+2025-06-04 22:46:19,772 - INFO - O | X*| O | X*|   |   
+2025-06-04 22:46:19,772 - INFO - 
+2025-06-04 22:46:19,772 - INFO - Acting based on observation
+2025-06-04 22:46:19,772 - INFO -     Found 32 possible moves, after removing failures 31 remain.
+2025-06-04 22:46:19,772 - INFO -     Looking for best choices
+2025-06-04 22:46:19,772 - INFO -         Returning best option (4, 3) with symbol O from 1 options.
+2025-06-04 22:46:19,772 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,772 - INFO -   | O*|   |   |   | X 
+2025-06-04 22:46:19,773 - INFO -   | X | O*| X | O*| X 
+2025-06-04 22:46:19,773 - INFO - O |   | X*|   |   | O*
+2025-06-04 22:46:19,773 - INFO - X*|   | O | O*| X*| X 
+2025-06-04 22:46:19,773 - INFO - O | X*| O | X*|   |   
+2025-06-04 22:46:19,773 - INFO - 
+2025-06-04 22:46:19,773 - INFO - Acting based on observation
+2025-06-04 22:46:19,773 - INFO -     Found 30 possible moves, after removing failures 29 remain.
+2025-06-04 22:46:19,773 - INFO -     Looking for best choices
+2025-06-04 22:46:19,773 - INFO -         Returning best option (4, 1) with symbol X from 1 options.
+2025-06-04 22:46:19,773 - INFO -   | X*|   |   |   | O*
+2025-06-04 22:46:19,773 - INFO -   | O*|   |   |   | X 
+2025-06-04 22:46:19,773 - INFO -   | X | O*| X | O*| X 
+2025-06-04 22:46:19,773 - INFO - O |   | X*|   |   | O*
+2025-06-04 22:46:19,773 - INFO - X*| X*| O | O*| X*| X 
+2025-06-04 22:46:19,773 - INFO - O | X*| O | X*|   |   
+2025-06-04 22:46:19,773 - INFO - 
+2025-06-04 22:46:19,773 - INFO - 
+2025-06-04 22:46:19,773 - INFO - 
+2025-06-04 22:46:19,773 - INFO - ----------------------------------------
+2025-06-04 22:46:19,773 - INFO - 
+2025-06-04 22:46:19,773 - INFO - 
+2025-06-04 22:46:19,773 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,773 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,773 - INFO -   |   |   |   |   |   
+2025-06-04 22:46:19,773 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,773 - INFO -   |   |   |   | X | X 
+2025-06-04 22:46:19,773 - INFO -   |   | X | O |   |   
+2025-06-04 22:46:19,773 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,773 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,774 - INFO - 
+2025-06-04 22:46:19,774 - INFO - Acting based on observation
+2025-06-04 22:46:19,775 - INFO -     Found 56 possible moves, after removing failures 52 remain.
+2025-06-04 22:46:19,775 - INFO -     Looking for best choices
+2025-06-04 22:46:19,775 - INFO -         Returning best option (0, 5) with symbol O from 4 options.
+2025-06-04 22:46:19,775 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,775 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,775 - INFO -   |   |   |   | X | X 
+2025-06-04 22:46:19,775 - INFO -   |   | X | O |   |   
+2025-06-04 22:46:19,775 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,775 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,775 - INFO - 
+2025-06-04 22:46:19,775 - INFO - Acting based on observation
+2025-06-04 22:46:19,776 - INFO -     Found 54 possible moves, after removing failures 51 remain.
+2025-06-04 22:46:19,776 - INFO -     Looking for best choices
+2025-06-04 22:46:19,776 - INFO -         Returning best option (3, 5) with symbol O from 3 options.
+2025-06-04 22:46:19,776 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,776 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,776 - INFO -   |   |   |   | X | X 
+2025-06-04 22:46:19,776 - INFO -   |   | X | O |   | O*
+2025-06-04 22:46:19,776 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,776 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,776 - INFO - 
+2025-06-04 22:46:19,776 - INFO - Acting based on observation
+2025-06-04 22:46:19,778 - INFO -     Found 52 possible moves, after removing failures 49 remain.
+2025-06-04 22:46:19,778 - INFO -     Looking for best choices
+2025-06-04 22:46:19,778 - INFO -         Returning best option (3, 4) with symbol X from 3 options.
+2025-06-04 22:46:19,778 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,778 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,778 - INFO -   |   |   |   | X | X 
+2025-06-04 22:46:19,778 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,778 - INFO -   |   |   |   |   | X 
+2025-06-04 22:46:19,778 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,778 - INFO - 
+2025-06-04 22:46:19,778 - INFO - Acting based on observation
+2025-06-04 22:46:19,779 - INFO -     Found 50 possible moves, after removing failures 46 remain.
+2025-06-04 22:46:19,779 - INFO -     Looking for best choices
+2025-06-04 22:46:19,779 - INFO -         Returning best option (4, 4) with symbol O from 4 options.
+2025-06-04 22:46:19,779 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,779 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,779 - INFO -   |   |   |   | X | X 
+2025-06-04 22:46:19,779 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,779 - INFO -   |   |   |   | O*| X 
+2025-06-04 22:46:19,779 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,779 - INFO - 
+2025-06-04 22:46:19,779 - INFO - Acting based on observation
+2025-06-04 22:46:19,780 - INFO -     Found 48 possible moves, after removing failures 45 remain.
+2025-06-04 22:46:19,780 - INFO -     Looking for best choices
+2025-06-04 22:46:19,780 - INFO -         Returning best option (2, 2) with symbol O from 3 options.
+2025-06-04 22:46:19,780 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,780 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,780 - INFO -   |   | O*|   | X | X 
+2025-06-04 22:46:19,780 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,780 - INFO -   |   |   |   | O*| X 
+2025-06-04 22:46:19,780 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,780 - INFO - 
+2025-06-04 22:46:19,780 - INFO - Acting based on observation
+2025-06-04 22:46:19,781 - INFO -     Found 46 possible moves, after removing failures 44 remain.
+2025-06-04 22:46:19,781 - INFO -     Looking for best choices
+2025-06-04 22:46:19,781 - INFO -         Returning best option (2, 3) with symbol O from 2 options.
+2025-06-04 22:46:19,781 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,781 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,781 - INFO -   |   | O*| O*| X | X 
+2025-06-04 22:46:19,781 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,781 - INFO -   |   |   |   | O*| X 
+2025-06-04 22:46:19,781 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,781 - INFO - 
+2025-06-04 22:46:19,781 - INFO - Acting based on observation
+2025-06-04 22:46:19,782 - INFO -     Found 44 possible moves, after removing failures 40 remain.
+2025-06-04 22:46:19,782 - INFO -     Looking for best choices
+2025-06-04 22:46:19,782 - INFO -         Returning best option (4, 3) with symbol X from 4 options.
+2025-06-04 22:46:19,782 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,782 - INFO -   |   | X |   |   | X 
+2025-06-04 22:46:19,782 - INFO -   |   | O*| O*| X | X 
+2025-06-04 22:46:19,782 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,782 - INFO -   |   |   | X*| O*| X 
+2025-06-04 22:46:19,782 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,782 - INFO - 
+2025-06-04 22:46:19,782 - INFO - Acting based on observation
+2025-06-04 22:46:19,784 - INFO -     Found 42 possible moves, after removing failures 39 remain.
+2025-06-04 22:46:19,784 - INFO -     Looking for best choices
+2025-06-04 22:46:19,784 - INFO -         Returning best option (1, 3) with symbol X from 3 options.
+2025-06-04 22:46:19,784 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,784 - INFO -   |   | X | X*|   | X 
+2025-06-04 22:46:19,784 - INFO -   |   | O*| O*| X | X 
+2025-06-04 22:46:19,784 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,784 - INFO -   |   |   | X*| O*| X 
+2025-06-04 22:46:19,784 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,784 - INFO - 
+2025-06-04 22:46:19,784 - INFO - Acting based on observation
+2025-06-04 22:46:19,785 - INFO -     Found 40 possible moves, after removing failures 37 remain.
+2025-06-04 22:46:19,785 - INFO -     Looking for best choices
+2025-06-04 22:46:19,785 - INFO -         Returning best option (1, 4) with symbol O from 3 options.
+2025-06-04 22:46:19,785 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,785 - INFO -   |   | X | X*| O*| X 
+2025-06-04 22:46:19,785 - INFO -   |   | O*| O*| X | X 
+2025-06-04 22:46:19,785 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,785 - INFO -   |   |   | X*| O*| X 
+2025-06-04 22:46:19,785 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,785 - INFO - 
+2025-06-04 22:46:19,785 - INFO - Acting based on observation
+2025-06-04 22:46:19,785 - INFO -     Found 38 possible moves, after removing failures 36 remain.
+2025-06-04 22:46:19,786 - INFO -     Looking for best choices
+2025-06-04 22:46:19,786 - INFO -         Returning best option (2, 1) with symbol X from 2 options.
+2025-06-04 22:46:19,786 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,786 - INFO -   |   | X | X*| O*| X 
+2025-06-04 22:46:19,786 - INFO -   | X*| O*| O*| X | X 
+2025-06-04 22:46:19,786 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,786 - INFO -   |   |   | X*| O*| X 
+2025-06-04 22:46:19,786 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,786 - INFO - 
+2025-06-04 22:46:19,786 - INFO - Acting based on observation
+2025-06-04 22:46:19,786 - INFO -     Found 36 possible moves, after removing failures 35 remain.
+2025-06-04 22:46:19,786 - INFO -     Looking for best choices
+2025-06-04 22:46:19,786 - INFO -         Returning best option (1, 1) with symbol O from 1 options.
+2025-06-04 22:46:19,786 - INFO -   |   |   |   |   | O*
+2025-06-04 22:46:19,786 - INFO -   | O*| X | X*| O*| X 
+2025-06-04 22:46:19,786 - INFO -   | X*| O*| O*| X | X 
+2025-06-04 22:46:19,786 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,786 - INFO -   |   |   | X*| O*| X 
+2025-06-04 22:46:19,787 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,787 - INFO - 
+2025-06-04 22:46:19,787 - INFO - Acting based on observation
+2025-06-04 22:46:19,787 - INFO -     Found 34 possible moves, after removing failures 34 remain.
+2025-06-04 22:46:19,787 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,787 - INFO -     Returning random cell (0, 2) with symbol O
+2025-06-04 22:46:19,787 - INFO -   |   | O*|   |   | O*
+2025-06-04 22:46:19,787 - INFO -   | O*| X | X*| O*| X 
+2025-06-04 22:46:19,787 - INFO -   | X*| O*| O*| X | X 
+2025-06-04 22:46:19,787 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,787 - INFO -   |   |   | X*| O*| X 
+2025-06-04 22:46:19,787 - INFO - O |   |   |   |   |   
+2025-06-04 22:46:19,787 - INFO - 
+2025-06-04 22:46:19,787 - INFO - Acting based on observation
+2025-06-04 22:46:19,788 - INFO -     Found 32 possible moves, after removing failures 32 remain.
+2025-06-04 22:46:19,788 - INFO -     Looking for best choices
+2025-06-04 22:46:19,788 - INFO -     Returning random cell (5, 3) with symbol O
+2025-06-04 22:46:19,788 - INFO -   |   | O*|   |   | O*
+2025-06-04 22:46:19,788 - INFO -   | O*| X | X*| O*| X 
+2025-06-04 22:46:19,788 - INFO -   | X*| O*| O*| X | X 
+2025-06-04 22:46:19,788 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,788 - INFO -   |   |   | X*| O*| X 
+2025-06-04 22:46:19,788 - INFO - O |   |   | O*|   |   
+2025-06-04 22:46:19,788 - INFO - 
+2025-06-04 22:46:19,788 - INFO - Acting based on observation
+2025-06-04 22:46:19,789 - INFO -     Found 30 possible moves, after removing failures 30 remain.
+2025-06-04 22:46:19,789 - INFO -     Looking for best choices
+2025-06-04 22:46:19,789 - INFO -     Returning random cell (0, 3) with symbol O
+2025-06-04 22:46:19,789 - INFO -   |   | O*| O*|   | O*
+2025-06-04 22:46:19,789 - INFO -   | O*| X | X*| O*| X 
+2025-06-04 22:46:19,789 - INFO -   | X*| O*| O*| X | X 
+2025-06-04 22:46:19,789 - INFO -   |   | X | O | X*| O*
+2025-06-04 22:46:19,789 - INFO -   |   |   | X*| O*| X 
+2025-06-04 22:46:19,789 - INFO - O |   |   | O*|   |   
+2025-06-04 22:46:19,789 - INFO - 
+2025-06-04 22:46:19,789 - INFO - 
+2025-06-04 22:46:19,789 - INFO - 
+2025-06-04 22:46:19,789 - INFO - ----------------------------------------
+2025-06-04 22:46:19,789 - INFO - 
+2025-06-04 22:46:19,789 - INFO - 
+2025-06-04 22:46:19,789 - INFO - Starting a new episode, resetting agent state.
+2025-06-04 22:46:19,789 - INFO - Starting a new episode with the following grid:
+2025-06-04 22:46:19,789 - INFO -   |   | O |   | O |   
+2025-06-04 22:46:19,789 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,789 - INFO -   |   |   | O |   | X 
+2025-06-04 22:46:19,789 - INFO -   |   |   | O |   |   
+2025-06-04 22:46:19,789 - INFO - X |   |   |   |   | X 
+2025-06-04 22:46:19,789 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,789 - INFO - 
+2025-06-04 22:46:19,789 - INFO - Acting based on observation
+2025-06-04 22:46:19,789 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,789 - INFO -     Looking for best choices
+2025-06-04 22:46:19,789 - INFO -     Returning random cell (3, 1) with symbol X
+2025-06-04 22:46:19,789 - INFO -   |   | O |   | O |   
+2025-06-04 22:46:19,789 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,789 - INFO -   |   |   | O |   | X 
+2025-06-04 22:46:19,789 - INFO -   | X*|   | O |   |   
+2025-06-04 22:46:19,789 - INFO - X |   |   |   |   | X 
+2025-06-04 22:46:19,789 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,789 - INFO - 
+2025-06-04 22:46:19,789 - INFO - Acting based on observation
+2025-06-04 22:46:19,791 - INFO -     Found 52 possible moves, after removing failures 47 remain.
+2025-06-04 22:46:19,791 - INFO -     Looking for best choices
+2025-06-04 22:46:19,791 - INFO -         Returning best option (0, 3) with symbol X from 5 options.
+2025-06-04 22:46:19,791 - INFO -   |   | O | X*| O |   
+2025-06-04 22:46:19,791 - INFO -   |   | X |   |   |   
+2025-06-04 22:46:19,791 - INFO -   |   |   | O |   | X 
+2025-06-04 22:46:19,791 - INFO -   | X*|   | O |   |   
+2025-06-04 22:46:19,791 - INFO - X |   |   |   |   | X 
+2025-06-04 22:46:19,791 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,791 - INFO - 
+2025-06-04 22:46:19,791 - INFO - Acting based on observation
+2025-06-04 22:46:19,792 - INFO -     Found 50 possible moves, after removing failures 46 remain.
+2025-06-04 22:46:19,792 - INFO -     Skipping best choice, exploring options.
+2025-06-04 22:46:19,792 - INFO -     Returning random cell (1, 1) with symbol O
+2025-06-04 22:46:19,792 - INFO -   |   | O | X*| O |   
+2025-06-04 22:46:19,792 - INFO -   | O*| X |   |   |   
+2025-06-04 22:46:19,792 - INFO -   |   |   | O |   | X 
+2025-06-04 22:46:19,792 - INFO -   | X*|   | O |   |   
+2025-06-04 22:46:19,792 - INFO - X |   |   |   |   | X 
+2025-06-04 22:46:19,792 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,792 - INFO - 
+2025-06-04 22:46:19,792 - INFO - Acting based on observation
+2025-06-04 22:46:19,793 - INFO -     Found 48 possible moves, after removing failures 44 remain.
+2025-06-04 22:46:19,793 - INFO -     Looking for best choices
+2025-06-04 22:46:19,793 - INFO -         Returning best option (4, 3) with symbol X from 4 options.
+2025-06-04 22:46:19,793 - INFO -   |   | O | X*| O |   
+2025-06-04 22:46:19,793 - INFO -   | O*| X |   |   |   
+2025-06-04 22:46:19,793 - INFO -   |   |   | O |   | X 
+2025-06-04 22:46:19,793 - INFO -   | X*|   | O |   |   
+2025-06-04 22:46:19,793 - INFO - X |   |   | X*|   | X 
+2025-06-04 22:46:19,793 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,793 - INFO - 
+2025-06-04 22:46:19,793 - INFO - Acting based on observation
+2025-06-04 22:46:19,793 - INFO -     Skipping failure checks, exploring options.
+2025-06-04 22:46:19,793 - INFO -     Looking for best choices
+2025-06-04 22:46:19,793 - INFO -     Returning random cell (3, 0) with symbol X
+2025-06-04 22:46:19,793 - INFO -   |   | O | X*| O |   
+2025-06-04 22:46:19,793 - INFO -   | O*| X |   |   |   
+2025-06-04 22:46:19,793 - INFO -   |   |   | O |   | X 
+2025-06-04 22:46:19,793 - INFO - X*| X*|   | O |   |   
+2025-06-04 22:46:19,793 - INFO - X |   |   | X*|   | X 
+2025-06-04 22:46:19,793 - INFO - X |   |   |   |   |   
+2025-06-04 22:46:19,793 - INFO - 
+2025-06-04 22:46:19,793 - INFO - 
+2025-06-04 22:46:19,793 - INFO - 
+2025-06-04 22:46:19,793 - INFO - ----------------------------------------
+2025-06-04 22:46:19,793 - INFO - 
+2025-06-04 22:46:19,793 - INFO - 
