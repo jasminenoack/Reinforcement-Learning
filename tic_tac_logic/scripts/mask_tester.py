@@ -142,6 +142,11 @@ def print_grid(grid: Grid) -> None:
 
 mask_builder_view(agent, envs)
 print("Done with training")
-env = envs[0]
-env.reset()
-run_episode(agent, env, train=False, explain=True)
+for env in envs:
+    env.reset()
+    run_episode(agent, env, train=False, explain=True)
+    logger.info("")
+    logger.info("")
+    logger.info("-" * 40)
+    logger.info("")
+    logger.info("")

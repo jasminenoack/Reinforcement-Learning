@@ -201,11 +201,15 @@ class MaskAgent(Agent):
         )
 
         if self.do_not_discover():
-            self.log("    Removing known issues")
+            move_count = len(possible_moves)
             # remove known bad placements
             failure_masks = self.find_aggressive_failures()
             possible_moves = self.remove_failing_options(
                 observation.grid, possible_moves, failure_masks
+            )
+            new_move_count = len(possible_moves)
+            self.log(
+                f"    Found {move_count} possible moves, after removing failures {new_move_count} remain."
             )
 
         if self.do_not_discover():
@@ -214,7 +218,7 @@ class MaskAgent(Agent):
             if best_options:
                 result = best_options.pop()
                 self.log(
-                    f"        Returning best option {result[0]} with symbol {result[1]}"
+                    f"        Returning best option {result[0]} with symbol {result[1]} from {len(best_options)} options."
                 )
                 return result
 

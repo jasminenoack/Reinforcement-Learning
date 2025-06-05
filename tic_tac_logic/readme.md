@@ -22,3 +22,5 @@ This is an agent inspired by a coworker who once told me "I don't know the solut
 This friend is in development. The idea here is to see if the agent can actually learn what might be useful. So basically we teach it how to look at the board and ask it to find patterns that it thinks are helpful. I think there could be something interesting here in that it might find patterns that do not appear to us.
 
 The first step here is to attempt 3 masks that are related to 3 cell sequences with an empty cell in the center. The idea is to figure out if it is able to actually tell us what seems quite bad.
+
+What we currently have working and semi tested (basically testing the parts with less confidence or visibility). We can create masks and then when we create the masks we train on them for a while. Once we have trained we start to make decisions based on what we have learned about the masks. If we learn trying to place an X between 2 Xs failed 30 times we avoid doing it any longer.
