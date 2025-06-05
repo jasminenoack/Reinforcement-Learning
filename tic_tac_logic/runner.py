@@ -1,4 +1,4 @@
-import math
+# import math
 from time import sleep
 from typing import Any
 from tic_tac_logic.env.grid import Grid
@@ -118,21 +118,21 @@ if __name__ == "__main__":
     probably_failure: list[list[Any]] = []
     probably_success: list[list[Any]] = []
     unknown: list[list[Any]] = []
-    for mask, data in agent.q_table["masks"].items():
-        name = mask.split("-")[1:]
-        print("    ", name)
-        successes = data["non_failure_count"]
-        failures = data["failure_count"]
-        total = successes + failures
-        fail_probability = math.ceil(failures / total)
-        if total < 5:
-            unknown.append(mask)
-        elif fail_probability > 0.9:
-            probably_failure.append(mask)
-        elif fail_probability < 0.3:
-            probably_success.append(mask)
-        else:
-            unknown.append(mask)
+    # for mask, data in agent.q_table["masks"].items():
+    #     name = mask.split("-")[1:]
+    #     print("    ", name)
+    #     successes = data["non_failure_count"]
+    #     failures = data["failure_count"]
+    #     total = successes + failures
+    #     fail_probability = math.ceil(failures / total)
+    #     if total < 5:
+    #         unknown.append(mask)
+    #     elif fail_probability > 0.9:
+    #         probably_failure.append(mask)
+    #     elif fail_probability < 0.3:
+    #         probably_success.append(mask)
+    #     else:
+    #         unknown.append(mask)
 
     print("Probably failure masks:")
     for mask in sorted(probably_failure):
