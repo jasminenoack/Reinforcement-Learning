@@ -21,7 +21,6 @@ class TestMaskHorizontal3:
             (
                 (0, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="XO_",
                     symbol=X,
@@ -32,7 +31,6 @@ class TestMaskHorizontal3:
             (
                 (1, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="_XO",
                     symbol=X,
@@ -43,7 +41,6 @@ class TestMaskHorizontal3:
             (
                 (2, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="O_X",
                     symbol=X,
@@ -66,7 +63,6 @@ class TestMaskHorizontal3X:
             (
                 (0, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="X__",
                     symbol=X,
@@ -77,7 +73,6 @@ class TestMaskHorizontal3X:
             (
                 (1, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="_X_",
                     symbol=X,
@@ -88,7 +83,6 @@ class TestMaskHorizontal3X:
             (
                 (2, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="__X",
                     symbol=X,
@@ -111,7 +105,6 @@ class TestMaskHorizontal3O:
             (
                 (0, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="_O_",
                     symbol=O,
@@ -122,7 +115,6 @@ class TestMaskHorizontal3O:
             (
                 (1, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="__O",
                     symbol=O,
@@ -133,7 +125,6 @@ class TestMaskHorizontal3O:
             (
                 (2, 1),
                 MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="O__",
                     symbol=O,
@@ -178,13 +169,11 @@ class TestLearn:
         agent.learn(step)
         assert agent.q_table["masks"] == {
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3,
                 pattern="X__",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="X__",
                     symbol="O",
@@ -193,13 +182,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3O,
                 pattern="___",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="___",
                     symbol="O",
@@ -208,13 +195,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3X,
                 pattern="X__",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="X__",
                     symbol="O",
@@ -238,13 +223,11 @@ class TestLearn:
         agent.learn(step)
         assert agent.q_table["masks"] == {
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3,
                 pattern="X__",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="X__",
                     symbol="O",
@@ -253,13 +236,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3O,
                 pattern="___",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="___",
                     symbol="O",
@@ -268,13 +249,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3X,
                 pattern="X__",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="X__",
                     symbol="O",
@@ -283,13 +262,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3,
                 pattern="___",
                 symbol="X",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="___",
                     symbol="X",
@@ -298,13 +275,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3O,
                 pattern="___",
                 symbol="X",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="___",
                     symbol="X",
@@ -313,13 +288,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3X,
                 pattern="___",
                 symbol="X",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="___",
                     symbol="X",
@@ -346,13 +319,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3O,
                 pattern="___",
                 symbol="O",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3O,
                     pattern="___",
                     symbol="O",
-                    placement_location=1,
                 ),
                 failure_count=0,
                 success_count=1,
@@ -361,13 +332,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3X,
                 pattern="X__",
                 symbol="O",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3X,
                     pattern="X__",
                     symbol="O",
-                    placement_location=1,
                 ),
                 failure_count=0,
                 success_count=1,
@@ -376,13 +345,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3,
                 pattern="X__",
                 symbol="O",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3,
                     pattern="X__",
                     symbol="O",
-                    placement_location=1,
                 ),
                 failure_count=0,
                 success_count=1,
@@ -391,13 +358,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3O,
                 pattern="___",
                 symbol="X",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3O,
                     pattern="___",
                     symbol="X",
-                    placement_location=1,
                 ),
                 failure_count=0,
                 success_count=1,
@@ -406,13 +371,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3X,
                 pattern="___",
                 symbol="X",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3X,
                     pattern="___",
                     symbol="X",
-                    placement_location=1,
                 ),
                 failure_count=0,
                 success_count=1,
@@ -421,13 +384,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3,
                 pattern="___",
                 symbol="X",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3,
                     pattern="___",
                     symbol="X",
-                    placement_location=1,
                 ),
                 failure_count=0,
                 success_count=1,
@@ -436,13 +397,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3,
                 pattern="O_O",
                 symbol="O",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3,
                     pattern="O_O",
                     symbol="O",
-                    placement_location=1,
                 ),
                 failure_count=1,
                 success_count=0,
@@ -451,13 +410,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3O,
                 pattern="O_O",
                 symbol="O",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3O,
                     pattern="O_O",
                     symbol="O",
-                    placement_location=1,
                 ),
                 failure_count=1,
                 success_count=0,
@@ -466,13 +423,11 @@ class TestLearn:
                 mask_type=MaskHorizontal3X,
                 pattern="___",
                 symbol="O",
-                placement_location=1,
             ): MaskResult(
                 mask=MaskKey(
                     mask_type=MaskHorizontal3X,
                     pattern="___",
                     symbol="O",
-                    placement_location=1,
                 ),
                 failure_count=1,
                 success_count=0,
@@ -506,13 +461,11 @@ class TestLearn:
 
         assert agent.q_table["masks"] == {
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3,
                 pattern="__O",
                 symbol="X",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="__O",
                     symbol="X",
@@ -521,13 +474,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3O,
                 pattern="__O",
                 symbol="X",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="__O",
                     symbol="X",
@@ -536,13 +487,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3X,
                 pattern="___",
                 symbol="X",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="___",
                     symbol="X",
@@ -551,13 +500,11 @@ class TestLearn:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3,
                 pattern="X_X",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="X_X",
                     symbol="O",
@@ -566,13 +513,11 @@ class TestLearn:
                 success_count=2,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3O,
                 pattern="___",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="___",
                     symbol="O",
@@ -581,13 +526,11 @@ class TestLearn:
                 success_count=2,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3X,
                 pattern="X_X",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="X_X",
                     symbol="O",
@@ -617,13 +560,11 @@ class TestFindAgressiveFailures:
 
         agent.q_table["masks"] = {
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3,
                 pattern="X__",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="X__",
                     symbol="O",
@@ -632,13 +573,11 @@ class TestFindAgressiveFailures:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3O,
                 pattern="___",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="___",
                     symbol="O",
@@ -647,13 +586,11 @@ class TestFindAgressiveFailures:
                 success_count=0,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3X,
                 pattern="X__",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="X__",
                     symbol="O",
@@ -662,13 +599,11 @@ class TestFindAgressiveFailures:
                 success_count=1,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3,
                 pattern="O_O",
                 symbol="X",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="O_O",
                     symbol="X",
@@ -677,13 +612,11 @@ class TestFindAgressiveFailures:
                 success_count=0,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3O,
                 pattern="O_O",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="O_O",
                     symbol="O",
@@ -692,13 +625,11 @@ class TestFindAgressiveFailures:
                 success_count=0,
             ),
             MaskKey(
-                placement_location=1,
                 mask_type=MaskHorizontal3X,
                 pattern="___",
                 symbol="O",
             ): MaskResult(
                 mask=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3X,
                     pattern="___",
                     symbol="O",
@@ -711,7 +642,6 @@ class TestFindAgressiveFailures:
         assert agent.find_aggressive_failures() == {
             ConfidentMask(
                 mask_key=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="O_O",
                     symbol="X",
@@ -720,7 +650,6 @@ class TestFindAgressiveFailures:
             ),
             ConfidentMask(
                 mask_key=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="O_O",
                     symbol="O",
@@ -757,7 +686,6 @@ class TestRemovePossibleMoves:
         failure_masks = {
             ConfidentMask(
                 mask_key=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3,
                     pattern="X__",
                     symbol="O",
@@ -766,7 +694,6 @@ class TestRemovePossibleMoves:
             ),
             ConfidentMask(
                 mask_key=MaskKey(
-                    placement_location=1,
                     mask_type=MaskHorizontal3O,
                     pattern="___",
                     symbol="O",

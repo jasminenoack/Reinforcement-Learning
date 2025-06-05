@@ -19,7 +19,6 @@ class MaskKey:
     mask_type: type["AbstractMask"]
     pattern: str
     symbol: str
-    placement_location: int
 
 
 @dataclass(frozen=True)
@@ -58,7 +57,6 @@ class AbstractMask:
     match_symbol: str | None = None
     rule: MaskRules = NotImplemented
     # I think this is not actually needed
-    placement_location: int = 1
 
     def create_mask_key(self, value: list[list[str]], current: str) -> MaskKey:
         rows = ["".join(row).replace(" ", "_") for row in value]
@@ -66,7 +64,6 @@ class AbstractMask:
             mask_type=self.__class__,
             pattern=("\n").join(rows),
             symbol=current,
-            placement_location=self.placement_location,
         )
 
     def remove_non_matching(self, grid: list[list[str]]) -> list[list[str]]:
