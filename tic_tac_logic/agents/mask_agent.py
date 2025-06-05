@@ -22,63 +22,84 @@ class MaskKey:
     placement_location: int
 
 
+@dataclass(frozen=True)
+class MaskRules:
+    rows_above: int
+    rows_below: int
+    columns_left: int
+    columns_right: int
+
+    def get_pattern(
+        self, coord: tuple[int, int], grid: list[list[str]]
+    ) -> list[list[str]] | None:
+        print(grid)
+        row_i, col_i = coord
+
+        first_row = row_i - self.rows_above
+        if first_row < 0:
+            return None
+        last_row = row_i + self.rows_below
+        if last_row >= len(grid):
+            return None
+        first_col = col_i - self.columns_left
+        if first_col < 0:
+            return None
+        last_col = col_i + self.columns_right
+        if last_col >= len(grid[0]):
+            return None
+
+        rows = grid[first_row : last_row + 1]
+        mini_grid = [row[first_col : last_col + 1] for row in rows]
+        return mini_grid
+
+
 @dataclass
 class AbstractMask:
-    symbol: str = NotImplemented
+    match_symbol: str | None = None
+    rule: MaskRules = NotImplemented
     # I think this is not actually needed
     placement_location: int = 1
 
-    def get_mask(self, coord: tuple[int, int], grid: list[list[str]]) -> str:
-        raise NotImplementedError()
-
-    def create_mask_key(self, value: list[str], current: str) -> MaskKey:
+    def create_mask_key(self, value: list[list[str]], current: str) -> MaskKey:
+        rows = ["".join(row).replace(" ", "_") for row in value]
         return MaskKey(
             mask_type=self.__class__,
-            pattern="".join(value).replace(" ", "_"),
+            pattern=("\n").join(rows),
             symbol=current,
             placement_location=self.placement_location,
         )
 
     def remove_non_matching(self, grid: list[list[str]]) -> list[list[str]]:
-        return [[cell if cell == self.symbol else E for cell in row] for row in grid]
+        return [
+            [cell if cell == self.match_symbol else E for cell in row] for row in grid
+        ]
+
+    def get_mask(
+        self, coord: tuple[int, int], grid: list[list[str]], current: str
+    ) -> MaskKey | None:
+        if self.match_symbol:
+            grid = self.remove_non_matching(grid)
+        section = self.rule.get_pattern(coord, grid)
+        if section is None:
+            return None
+        return self.create_mask_key(section, current=current)
 
 
 @dataclass
 class MaskHorizontal3(AbstractMask):
-    def get_mask(
-        self, coord: tuple[int, int], grid: list[list[str]], current: str
-    ) -> MaskKey | None:
-        row_i, col_i = coord
-        row = grid[row_i]
-        row_length = len(row)
-        first_item = col_i == 0
-        last_item = col_i == row_length - 1
-        if first_item or last_item:
-            return None
-        return self.create_mask_key(row[col_i - 1 : col_i + 2], current=current)
+    rule: MaskRules = MaskRules(
+        rows_above=0, rows_below=0, columns_left=1, columns_right=1
+    )
 
 
 @dataclass
 class MaskHorizontal3X(MaskHorizontal3):
-    symbol: str = "X"
-
-    def get_mask(
-        self, coord: tuple[int, int], grid: list[list[str]], current: str
-    ) -> MaskKey | None:
-        grid = self.remove_non_matching(grid)
-        return super().get_mask(coord, grid, current=current)
+    match_symbol: str | None = "X"
 
 
 @dataclass
 class MaskHorizontal3O(MaskHorizontal3):
-    symbol: str = "O"
-    failure_mode_requirement = 5
-
-    def get_mask(
-        self, coord: tuple[int, int], grid: list[list[str]], current: str
-    ) -> MaskKey | None:
-        grid = self.remove_non_matching(grid)
-        return super().get_mask(coord, grid, current=current)
+    match_symbol: str | None = "O"
 
 
 @dataclass

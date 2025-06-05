@@ -53,7 +53,7 @@ class TestMaskHorizontal3:
         ],
     )
     def test_get_mask(self, coord: tuple[int, int], expected: str | None):
-        mask = MaskHorizontal3(symbol=X)
+        mask = MaskHorizontal3()
         result = mask.get_mask(coord, grid=[[X, O, E], [E, X, O], [O, E, X]], current=X)
         assert result == expected
 
