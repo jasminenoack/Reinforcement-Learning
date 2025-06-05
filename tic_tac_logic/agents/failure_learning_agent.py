@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
+import random
 from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import StepResult, E, PLACEMENT_OPTIONS, Observation
 
@@ -9,6 +10,7 @@ FAILURE = "FAILURE"
 class FailureClass(Enum):
     ROW = "ROW"
     COLUMN = "COLUMN"
+    BOARD = "BOARD"
 
 
 # masks?
@@ -48,7 +50,7 @@ class Move:
                     applicable_area_str += ", ".join(item) + ",\n"
         return cls(
             type=type,
-            applicable_area=applicable_area_str.strip(),
+            applicable_area=applicable_area_str,
             location=location,
             symbol=symbol,
         )
@@ -66,8 +68,6 @@ class FailureAgent(Agent):
         self.rows = len(grid)
         self.columns = len(grid[0])
 
-    def save_failure(self, move: tuple[int, int], player: str) -> None: ...
-
     def _row_move(
         self, grid: list[list[str]], coordinate: tuple[int, int], player: str
     ) -> Move:
@@ -80,6 +80,28 @@ class FailureAgent(Agent):
             symbol=player,
         )
 
+    def _column_move(
+        self, grid: list[list[str]], coordinate: tuple[int, int], player: str
+    ) -> Move:
+        col_index = coordinate[1]
+        column = [grid[row_index][col_index] for row_index in range(len(grid))]
+        return Move.create(
+            type=FailureClass.COLUMN,
+            applicable_area=column,
+            location=coordinate[0],
+            symbol=player,
+        )
+
+    def _board_move(
+        self, grid: list[list[str]], coordinate: tuple[int, int], player: str
+    ) -> Move:
+        return Move.create(
+            type=FailureClass.BOARD,
+            applicable_area=grid,
+            location=coordinate,
+            symbol=player,
+        )
+
     def get_valid_placements(self, grid: list[list[str]]) -> set[ValidPlacement]:
         valid_placements: set[ValidPlacement] = set()
         for row_index in range(self.rows):
@@ -87,47 +109,32 @@ class FailureAgent(Agent):
                 if grid[row_index][col_index] == E:
                     for player in PLACEMENT_OPTIONS:
                         moves_to_check = set(
-                            [self._row_move(grid, (row_index, col_index), player)]
+                            [
+                                self._row_move(grid, (row_index, col_index), player),
+                                self._column_move(grid, (row_index, col_index), player),
+                                self._board_move(grid, (row_index, col_index), player),
+                            ]
                         )
-                        if not moves_to_check & self.q_table["failures"]:
+                        remaining_moves = moves_to_check - self.q_table["failures"]
+                        if len(moves_to_check) == len(remaining_moves):
                             valid_placements.add(
                                 ValidPlacement(
                                     coordinate=(row_index, col_index),
                                     symbol=player,
                                 )
                             )
-                        else:
-                            print("BAD MOVE", row_index, col_index, player)
         return valid_placements
 
     def act(self, observation: Observation) -> tuple[tuple[int, int], str]:
         valid_placements = self.get_valid_placements(observation.grid)
-        if not valid_placements:
-            raise ValueError("No valid placements available.")
-        # TODO, make this way less hardcoded
-        # for testing purposes we are looking at the exact movements
-        moves_interesting_moves = sorted(
-            [
-                placement
-                for placement in valid_placements
-                if placement.coordinate in [(1, 2), (1, 3)]
-            ],
-            key=lambda x: (x.coordinate, x.symbol),
-        )
-        if moves_interesting_moves:
-            return (
-                moves_interesting_moves[0].coordinate,
-                moves_interesting_moves[0].symbol,
-            )
-
         if valid_placements:
-            placement = valid_placements.pop()
+            placement = random.choice(list(valid_placements))
             return (
                 placement.coordinate,
                 placement.symbol,
             )
 
-        raise ValueError("I dunno")
+        raise ValueError("No valid placements")
 
     def learn(self, step_result: StepResult) -> None:
         q_table = self.q_table
@@ -135,11 +142,38 @@ class FailureAgent(Agent):
         if lost:
             if "ROW" in lost:
                 assert step_result.pre_step_grid
-                row = step_result.pre_step_grid[step_result.coordinate[0]]
+                move = self._row_move(
+                    step_result.pre_step_grid,
+                    step_result.coordinate,
+                    step_result.symbol,
+                )
+                q_table["failures"].add(move)
+            elif "COLUMN" in lost:
+                assert step_result.pre_step_grid
+                move = self._column_move(
+                    step_result.pre_step_grid,
+                    step_result.coordinate,
+                    step_result.symbol,
+                )
+                q_table["failures"].add(move)
+            else:
+                assert step_result.pre_step_grid
+                move = self._board_move(
+                    step_result.pre_step_grid,
+                    step_result.coordinate,
+                    step_result.symbol,
+                )
+                q_table["failures"].add(move)
+        else:
+            # if we know there are no remaining valid placments
+            assert step_result.pre_step_grid
+            assert step_result.grid
+            next_valid_placements = self.get_valid_placements(step_result.grid)
+            if not next_valid_placements:
                 move = Move.create(
-                    type=FailureClass.ROW,
-                    applicable_area=row,
-                    location=step_result.coordinate[1],
+                    type=FailureClass.BOARD,
+                    applicable_area=step_result.pre_step_grid,
+                    location=step_result.coordinate,
                     symbol=step_result.symbol,
                 )
                 q_table["failures"].add(move)

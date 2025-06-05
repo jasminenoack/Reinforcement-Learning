@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 X = "X"
@@ -23,7 +24,8 @@ class Result:
     actions: int
     score: int
     won: bool
-    q_table: dict[tuple[int, int], dict[str, float]] | None = None
+    q_table: dict[tuple[int, int], dict[str, float]] | dict[str, Any] | None = None
+    error: str | None = None
 
 
 @dataclass
