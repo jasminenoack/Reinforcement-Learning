@@ -23,8 +23,18 @@ grids = get_testing_sample_grids()
 envs = [Grid(g.grid) for g in grids]
 # this is not ideal... we never use this again it's just to check the size
 # so we can swap to others of the same size
-agent = MaskAgent(grid=grids[0].grid, masks=generate_pool_masks(3, 3))
-rounds_of_attempts = 10
+
+rows = len(grids[0].grid)
+columns = len(grids[0].grid[0])
+
+# rows_masks = generate_pool_masks(rows=1, columns=columns)
+# columns_masks = generate_pool_masks(rows=rows, columns=1)
+# all_single_block_masks = rows_masks + columns_masks
+all_masks = generate_pool_masks(rows=rows, columns=columns)
+# print(len(all_single_block_masks), "single block masks generated")
+
+agent = MaskAgent(grid=grids[0].grid, masks=all_masks)
+rounds_of_attempts = 100
 
 
 @dataclass
@@ -74,7 +84,8 @@ def run_episode(
 
 def mask_builder_view(agent: MaskAgent, envs: list[Grid]) -> None:
     results: list[Result] = []
-    for _ in range(rounds_of_attempts):
+    for i in range(rounds_of_attempts):
+        print(f"Training episode {i + 1}/{rounds_of_attempts}")
         for env in envs:
             results.append(run_episode(agent, env, train=True))
 
@@ -147,13 +158,33 @@ def print_grid(grid: Grid) -> None:
     logger.info("")
 
 
+def render_analytics(results: list[Result], agent: MaskAgent, env: Grid) -> None:
+    total_actions = sum(result.actions for result in results)
+    total_score = sum(result.score for result in results)
+    total_wins = sum(1 for result in results if result.won)
+    errors = len([result for result in results if result.error])
+
+    print(f"Average Actions per Episode: {total_actions / len(results):.2f}")
+    print(f"Average Score per Episode: {total_score / len(results):.2f}")
+    print(f"Error Rate: {errors / len(results) * 100:.2f}%")
+    print(f"Win Rate: {total_wins / len(results) * 100:.2f}%")
+    print_grid(env)
+    print("-" * 40)
+
+
+results: dict[int, list[Result]] = {}
 mask_builder_view(agent, envs)
 print("Done with training")
-for env in envs:
-    env.reset()
-    run_episode(agent, env, train=False, explain=True)
-    logger.info("")
-    logger.info("")
-    logger.info("-" * 40)
-    logger.info("")
-    logger.info("")
+for env_number, env in enumerate(envs):
+    results[env_number] = []
+    for i in range(rounds_of_attempts):
+        env.reset()
+        results[env_number].append(run_episode(agent, env, train=False, explain=i == 0))
+        logger.info("")
+        logger.info("")
+        logger.info("-" * 40)
+        logger.info("")
+        logger.info("")
+    print(f"Results for env {env_number}:")
+    render_analytics(results[env_number], agent, envs[env_number])
+    print("")

@@ -107,13 +107,13 @@ if __name__ == "__main__":
     grid = Grid(grid)
     for _ in range(100):
         grid.reset()
-        print_grid(grid)
+        # print_grid(grid)
         run_episode(agent, grid, train=True)
-        print_grid(grid)
+        # print_grid(grid)
         masks = agent.q_table["masks"]
-        sleep(0.3)
-        print("")
-        print("")
+        # sleep(0.3)
+        # print("")
+        # print("")
     print("Masks learned:")
     probably_failure: list[list[Any]] = []
     probably_success: list[list[Any]] = []

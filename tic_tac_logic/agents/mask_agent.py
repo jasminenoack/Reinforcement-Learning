@@ -45,7 +45,7 @@ class MaskAgent(Agent):
         }
         self.rows = len(grid)
         self.columns = len(grid[0])
-        self.epsilon = 0.1
+        self.epsilon = 0.01
         self.all_masks = masks or generate_pool_masks(
             rows=self.rows, columns=self.columns
         )
