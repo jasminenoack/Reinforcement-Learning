@@ -37,8 +37,8 @@ class QTable(TypedDict):
 class MaskManager:
     def __init__(self, masks: list[AbstractMask]) -> None:
         self._masks = masks
-        self._current_masks = masks[:5]
-        self._masks = masks[5:]
+        self._current_masks = masks[:20]
+        self._masks = masks[20:]
         self._iterations = 0
         self.q_table: QTable = {  # pyright: ignore[reportIncompatibleVariableOverride]
             "masks": {}
