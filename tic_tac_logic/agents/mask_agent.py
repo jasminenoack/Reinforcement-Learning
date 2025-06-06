@@ -34,22 +34,129 @@ class QTable(TypedDict):
     masks: dict[MaskKey, MaskResult]
 
 
+class MaskManager:
+    def __init__(self, masks: list[AbstractMask]) -> None:
+        self._masks = masks
+        self._current_masks = masks[:5]
+        self._masks = masks[5:]
+        self._iterations = 0
+        self.q_table: QTable = {  # pyright: ignore[reportIncompatibleVariableOverride]
+            "masks": {}
+        }
+        self.rejected_masks: list[AbstractMask] = []
+
+    def get_masks(self) -> list[AbstractMask]:
+        """
+        Returns the current set of masks.
+        """
+        return self._current_masks
+
+    def iterate(self) -> None:
+        self._iterations += 1
+        if self._iterations % 50 == 0:
+            self._prune_masks()
+
+    def _prune_useless_masks(self) -> None:
+        """
+        Prunes the masks based on some criteria.
+        For now, we just return the first 10 masks.
+        """
+        # print("Pruning masks...")
+        new_current_masks: list[AbstractMask] = []
+        q_table_keys_by_mask_type: dict[AbstractMask, list[MaskResult]] = defaultdict(
+            list
+        )
+        for key, result in self.q_table["masks"].items():
+            q_table_keys_by_mask_type[key.mask_type].append(result)
+        for mask in self._current_masks:
+            matches = q_table_keys_by_mask_type.get(mask, [])
+            # print(f"  Matches in Q-table: {len(matches)}")
+            """
+            Expected total =
+            # (places - 1) * 3 filters * 2 placement options
+            """
+            if mask.match_symbol:
+                num_filter_options = 2
+            else:
+                num_filter_options = 3
+            total_expected = (mask.total_cells() - 1) * num_filter_options * 2
+            if len(matches) < total_expected:
+                # print(
+                #     f"    Keeping mask {mask.name} with {len(matches)} matches expected {total_expected}."
+                # )
+                new_current_masks.append(mask)
+                continue
+
+            results = [
+                (result.success_count, result.failure_count) for result in matches
+            ]
+            total_counts = [success + failure for success, failure in results]
+            if any(total < 25 for total in total_counts):
+                # print([total < 25 for total in total_counts], total_counts)
+                # print(
+                #     f"    Keeping mask {mask.name} with {len(matches)} matches, but not enough data {min(total_counts)} < 25."
+                # )
+                new_current_masks.append(mask)
+                continue
+
+            failure_rates = [
+                failure / (success + failure) if (success + failure) > 0 else 1.0
+                for success, failure in results
+            ]
+            if any(failure_rate > 0.7 for failure_rate in failure_rates):
+                # print(
+                #     f"    Keeping mask {mask.name} with {len(matches)} matches, failure rates: {failure_rates}"
+                # )
+                new_current_masks.append(mask)
+
+            # print(
+            #     f"    Removing Mask {mask.name} has {len(matches)} matches, failure rates: {failure_rates}"
+            # )
+            self.rejected_masks.append(mask)
+
+        self._current_masks = new_current_masks
+
+    def _prune_masks(self) -> None:
+        self._prune_useless_masks()
+        if self._masks:
+            self._current_masks.append(self._masks.pop(0))
+        print(f"Current masks: {len(self._current_masks)}")
+
+    def trained_enough(self) -> bool:
+        untrained_masks = len(self._masks)
+        usable_masks = len(self._current_masks)
+        rejected_masks = len(self.rejected_masks)
+        print(
+            f"Trained enough? Untrained: {untrained_masks}, Usable: {usable_masks}, Rejected: {rejected_masks}"
+        )
+
+        return not self._masks
+
+
 class MaskAgent(Agent):
     confidence_threshold = 5
 
     def __init__(
         self, grid: list[list[str]], masks: list[AbstractMask] | None = None
     ) -> None:
-        self.q_table: QTable = {  # pyright: ignore[reportIncompatibleVariableOverride]
-            "masks": {}
-        }
         self.rows = len(grid)
         self.columns = len(grid[0])
         self.epsilon = 0.01
-        self.all_masks = masks or generate_pool_masks(
-            rows=self.rows, columns=self.columns
+        self.mask_manager = MaskManager(
+            masks or generate_pool_masks(rows=self.rows, columns=self.columns)
         )
-        self.masks = self.all_masks
+
+    @property
+    def q_table(self) -> QTable:  # pyright: ignore[reportIncompatibleVariableOverride]
+        """
+        Returns the Q-table for the agent.
+        This is a dictionary where keys are mask keys and values are MaskResult objects.
+        """
+        return self.mask_manager.q_table
+
+    @property
+    def masks(self) -> list[AbstractMask]:
+        return self.mask_manager.get_masks()
 
     def log(self, message: str) -> None:
         if self.explain:
@@ -190,7 +297,15 @@ class MaskAgent(Agent):
                 q_table[mask].failure_count += 1
             else:
                 q_table[mask].success_count += 1
+        self.mask_manager.iterate()
 
     def reset(self) -> None:
         self.log("Starting a new episode, resetting agent state.")
         self.current_grid = None
+
+    def fully_trained(self) -> bool:
+        """
+        Returns True if the agent has been trained enough to make confident decisions.
+        For now, we just return False.
+        """
+        return self.mask_manager.trained_enough()

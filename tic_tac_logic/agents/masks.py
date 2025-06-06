@@ -87,6 +87,15 @@ class AbstractMask:
     def __repr__(self):
         return str(self)
 
+    def rows(self) -> int:
+        return self.rule.rows_above + self.rule.rows_below + 1
+
+    def columns(self) -> int:
+        return self.rule.columns_left + self.rule.columns_right + 1
+
+    def total_cells(self) -> int:
+        return self.rows() * self.columns()
+
 
 def print_mask(mask: AbstractMask):
     rows_above = mask.rule.rows_above

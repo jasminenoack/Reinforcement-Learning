@@ -27,13 +27,13 @@ envs = [Grid(g.grid) for g in grids]
 rows = len(grids[0].grid)
 columns = len(grids[0].grid[0])
 
-# rows_masks = generate_pool_masks(rows=1, columns=columns)
-# columns_masks = generate_pool_masks(rows=rows, columns=1)
-# all_single_block_masks = rows_masks + columns_masks
-all_masks = generate_pool_masks(rows=rows, columns=columns)
+rows_masks = generate_pool_masks(rows=1, columns=columns)
+columns_masks = generate_pool_masks(rows=rows, columns=1)
+all_single_block_masks = rows_masks + columns_masks
+# all_masks = generate_pool_masks(rows=rows, columns=columns)
 # print(len(all_single_block_masks), "single block masks generated")
 
-agent = MaskAgent(grid=grids[0].grid, masks=all_masks)
+agent = MaskAgent(grid=grids[0].grid, masks=all_single_block_masks)
 rounds_of_attempts = 100
 
 
@@ -175,6 +175,7 @@ def render_analytics(results: list[Result], agent: MaskAgent, env: Grid) -> None
 results: dict[int, list[Result]] = {}
 mask_builder_view(agent, envs)
 print("Done with training")
+agent.fully_trained()
 for env_number, env in enumerate(envs):
     results[env_number] = []
     for i in range(rounds_of_attempts):
