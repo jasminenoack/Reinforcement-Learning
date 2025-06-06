@@ -106,15 +106,19 @@ def print_mask(mask: AbstractMask):
 
 
 def generate_pool_masks(
-    rows: int, columns: int, debug: bool = False
+    rows: int,
+    columns: int,
+    debug: bool = False,
+    skip_rows_under: int = 0,
+    skip_columns_under: int = 0,
 ) -> list[AbstractMask]:
     if debug:
         print(rows, columns)
     masks: list[AbstractMask] = []
-    for rows in range(rows + 1):
+    for rows in range(skip_rows_under, rows + 1):
         if debug:
             print("   ", rows)
-        for columns in range(columns + 1):
+        for columns in range(skip_columns_under, columns + 1):
             if debug:
                 print("      ", columns)
             for current_row in range(rows):
