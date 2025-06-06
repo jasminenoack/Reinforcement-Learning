@@ -1,4 +1,6 @@
+# import math
 from time import sleep
+from typing import Any
 from tic_tac_logic.env.grid import Grid
 from tic_tac_logic.sample_grids import (
     # get_one_off_grid,
@@ -6,10 +8,12 @@ from tic_tac_logic.sample_grids import (
 )
 
 # from tic_tac_logic.agents.shaping_agents import RLShapingBasedAgent
-from tic_tac_logic.agents.failure_learning_agent import FailureAgent
+# from tic_tac_logic.agents.failure_learning_agent import FailureAgent
 from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import Result
-import numpy as np
+from tic_tac_logic.agents.mask_agent import MaskAgent
+
+# import numpy as np
 
 
 def print_grid(grid: Grid) -> None:
@@ -28,8 +32,17 @@ def run_episode(
         print("Running episode...")
         print_grid(grid)
     while not grid.lost()[0] and not grid.won()[0]:
-        action = agent.act(grid.get_observation())
-        step_result = grid.act(*action)
+        try:
+            action = agent.act(grid.get_observation())
+            step_result = grid.act(*action)
+        except ValueError as e:
+            return Result(
+                actions=grid.actions,
+                score=grid.score,
+                won=False,
+                q_table=agent.q_table if hasattr(agent, "q_table") else None,
+                error=str(e),
+            )
         if train:
             agent.learn(step_result)
         if render:
@@ -43,6 +56,7 @@ def run_episode(
         score=grid.score,
         won=grid.won()[0],
         q_table=agent.q_table if hasattr(agent, "q_table") else None,
+        error=None,
     )
     # if render:
     #     print(grid.lost()[1])
@@ -50,68 +64,19 @@ def run_episode(
     return result
 
 
-def create_ascii_heatmap(
-    raw_data: list[list[float]], characters: str = " `'.,-~:;=!*%#@$"
-):
-    """
-    Creates an ASCII heat map from a 2D array.
-
-    Args:
-    data: 2D array of numeric data.
-    characters: String of ASCII characters for mapping.
-
-    Returns:
-    String of the ASCII heat map.
-    """
-    data = np.array(raw_data)
-    normalized_data = (data - np.min(data)) / (
-        np.max(data) - (np.min(data)) + -0.000000000000001
-    )
-    num_chars = len(characters)
-    indices = (normalized_data * (num_chars - 1)).astype(int)
-    result: list[str] = []
-    for row in indices:
-        row_indices = [int(i) for i in row]
-        result.append(" ".join(characters[index] for index in row_indices))
-    print("\n".join(result))
-
-
-def render_analytics(results: list[Result]) -> None:
+def render_analytics(results: list[Result], agent: Agent, env: Grid) -> None:
     total_actions = sum(result.actions for result in results)
     total_score = sum(result.score for result in results)
     total_wins = sum(1 for result in results if result.won)
+    errors = len([result for result in results if result.error])
 
     print(f"Average Actions per Episode: {total_actions / len(results):.2f}")
     print(f"Average Score per Episode: {total_score / len(results):.2f}")
-    # print(f"Total Wins: {total_wins} out of {len(results)}")
+    print(f"Length of failures: {len(agent.q_table['failures'])}")
+    print(f"Error Rate: {errors / len(results) * 100:.2f}%")
     print(f"Win Rate: {total_wins / len(results) * 100:.2f}%")
+    print_grid(env)
     print("-" * 40)
-    raw_max_scores: list[list[float]] = []
-    raw_min_scores: list[list[float]] = []
-    coordinates: list[tuple[int, int]] = list(
-        results[0].q_table.keys() if results[0].q_table else []
-    )
-    max_row = max([cord[0] for cord in coordinates])
-    max_column = max([cord[1] for cord in coordinates])
-    if max_row and max_column:
-        for row in range(max_row + 1):
-            row_maxes: list[float] = []
-            row_mins: list[float] = []
-            for column in range(max_column + 1):
-                result = results[-1]
-                if result.q_table:
-                    values = result.q_table[(row, column)].values()
-                    row_maxes.append(max(values))
-                    row_mins.append(min(values))
-            raw_max_scores.append(row_maxes)
-            raw_min_scores.append(row_mins)
-
-    print("Max Scores Heatmap:")
-    create_ascii_heatmap(raw_max_scores)
-    print("-" * 40)
-    # print("Min Scores Heatmap:")
-    # create_ascii_heatmap(raw_min_scores)
-    # print("-" * 40)
 
 
 def run_episodes(
@@ -127,25 +92,60 @@ def run_episodes(
         result = run_episode(agent, grid, train=train)
         results.append(result)
     if render:
-        render_analytics(results)
+        render_analytics(results, agent, grid)
     # print_grid(grid)
     # print(grid.lost()[1])
     return results
 
 
 if __name__ == "__main__":
-    training_count = 1000
-    training_rounds = 20
+    training_count = 2000
+    training_rounds = 50
     non_training_count = 100
     grid = get_easy_grid()
-    # agent = RLShapingBasedAgent(grid)
+    agent = MaskAgent(grid)
     grid = Grid(grid)
-    # for _ in range(3):
-    #     grid.reset()
-    #     run_episode(agent, grid, render=True, train=True)
-    #     sleep(5)
-    #     print("")
-    #     print("")
+    for _ in range(100):
+        grid.reset()
+        # print_grid(grid)
+        run_episode(agent, grid, train=True)
+        # print_grid(grid)
+        masks = agent.q_table["masks"]
+        # sleep(0.3)
+        # print("")
+        # print("")
+    print("Masks learned:")
+    probably_failure: list[list[Any]] = []
+    probably_success: list[list[Any]] = []
+    unknown: list[list[Any]] = []
+    # for mask, data in agent.q_table["masks"].items():
+    #     name = mask.split("-")[1:]
+    #     print("    ", name)
+    #     successes = data["non_failure_count"]
+    #     failures = data["failure_count"]
+    #     total = successes + failures
+    #     fail_probability = math.ceil(failures / total)
+    #     if total < 5:
+    #         unknown.append(mask)
+    #     elif fail_probability > 0.9:
+    #         probably_failure.append(mask)
+    #     elif fail_probability < 0.3:
+    #         probably_success.append(mask)
+    #     else:
+    #         unknown.append(mask)
+
+    print("Probably failure masks:")
+    for mask in sorted(probably_failure):
+        print("    ", mask)
+    print("")
+    print("Probably success masks:")
+    for mask in sorted(probably_success):
+        print("    ", mask)
+    print("")
+    print("Unknown masks:")
+    for mask in sorted(unknown):
+        print("    ", mask)
+
     # print(f"Running {non_training_count} episodes before training...")
     # _ = run_episodes(agent, grid, episodes=non_training_count, render=True, train=False)
     # for _ in range(training_rounds):
@@ -155,20 +155,20 @@ if __name__ == "__main__":
     # print(f"Running {non_training_count} episodes after training...")
     # _ = run_episodes(agent, grid, episodes=non_training_count, render=True, train=False)
 
-    agent = FailureAgent(grid.grid)
-    for _ in range(4):
-        run_episode(grid=grid, agent=agent, render=True, train=True)
+    # agent = FailureAgent(grid.grid)
+    # for _ in range(4):
+    #     run_episode(grid=grid, agent=agent, render=True, train=True)
 
-        print("Q Table failures:")
-        failures = agent.q_table["failures"]
-        for failure in failures:
-            print(
-                "    ",
-                failure.location,
-                "[",
-                failure.applicable_area,
-                "]",
-                failure.symbol,
-            )
+    #     print("Q Table failures:")
+    #     failures = agent.q_table["failures"]
+    #     for failure in failures:
+    #         print(
+    #             "    ",
+    #             failure.location,
+    #             "[",
+    #             failure.applicable_area,
+    #             "]",
+    #             failure.symbol,
+    #         )
 
-        print("--" * 20)
+    #     print("--" * 20)

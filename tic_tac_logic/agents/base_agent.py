@@ -4,6 +4,8 @@ from tic_tac_logic.constants import StepResult, Observation
 
 
 class Agent(ABC):
+    explain: bool = False
+
     @abstractmethod
     def __init__(self, grid: list[list[str]]) -> None:
         self.q_table: dict[Any, Any] = {}
