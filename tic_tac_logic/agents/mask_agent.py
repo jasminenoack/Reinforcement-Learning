@@ -46,7 +46,10 @@ class MaskAgent(Agent):
         self.rows = len(grid)
         self.columns = len(grid[0])
         self.epsilon = 0.1
-        self.masks = masks or generate_pool_masks(rows=self.rows, columns=self.columns)
+        self.all_masks = masks or generate_pool_masks(
+            rows=self.rows, columns=self.columns
+        )
+        self.masks = self.all_masks
 
     def log(self, message: str) -> None:
         if self.explain:

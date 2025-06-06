@@ -9,7 +9,7 @@ from tic_tac_logic.env.grid import Grid
 from tic_tac_logic.constants import O
 from tic_tac_logic.runner import print_grid
 import logging
-from tic_tac_logic.agents.masks import ALL_MASKS
+from tic_tac_logic.agents.masks import generate_pool_masks
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -23,8 +23,8 @@ grids = get_testing_sample_grids()
 envs = [Grid(g.grid) for g in grids]
 # this is not ideal... we never use this again it's just to check the size
 # so we can swap to others of the same size
-agent = MaskAgent(grid=grids[0].grid, masks=ALL_MASKS)
-rounds_of_attempts = 100
+agent = MaskAgent(grid=grids[0].grid, masks=generate_pool_masks(3, 3))
+rounds_of_attempts = 10
 
 
 @dataclass
@@ -89,7 +89,7 @@ def mask_builder_view(agent: MaskAgent, envs: list[Grid]) -> None:
         if symbol == O:
             o_placements.append(
                 MaskInfo(
-                    mask_type=mask_type.__name__,
+                    mask_type=mask_type.name,
                     pattern=pattern,
                     symbol=symbol,
                     counts=Counts(
@@ -101,7 +101,7 @@ def mask_builder_view(agent: MaskAgent, envs: list[Grid]) -> None:
         else:
             x_placements.append(
                 MaskInfo(
-                    mask_type=mask_type.__name__,
+                    mask_type=mask_type.name,
                     pattern=pattern,
                     symbol=symbol,
                     counts=Counts(
@@ -115,19 +115,21 @@ def mask_builder_view(agent: MaskAgent, envs: list[Grid]) -> None:
     print("")
     print("    Top X Placements failure rates")
     for placement in sorted(
-        x_placements, key=lambda x: -x.counts.failure_probability()
+        x_placements,
+        key=lambda x: (-x.counts.failure_probability(), -x.counts.failure_count),
     )[:10]:
         print(
-            f"        {placement.pattern.replace("\n", "")}  {placement.counts.failure_probability():.0f} ({placement.counts.failure_count}/{placement.counts.success_count})"
+            f"        {placement.pattern.replace("\n", "|")}  {placement.counts.failure_probability():.0f} ({placement.counts.failure_count}/{placement.counts.success_count})"
         )
 
     print("")
     print("    Top O Placements failure rates")
     for placement in sorted(
-        o_placements, key=lambda x: -x.counts.failure_probability()
+        o_placements,
+        key=lambda x: (-x.counts.failure_probability(), -x.counts.failure_count),
     )[:10]:
         print(
-            f"        {placement.pattern.replace("\n", "")}  {placement.counts.failure_probability():.0f} ({placement.counts.failure_count}/{placement.counts.success_count})"
+            f"        {placement.pattern.replace("\n", "|")}  {placement.counts.failure_probability():.0f} ({placement.counts.failure_count}/{placement.counts.success_count})"
         )
 
 
