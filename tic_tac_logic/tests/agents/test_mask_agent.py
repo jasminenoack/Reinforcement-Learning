@@ -1,8 +1,9 @@
 import pytest
 from tic_tac_logic.agents.mask_agent import (
-    MaskHorizontal3Centered,
-    MaskHorizontal3CenteredX,
-    MaskHorizontal3CenteredO,
+    # MaskHorizontal3Centered,
+    # MaskHorizontal3CenteredX,
+    # MaskHorizontal3CenteredO,
+    generate_pool_masks,
     MaskAgent,
     MaskKey,
     MaskResult,
@@ -11,6 +12,15 @@ from tic_tac_logic.agents.mask_agent import (
 from tic_tac_logic.constants import X, O, E
 from tic_tac_logic.sample_grids import get_easy_grid
 from tic_tac_logic.env.grid import Grid
+
+masks = generate_pool_masks(3, 3)
+MaskHorizontal3Centered = [mask for mask in masks if mask.name == "Mask|1x3|(0, 1)"][0]
+MaskHorizontal3CenteredX = [mask for mask in masks if mask.name == "Mask|1x3|(0, 1)|X"][
+    0
+]
+MaskHorizontal3CenteredO = [mask for mask in masks if mask.name == "Mask|1x3|(0, 1)|O"][
+    0
+]
 
 
 class TestMaskHorizontal3Centered:
@@ -50,8 +60,11 @@ class TestMaskHorizontal3Centered:
         ],
     )
     def test_get_mask(self, coord: tuple[int, int], expected: str | None):
-        mask = MaskHorizontal3Centered()
+        mask = MaskHorizontal3Centered
+        print(mask)
         result = mask.get_mask(coord, grid=[[X, O, E], [E, X, O], [O, E, X]], current=X)
+        print(result)
+        print(expected)
         assert result == expected
 
 
@@ -92,7 +105,7 @@ class TestMaskHorizontal3CenteredX:
         ],
     )
     def test_get_mask(self, coord: tuple[int, int], expected: str | None):
-        mask = MaskHorizontal3CenteredX()
+        mask = MaskHorizontal3CenteredX
         result = mask.get_mask(coord, grid=[[X, O, E], [E, X, O], [O, E, X]], current=X)
         assert result == expected
 
@@ -134,7 +147,7 @@ class TestMaskHorizontal3CenteredO:
         ],
     )
     def test_get_mask(self, coord: tuple[int, int], expected: str | None):
-        mask = MaskHorizontal3CenteredO()
+        mask = MaskHorizontal3CenteredO
         result = mask.get_mask(coord, grid=[[X, O, E], [E, X, O], [O, E, X]], current=O)
         assert result == expected
 
@@ -167,7 +180,7 @@ class TestLearn:
         # ]
         step = grid.act((1, 2), O)
         agent.learn(step)
-        assert agent.q_table["masks"] == {
+        for mask, mask_result in {
             MaskKey(
                 mask_type=MaskHorizontal3Centered,
                 pattern="X__",
@@ -207,8 +220,8 @@ class TestLearn:
                 failure_count=0,
                 success_count=1,
             ),
-        }
-
+        }.items():
+            assert agent.q_table["masks"][mask] == mask_result
         # [     0  1  2  3  4  5
         # 0    [E, E, X, E, E, E],
         # 1    [X, X, O, E, O, E],
@@ -221,7 +234,7 @@ class TestLearn:
         # ]
         step = grid.act((0, 2), X)
         agent.learn(step)
-        assert agent.q_table["masks"] == {
+        for mask, mask_result in {
             MaskKey(
                 mask_type=MaskHorizontal3Centered,
                 pattern="X__",
@@ -300,7 +313,8 @@ class TestLearn:
                 failure_count=0,
                 success_count=1,
             ),
-        }
+        }.items():
+            assert agent.q_table["masks"][mask] == mask_result
 
         # [     0  1  2  3  4  5
         # 0    [E, E, X, E, E, E],
@@ -314,7 +328,7 @@ class TestLearn:
         # ]
         step = grid.act((1, 3), O)
         agent.learn(step)
-        assert agent.q_table["masks"] == {
+        for mask, mask_result in {
             MaskKey(
                 mask_type=MaskHorizontal3CenteredO,
                 pattern="___",
@@ -432,7 +446,8 @@ class TestLearn:
                 failure_count=1,
                 success_count=0,
             ),
-        }
+        }.items():
+            assert agent.q_table["masks"][mask] == mask_result
 
     def test_learns_from_changes_2(self):
         easy_grid = get_easy_grid()
@@ -459,7 +474,7 @@ class TestLearn:
         step = grid.act((5, 1), O)
         agent.learn(step)
 
-        assert agent.q_table["masks"] == {
+        for mask, mask_result in {
             MaskKey(
                 mask_type=MaskHorizontal3Centered,
                 pattern="__O",
@@ -538,7 +553,8 @@ class TestLearn:
                 failure_count=0,
                 success_count=2,
             ),
-        }
+        }.items():
+            assert agent.q_table["masks"][mask] == mask_result
 
     # [     0  1  2  3  4  5
     # 0    [E, E, E, E, E, E],

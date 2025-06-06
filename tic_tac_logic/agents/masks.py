@@ -4,7 +4,7 @@ from tic_tac_logic.constants import E
 
 @dataclass(frozen=True)
 class MaskKey:
-    mask_type: type["AbstractMask"]
+    mask_type: "AbstractMask"
     pattern: str
     symbol: str
 
@@ -39,16 +39,23 @@ class MaskRules:
         return mini_grid
 
 
-@dataclass
 class AbstractMask:
-    match_symbol: str | None = None
-    rule: MaskRules = NotImplemented
-    # I think this is not actually needed
+    def __init__(self, match_symbol: str | None, rule: MaskRules) -> None:
+        self.match_symbol = match_symbol
+        self.rule = rule
+        row_len = rule.rows_above + rule.rows_below + 1
+        column_len = rule.columns_left + rule.columns_right + 1
+        row_position = rule.rows_above
+        column_position = rule.columns_left
+        position = (row_position, column_position)
+        self.name = f"Mask|{row_len}x{column_len}|{position}"
+        if match_symbol:
+            self.name += f"|{match_symbol}"
 
     def create_mask_key(self, value: list[list[str]], current: str) -> MaskKey:
         rows = ["".join(row).replace(" ", "_") for row in value]
         return MaskKey(
-            mask_type=self.__class__,
+            mask_type=self,
             pattern=("\n").join(rows),
             symbol=current,
         )
@@ -68,126 +75,74 @@ class AbstractMask:
             return None
         return self.create_mask_key(section, current=current)
 
+    def __eq__(self, value: "AbstractMask") -> bool:
+        return self.match_symbol == value.match_symbol and self.rule == value.rule
 
-@dataclass
-class MaskHorizontal3Centered(AbstractMask):
-    rule: MaskRules = MaskRules(
-        rows_above=0, rows_below=0, columns_left=1, columns_right=1
-    )
+    def __hash__(self) -> int:
+        return (self.match_symbol, self.rule).__hash__()
 
+    def __str__(self) -> str:
+        return f"{self.name}"
 
-@dataclass
-class MaskHorizontal3CenteredX(MaskHorizontal3Centered):
-    match_symbol: str | None = "X"
-
-
-@dataclass
-class MaskHorizontal3CenteredO(MaskHorizontal3Centered):
-    match_symbol: str | None = "O"
+    def __repr__(self):
+        return str(self)
 
 
-@dataclass
-class MaskHorizontal3Left(AbstractMask):
-    rule: MaskRules = MaskRules(
-        rows_above=0, rows_below=0, columns_left=0, columns_right=2
-    )
+def print_mask(mask: AbstractMask):
+    rows_above = mask.rule.rows_above
+    rows_below = mask.rule.rows_below
+    columns_left = mask.rule.columns_left
+    columns_right = mask.rule.columns_right
+    total_columns = columns_left + columns_right + 1
+    total_rows = rows_above + rows_below + 1
+    for row in range(total_rows):
+        for column in range(total_columns):
+            if row == rows_above and column == columns_left:
+                print("+", end="")
+            else:
+                print("_", end="")
+        print()
+    print()
 
 
-@dataclass
-class MaskHorizontal3LeftX(MaskHorizontal3Left):
-    match_symbol: str | None = "X"
+def generate_pool_masks(
+    rows: int, columns: int, debug: bool = False
+) -> list[AbstractMask]:
+    if debug:
+        print(rows, columns)
+    masks: list[AbstractMask] = []
+    for rows in range(rows + 1):
+        if debug:
+            print("   ", rows)
+        for columns in range(columns + 1):
+            if debug:
+                print("      ", columns)
+            for current_row in range(rows):
+                for current_column in range(columns):
+                    for symbol in ["X", "O", None]:
+                        if debug:
+                            print(
+                                f"{rows}X{columns} ({current_row},{current_column}) {symbol}"
+                            )
+                        rows_above = current_row
+                        rows_below = rows - current_row - 1
+                        columns_left = current_column
+                        columns_right = columns - current_column - 1
+                        masks.append(
+                            AbstractMask(
+                                match_symbol=symbol,
+                                rule=MaskRules(
+                                    rows_above=rows_above,
+                                    rows_below=rows_below,
+                                    columns_left=columns_left,
+                                    columns_right=columns_right,
+                                ),
+                            )
+                        )
+                    if debug:
+                        print_mask(masks[-1])
+    return masks
 
 
-@dataclass
-class MaskHorizontal3LeftO(MaskHorizontal3Left):
-    match_symbol: str | None = "O"
-
-
-@dataclass
-class MaskHorizontal3Right(AbstractMask):
-    rule: MaskRules = MaskRules(
-        rows_above=0, rows_below=0, columns_left=2, columns_right=0
-    )
-
-
-@dataclass
-class MaskHorizontal3RightX(MaskHorizontal3Right):
-    match_symbol: str | None = "X"
-
-
-@dataclass
-class MaskHorizontal3RightO(MaskHorizontal3Right):
-    match_symbol: str | None = "O"
-
-
-@dataclass
-class MaskVertical3Centered(AbstractMask):
-    rule: MaskRules = MaskRules(
-        rows_above=1, rows_below=1, columns_left=0, columns_right=0
-    )
-
-
-@dataclass
-class MaskVertical3CenteredX(MaskVertical3Centered):
-    match_symbol: str | None = "X"
-
-
-@dataclass
-class MaskVertical3CenteredO(MaskVertical3Centered):
-    match_symbol: str | None = "O"
-
-
-@dataclass
-class MaskVertical3Above(AbstractMask):
-    rule: MaskRules = MaskRules(
-        rows_above=0, rows_below=2, columns_left=0, columns_right=0
-    )
-
-
-@dataclass
-class MaskVertical3AboveX(MaskVertical3Above):
-    match_symbol: str | None = "X"
-
-
-@dataclass
-class MaskVertical3AboveO(MaskVertical3Above):
-    match_symbol: str | None = "O"
-
-
-@dataclass
-class MaskVertical3Below(AbstractMask):
-    rule: MaskRules = MaskRules(
-        rows_above=2, rows_below=0, columns_left=0, columns_right=0
-    )
-
-
-@dataclass
-class MaskVertical3BelowX(MaskVertical3Below):
-    match_symbol: str | None = "X"
-
-
-@dataclass
-class MaskVertical3BelowO(MaskVertical3Below):
-    match_symbol: str | None = "O"
-
-
-ALL_MASKS: list[AbstractMask] = [
-    MaskHorizontal3Centered(),
-    MaskHorizontal3CenteredX(),
-    MaskHorizontal3CenteredO(),
-    MaskHorizontal3Left(),
-    MaskHorizontal3LeftX(),
-    MaskHorizontal3LeftO(),
-    MaskHorizontal3Right(),
-    MaskHorizontal3RightX(),
-    MaskHorizontal3RightO(),
-    MaskVertical3Centered(),
-    MaskVertical3CenteredX(),
-    MaskVertical3CenteredO(),
-    MaskVertical3Above(),
-    MaskVertical3AboveX(),
-    MaskVertical3AboveO(),
-    MaskVertical3Below(),
-    MaskVertical3BelowX(),
-    MaskVertical3BelowO(),
-]
+if __name__ == "__main__":
+    masks = generate_pool_masks(3, 3, debug=True)

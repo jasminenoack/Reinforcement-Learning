@@ -5,13 +5,7 @@ from typing import TypedDict
 from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import StepResult, E, PLACEMENT_OPTIONS, Observation
 import logging
-from tic_tac_logic.agents.masks import (
-    AbstractMask,
-    MaskKey,
-    MaskHorizontal3Centered,
-    MaskHorizontal3CenteredX,
-    MaskHorizontal3CenteredO,
-)
+from tic_tac_logic.agents.masks import AbstractMask, MaskKey, generate_pool_masks
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -52,11 +46,7 @@ class MaskAgent(Agent):
         self.rows = len(grid)
         self.columns = len(grid[0])
         self.epsilon = 0.1
-        self.masks = masks or [
-            MaskHorizontal3Centered(),
-            MaskHorizontal3CenteredX(),
-            MaskHorizontal3CenteredO(),
-        ]
+        self.masks = masks or generate_pool_masks(rows=self.rows, columns=self.columns)
 
     def log(self, message: str) -> None:
         if self.explain:
