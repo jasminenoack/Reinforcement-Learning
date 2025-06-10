@@ -166,7 +166,7 @@ class TestLearn:
         # 7    [E, E, E, E, E, E],
         # ]
         grid = Grid(easy_grid)
-        agent = MaskAgent(easy_grid)
+        agent = MaskAgent(len(easy_grid), len(easy_grid[0]))
 
         # [     0  1  2  3  4  5
         # 0    [E, E, E, E, E, E],
@@ -462,7 +462,7 @@ class TestLearn:
         # 7    [E, E, E, E, E, E],
         # ]
         grid = Grid(easy_grid)
-        agent = MaskAgent(easy_grid)
+        agent = MaskAgent(len(easy_grid), len(easy_grid[0]))
 
         # 1, 3  - E, E, O - X
         step = grid.act((1, 3), X)
@@ -572,7 +572,7 @@ class TestFindAgressiveFailures:
 
     def test_finds_cases_where_we_are_confident_an_answer_is_incorrect(self):
         easy_grid = get_easy_grid()
-        agent = MaskAgent(easy_grid)
+        agent = MaskAgent(len(easy_grid), len(easy_grid[0]))
 
         agent.q_table["masks"] = {
             MaskKey(
@@ -688,7 +688,7 @@ class TestRemovePossibleMoves:
         # 6    [X, E, O, E, E, X],
         # 7    [E, E, E, E, E, E],
         # ]
-        agent = MaskAgent(easy_grid)
+        agent = MaskAgent(len(easy_grid), len(easy_grid[0]))
 
         possible_moves = {
             ((0, 0), X),
@@ -730,7 +730,7 @@ class TestRemovePossibleMoves:
 class TestOptionsWithOneChoice:
     def test_returns_options_with_one_choice(self):
         easy_grid = get_easy_grid()
-        agent = MaskAgent(easy_grid)
+        agent = MaskAgent(len(easy_grid), len(easy_grid[0]))
 
         possible_moves = {
             ((0, 0), X),

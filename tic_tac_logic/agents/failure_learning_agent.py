@@ -63,10 +63,9 @@ class ValidPlacement:
 
 
 class FailureAgent(Agent):
-    def __init__(self, grid: list[list[str]]) -> None:
+    def __init__(self, rows: int, columns: int) -> None:
+        super().__init__(rows, columns)
         self.q_table: dict[str, set[Move]] = {"failures": set()}
-        self.rows = len(grid)
-        self.columns = len(grid[0])
 
     def _row_move(
         self, grid: list[list[str]], coordinate: tuple[int, int], player: str

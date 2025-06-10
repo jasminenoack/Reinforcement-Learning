@@ -5,10 +5,11 @@ from tic_tac_logic.agents.base_agent import Agent
 
 
 class RLShapingBasedAgent(Agent):
-    def __init__(self, grid: list[list[str]]) -> None:
+    def __init__(self, rows: int, columns: int) -> None:
+        super().__init__(rows, columns)
         self.q_table: dict[tuple[int, int], dict[str, float]] = {}
-        self.rows = len(grid)
-        self.columns = len(grid[0])
+        self.rows = rows
+        self.columns = columns
         for row in range(self.rows):
             for column in range(self.columns):
                 self.q_table[(row, column)] = {

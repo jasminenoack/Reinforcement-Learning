@@ -137,10 +137,12 @@ class MaskAgent(Agent):
     confidence_threshold = 5
 
     def __init__(
-        self, grid: list[list[str]], masks: list[AbstractMask] | None = None
+        self,
+        rows: int,
+        columns: int,
+        masks: list[AbstractMask] | None = None,
     ) -> None:
-        self.rows = len(grid)
-        self.columns = len(grid[0])
+        super().__init__(rows, columns)
         self.epsilon = 0.01
         self.mask_manager = MaskManager(
             masks or generate_pool_masks(rows=self.rows, columns=self.columns)

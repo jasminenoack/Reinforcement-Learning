@@ -103,7 +103,7 @@ if __name__ == "__main__":
     training_rounds = 50
     non_training_count = 100
     grid = get_easy_grid()
-    agent = MaskAgent(grid)
+    agent = MaskAgent(len(grid), len(grid[0]))
     grid = Grid(grid)
     for _ in range(100):
         grid.reset()
