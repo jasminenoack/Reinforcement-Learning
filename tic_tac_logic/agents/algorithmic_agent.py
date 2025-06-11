@@ -21,7 +21,7 @@ class AlgorithmicAgent(Agent):
         grid: list[list[str]],
         row: int,
         col: int,
-        val: str,
+        symbol: str,
     ) -> bool:
         rows = len(grid)
         cols = len(grid[0])
@@ -30,7 +30,7 @@ class AlgorithmicAgent(Agent):
 
         # Check row counts and triple repeats
         temp_row = grid[row].copy()
-        temp_row[col] = val
+        temp_row[col] = symbol
         if temp_row.count("X") > half_row or temp_row.count("O") > half_row:
             return False
         if "XXX" in "".join(temp_row) or "OOO" in "".join(temp_row):
@@ -38,7 +38,7 @@ class AlgorithmicAgent(Agent):
 
         # Check column counts and triple repeats
         temp_col = [grid[r][col] for r in range(rows)]
-        temp_col[row] = val
+        temp_col[row] = symbol
         if temp_col.count("X") > half_col or temp_col.count("O") > half_col:
             return False
         if "XXX" in "".join(temp_col) or "OOO" in "".join(temp_col):
@@ -46,20 +46,20 @@ class AlgorithmicAgent(Agent):
 
         # Unique row constraint when row complete
         if E not in temp_row:
-            for r in range(rows):
-                if r == row:
+            for other_row_index in range(rows):
+                if other_row_index == row:
                     continue
-                other = grid[r]
-                if E not in other and other == temp_row:
+                comparison_row = grid[other_row_index]
+                if E not in comparison_row and comparison_row == temp_row:
                     return False
 
         # Unique column constraint when column complete
         if E not in temp_col:
-            for c in range(cols):
-                if c == col:
+            for other_col_index in range(cols):
+                if other_col_index == col:
                     continue
-                other = [grid[r][c] for r in range(rows)]
-                if E not in other and other == temp_col:
+                comparison_col = [grid[r][other_col_index] for r in range(rows)]
+                if E not in comparison_col and comparison_col == temp_col:
                     return False
 
         return True
