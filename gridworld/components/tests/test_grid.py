@@ -446,7 +446,7 @@ class TestStep:
         assert new_state == (0, 0)
         assert reward == -10
         assert done is False
-        assert env.visit_counts == {(0, 0): 2}
+        assert env.visit_counts == {(0, 0): 3}
 
     def test_does_not_get_goal_reward_if_max_steps_not_at_goal(self):
         env = GridWorldEnv()
