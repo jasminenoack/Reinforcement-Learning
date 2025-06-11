@@ -37,9 +37,7 @@ Use a clear, professional tone. Prioritize readable, idiomatic code with minimal
 - Avoid changes to dependency versions unless required to fix a bug
 
 ## Tooling
-- Run `pytest`, `black`, and `pyright` before proposing a fix
-- If `flake8` is present in the project, ensure its checks pass as well
-- If `ruff` is present in the project, ensure its checks pass as well
+- Run `pytest`, `black`, `ruff` and `pyright` before proposing a fix
 - If a failure occurs, include the command and exact error message in the report
 
 ## Review Expectations
