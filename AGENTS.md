@@ -74,3 +74,11 @@ Use a clear, professional tone. Prioritize readable, idiomatic code with minimal
 - Add or update tests as needed to validate behavior before and after the refactor.
 - Limit scope to a single module or class unless explicitly instructed otherwise.
 - Clearly document the purpose of any non-trivial structural changes.
+
+## PR Guidelines
+- Use descriptive PR titles (e.g., `feat:`, `fix:`, `test:`).
+- Include a summary of the logic, scope of changes, and test coverage.
+- Include the actual test coverage percentage in the PR if available.
+- Note any limitations, skipped areas, or ambiguities encountered.
+- Highlight any security concerns or risky behavior introduced.
+- Avoid vague phrases like “updated code” or “fixed tests” — be specific.

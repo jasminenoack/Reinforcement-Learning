@@ -6,3 +6,4 @@ numpy
 pytest-mock
 black
 flake8
+coverage
