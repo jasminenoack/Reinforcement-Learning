@@ -4,3 +4,4 @@ __pycache__
 
 tic_tac_logic/*.log
 .coverage
+.DS_Store
