@@ -1,10 +1,15 @@
 {
-  "include": ["queens"],
-  "typeCheckingMode": "strict",
+  "typeCheckingMode": "basic",
   "reportMissingReturnType": "error",
   "reportMissingParameterType": true,
   "reportUnknownParameterType": true,
   "reportUntypedFunctionDecorator": true,
   "reportUnusedImport": true,
   "reportIncompatibleMethodOverride": false,
+  "exclude": [
+    "**/tests",
+    "gridworld/scripts",
+    "gridworld/components/maze_builders.py",
+    "gridworld/components/grid_environment.py"
+  ]
 }

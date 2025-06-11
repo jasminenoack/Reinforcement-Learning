@@ -1,9 +1,0 @@
-{
-  "include": ["queens"],
-  "typeCheckingMode": "strict",
-  "reportMissingReturnType": "error",
-  "reportMissingParameterType": true,
-  "reportUnknownParameterType": true,
-  "reportUntypedFunctionDecorator": true,
-  "reportUnusedImport": true
-}

@@ -2,6 +2,7 @@ from functools import reduce
 from os import mkdir
 import os
 import shutil
+from typing import Any
 from gridworld.agents.lost_agent import LostAgent
 from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
@@ -27,7 +28,7 @@ except FileExistsError:
     pass
 
 
-def log(*message: list[str]):
+def log(*message: Any) -> None:
     console.print(*message)
     with open(output_file, "a") as f:
         f.write(" ".join(str(m) for m in message) + "\n")
@@ -58,7 +59,7 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         analysis["reached_goal"]["count"] / len(results) * 100,
     )
     render_heatmap(
-        visit_counts=avg_visit_counts,
+        visit_counts=avg_visit_counts.data,
         rows=env.rows,
         cols=env.cols,
         stat=f"Avg Visit Count ({agent.__class__.__name__})",
@@ -67,7 +68,7 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         grid=env.grid,
     )
     render_heatmap(
-        visit_counts=total_visit_counts,
+        visit_counts=total_visit_counts.data,
         rows=env.rows,
         cols=env.cols,
         stat=f"Total Visit Count ({agent.__class__.__name__})",

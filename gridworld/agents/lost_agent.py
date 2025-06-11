@@ -7,7 +7,7 @@ from gridworld.utils import SIMPLE_ACTIONS, Step
 
 
 class LostAgent(Agent):
-    def __init__(self, *, rng: random.Random | None = None, **kwargs: Any):
+    def __init__(self, *, rng: random.Random | None = None, **kwargs: Any) -> None:
         """
         This is rather like the random agent, but it strongly prefers to not repeat a move
         """
@@ -26,7 +26,7 @@ class LostAgent(Agent):
             return choice
         return self.rng.choice(SIMPLE_ACTIONS)
 
-    def observe(self, step: Step):
+    def observe(self, step: Step) -> None:
         start = step.start
         action = step.action
         self.previous_attempts[start][action] += 1
@@ -36,8 +36,8 @@ class LostAgent(Agent):
             self.previous_attempts[reversed_step.start][reversed_step.action] += 1
             # Increment the count for the reverse action as well
 
-    def reset(self, **kwargs: Any):
-        self.previous_attempts = defaultdict(
+    def reset(self, **kwargs: Any) -> None:
+        self.previous_attempts: defaultdict[tuple[int, int], dict[str, int]] = defaultdict(
             lambda: {action: 0 for action in SIMPLE_ACTIONS}
         )
 
