@@ -103,9 +103,7 @@ class StepResult:
 
 
 class VisitCounter:
-    def __init__(
-        self, data: dict[tuple[int, int], int] | None = None
-    ) -> None:
+    def __init__(self, data: dict[tuple[int, int], int] | None = None) -> None:
         self.data: dict[tuple[int, int], int] = data or defaultdict(int)
 
     def __getitem__(self, key: tuple[int, int]) -> int:
@@ -156,10 +154,10 @@ class VisitCounter:
             new_counter[coordinate] = avg
         return new_counter
 
-    def items(self) -> 'ItemsView[tuple[int, int], int]':
+    def items(self) -> "ItemsView[tuple[int, int], int]":
         return self.data.items()
 
-    def values(self) -> 'ValuesView[int]':
+    def values(self) -> "ValuesView[int]":
         return self.data.values()
 
 
