@@ -10,12 +10,12 @@ class TestOpposite:
     @pytest.mark.parametrize("symbol,expected", [(X, O), (O, X)])
     def test_returns_opposite_symbol(self, symbol: str, expected: str) -> None:
         agent = AlgorithmicAgent(rows=2, columns=2)
-        assert agent._opposite(symbol) == expected
+        assert agent.opposite(symbol) == expected
 
     def test_raises_error_on_invalid_symbol(self) -> None:
         agent = AlgorithmicAgent(rows=2, columns=2)
         with pytest.raises(ValueError):
-            agent._opposite(E)
+            agent.opposite(E)
 
 
 class TestDeduceOneMove:
@@ -33,7 +33,7 @@ class TestDeduceOneMove:
             [E, E, E, E],
         ]
         agent = AlgorithmicAgent(rows=4, columns=4)
-        move = agent._deduce_one_move(grid)
+        move = agent.deduce_one_move(grid)
         assert move == (0, 2)
         assert grid == expected
 
@@ -51,7 +51,7 @@ class TestDeduceOneMove:
             [E, E, E, E],
         ]
         agent = AlgorithmicAgent(rows=4, columns=4)
-        move = agent._deduce_one_move(grid)
+        move = agent.deduce_one_move(grid)
         assert move == (2, 0)
         assert grid == expected
 
@@ -69,7 +69,7 @@ class TestDeduceOneMove:
             [E, E, E, E],
         ]
         agent = AlgorithmicAgent(rows=4, columns=4)
-        move = agent._deduce_one_move(grid)
+        move = agent.deduce_one_move(grid)
         assert move == (0, 3)
         assert grid == expected
 
@@ -87,7 +87,7 @@ class TestDeduceOneMove:
             [O, E, E, E],
         ]
         agent = AlgorithmicAgent(rows=4, columns=4)
-        move = agent._deduce_one_move(grid)
+        move = agent.deduce_one_move(grid)
         assert move == (3, 0)
         assert grid == expected
 
@@ -100,7 +100,7 @@ class TestDeduceOneMove:
         ]
         expected = [row.copy() for row in grid]
         agent = AlgorithmicAgent(rows=4, columns=4)
-        move = agent._deduce_one_move(grid)
+        move = agent.deduce_one_move(grid)
         assert move is None
         assert grid == expected
 
@@ -138,7 +138,7 @@ class TestRuleAvoidTriplesRow:
         expected_grid: list[list[str]],
     ) -> None:
         agent = AlgorithmicAgent(rows=len(grid), columns=len(grid[0]))
-        move = agent._rule_avoid_triples_row(grid)
+        move = agent.rule_avoid_triples_row(grid)
         assert move == expected_move
         assert grid == expected_grid
 
@@ -176,7 +176,7 @@ class TestRuleAvoidTriplesColumn:
         expected_grid: list[list[str]],
     ) -> None:
         agent = AlgorithmicAgent(rows=len(grid), columns=len(grid[0]))
-        move = agent._rule_avoid_triples_column(grid)
+        move = agent.rule_avoid_triples_column(grid)
         assert move == expected_move
         assert grid == expected_grid
 
@@ -209,7 +209,7 @@ class TestRuleBalanceRow:
         expected_grid: list[list[str]],
     ) -> None:
         agent = AlgorithmicAgent(rows=len(grid), columns=len(grid[0]))
-        move = agent._rule_balance_row(grid)
+        move = agent.rule_balance_row(grid)
         assert move == expected_move
         assert grid == expected_grid
 
@@ -242,7 +242,7 @@ class TestRuleBalanceColumn:
         expected_grid: list[list[str]],
     ) -> None:
         agent = AlgorithmicAgent(rows=len(grid), columns=len(grid[0]))
-        move = agent._rule_balance_column(grid)
+        move = agent.rule_balance_column(grid)
         assert move == expected_move
         assert grid == expected_grid
 
