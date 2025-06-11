@@ -23,7 +23,7 @@ class ManhattanAgent(Agent):
         row_goal, col_goal = self.goal
 
         # Preferred directions (Manhattan-style)
-        preferred = []
+        preferred: list[str] = []
         if row < row_goal:
             preferred.append(DOWN)
         if row > row_goal:
@@ -33,8 +33,8 @@ class ManhattanAgent(Agent):
         if col > col_goal:
             preferred.append(LEFT)
 
-        tried = self._tried.get(state, set())
-        options = [a for a in preferred if a not in tried]
+        tried: MutableSet[str] = self._tried.get(state, set())
+        options: list[str] = [a for a in preferred if a not in tried]
 
         # Fallback to any untried direction
         if not options:

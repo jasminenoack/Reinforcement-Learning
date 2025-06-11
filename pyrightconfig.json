@@ -1,5 +1,5 @@
 {
-  "typeCheckingMode": "basic",
+  "typeCheckingMode": "strict",
   "reportMissingReturnType": "error",
   "reportMissingParameterType": true,
   "reportUnknownParameterType": true,
