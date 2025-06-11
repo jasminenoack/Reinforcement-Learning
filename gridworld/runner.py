@@ -97,7 +97,9 @@ class Runner:
             results.append(result)
         return results
 
-    def analyze_results(self, results: list[RunnerReturn]) -> dict[str, dict[str, float]]:
+    def analyze_results(
+        self, results: list[RunnerReturn]
+    ) -> dict[str, dict[str, float]]:
         total_rewards = [result["total_reward"] for result in results]
         average_reward = sum(total_rewards) / len(total_rewards)
 

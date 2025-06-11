@@ -37,8 +37,8 @@ class LostAgent(Agent):
             # Increment the count for the reverse action as well
 
     def reset(self, **kwargs: Any) -> None:
-        self.previous_attempts: defaultdict[tuple[int, int], dict[str, int]] = defaultdict(
-            lambda: {action: 0 for action in SIMPLE_ACTIONS}
+        self.previous_attempts: defaultdict[tuple[int, int], dict[str, int]] = (
+            defaultdict(lambda: {action: 0 for action in SIMPLE_ACTIONS})
         )
 
 
