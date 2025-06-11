@@ -727,6 +727,99 @@ class TestRemovePossibleMoves:
             ((1, 3), O),
         }
 
+    @pytest.mark.parametrize(
+        "possible_moves,failure_masks,expected",
+        [
+            (
+                {((0, 0), X)},
+                set(),
+                {((0, 0), X)},
+            ),
+            (
+                {
+                    ((0, 0), X),
+                    ((0, 1), O),
+                    ((0, 1), X),
+                    ((1, 2), X),
+                    ((1, 2), O),
+                    ((1, 3), O),
+                },
+                {
+                    ConfidentMask(
+                        mask_key=MaskKey(
+                            mask_type=MaskHorizontal3Centered,
+                            pattern="X__",
+                            symbol="O",
+                        ),
+                        prediction=-1.0,
+                    ),
+                    ConfidentMask(
+                        mask_key=MaskKey(
+                            mask_type=MaskHorizontal3CenteredO,
+                            pattern="___",
+                            symbol="O",
+                        ),
+                        prediction=-1.0,
+                    ),
+                },
+                {
+                    ((0, 0), X),
+                    ((0, 1), X),
+                    ((1, 2), X),
+                    ((1, 3), O),
+                },
+            ),
+            (
+                {((1, 2), O), ((1, 2), X)},
+                {
+                    ConfidentMask(
+                        mask_key=MaskKey(
+                            mask_type=MaskHorizontal3Centered,
+                            pattern="X__",
+                            symbol="O",
+                        ),
+                        prediction=-1.0,
+                    ),
+                    ConfidentMask(
+                        mask_key=MaskKey(
+                            mask_type=MaskHorizontal3Centered,
+                            pattern="X__",
+                            symbol="X",
+                        ),
+                        prediction=-1.0,
+                    ),
+                },
+                set(),
+            ),
+            (
+                {((9, 0), X), ((0, 0), X)},
+                {
+                    ConfidentMask(
+                        mask_key=MaskKey(
+                            mask_type=MaskHorizontal3Centered,
+                            pattern="X__",
+                            symbol="X",
+                        ),
+                        prediction=-1.0,
+                    ),
+                },
+                {((9, 0), X), ((0, 0), X)},
+            ),
+        ],
+    )
+    def test_remove_failing_options_parametrized(
+        self,
+        possible_moves: set[tuple[tuple[int, int], str]],
+        failure_masks: set[ConfidentMask],
+        expected: set[tuple[tuple[int, int], str]],
+    ) -> None:
+        grid = get_easy_grid()
+        agent = MaskAgent(len(grid), len(grid[0]))
+        assert (
+            agent.remove_failing_options(grid, possible_moves, failure_masks)
+            == expected
+        )
+
 
 class TestOptionsWithOneChoice:
     def test_returns_options_with_one_choice(self):
