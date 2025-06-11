@@ -48,75 +48,50 @@ class AlgorithmicAgent(BaseAgent):
         return None
 
     def _rule_avoid_triples_row(self, grid: list[list[str]]) -> tuple[int, int] | None:
-        size = len(grid)
-        for r, row in enumerate(grid):
-            for c in range(size):
-                if row[c] != E:
-                    continue
-                if c >= 2 and row[c - 1] == row[c - 2] != E:
-                    row[c] = self._opposite(row[c - 1])
-                    return r, c
-                if c <= size - 3 and row[c + 1] == row[c + 2] != E:
-                    row[c] = self._opposite(row[c + 1])
-                    return r, c
-                if 0 < c < size - 1 and row[c - 1] == row[c + 1] != E:
-                    row[c] = self._opposite(row[c - 1])
-                    return r, c
-        return None
+        return self._rule_avoid_triples(grid, is_row=True)
 
-    def _rule_avoid_triples_column(
-        self, grid: list[list[str]]
-    ) -> tuple[int, int] | None:
+    def _rule_avoid_triples_column(self, grid: list[list[str]]) -> tuple[int, int] | None:
+        return self._rule_avoid_triples(grid, is_row=False)
+
+    def _rule_avoid_triples(self, grid: list[list[str]], is_row: bool) -> tuple[int, int] | None:
         size = len(grid)
-        for c in range(size):
-            column = [grid[r][c] for r in range(size)]
-            for r in range(size):
-                if column[r] != E:
+        for i in range(size):
+            line = grid[i] if is_row else [grid[j][i] for j in range(size)]
+            for j in range(size):
+                if line[j] != E:
                     continue
-                if r >= 2 and column[r - 1] == column[r - 2] != E:
-                    grid[r][c] = self._opposite(column[r - 1])
-                    return r, c
-                if r <= size - 3 and column[r + 1] == column[r + 2] != E:
-                    grid[r][c] = self._opposite(column[r + 1])
-                    return r, c
-                if 0 < r < size - 1 and column[r - 1] == column[r + 1] != E:
-                    grid[r][c] = self._opposite(column[r - 1])
-                    return r, c
+                if j >= 2 and line[j - 1] == line[j - 2] != E:
+                    line[j] = self._opposite(line[j - 1])
+                    return (i, j) if is_row else (j, i)
+                if j <= size - 3 and line[j + 1] == line[j + 2] != E:
+                    line[j] = self._opposite(line[j + 1])
+                    return (i, j) if is_row else (j, i)
+                if 0 < j < size - 1 and line[j - 1] == line[j + 1] != E:
+                    line[j] = self._opposite(line[j - 1])
+                    return (i, j) if is_row else (j, i)
         return None
 
     def _rule_balance_row(self, grid: list[list[str]]) -> tuple[int, int] | None:
-        size = len(grid)
-        half = size // 2
-        for r, row in enumerate(grid):
-            if row.count(E) == 0:
-                continue
-            if row.count(X) == half:
-                for c in range(size):
-                    if row[c] == E:
-                        row[c] = O
-                        return r, c
-            if row.count(O) == half:
-                for c in range(size):
-                    if row[c] == E:
-                        row[c] = X
-                        return r, c
-        return None
+        return self._rule_balance(grid, is_row=True)
 
     def _rule_balance_column(self, grid: list[list[str]]) -> tuple[int, int] | None:
+        return self._rule_balance(grid, is_row=False)
+
+    def _rule_balance(self, grid: list[list[str]], is_row: bool) -> tuple[int, int] | None:
         size = len(grid)
         half = size // 2
-        for c in range(size):
-            column = [grid[r][c] for r in range(size)]
-            if column.count(E) == 0:
+        for i in range(size):
+            line = grid[i] if is_row else [grid[j][i] for j in range(size)]
+            if line.count(E) == 0:
                 continue
-            if column.count(X) == half:
-                for r in range(size):
-                    if grid[r][c] == E:
-                        grid[r][c] = O
-                        return r, c
-            if column.count(O) == half:
-                for r in range(size):
-                    if grid[r][c] == E:
-                        grid[r][c] = X
-                        return r, c
+            if line.count(X) == half:
+                for j in range(size):
+                    if line[j] == E:
+                        line[j] = O
+                        return (i, j) if is_row else (j, i)
+            if line.count(O) == half:
+                for j in range(size):
+                    if line[j] == E:
+                        line[j] = X
+                        return (i, j) if is_row else (j, i)
         return None
