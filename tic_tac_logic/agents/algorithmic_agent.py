@@ -24,6 +24,8 @@ class AlgorithmicAgent(BaseAgent):
         pass
 
     def _opposite(self, symbol: str) -> str:
+        if symbol not in (X, O):
+            raise ValueError("_opposite called with invalid symbol")
         return O if symbol == X else X
 
     def _deduce_one_move(self, grid: list[list[str]]) -> tuple[int, int] | None:

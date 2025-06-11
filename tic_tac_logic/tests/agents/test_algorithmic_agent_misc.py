@@ -1,13 +1,19 @@
+import pytest
+
 from tic_tac_logic.agents.algorithmic_agent import AlgorithmicAgent
 from tic_tac_logic.constants import X, O, E
 
 
 class TestOpposite:
-    def test_returns_opposite_symbol(self) -> None:
+    @pytest.mark.parametrize("symbol,expected", [(X, O), (O, X)])
+    def test_returns_opposite_symbol(self, symbol: str, expected: str) -> None:
         agent = AlgorithmicAgent(rows=2, columns=2)
-        assert agent._opposite(X) == O
-        assert agent._opposite(O) == X
-        assert agent._opposite(E) == X
+        assert agent._opposite(symbol) == expected
+
+    def test_raises_error_on_invalid_symbol(self) -> None:
+        agent = AlgorithmicAgent(rows=2, columns=2)
+        with pytest.raises(ValueError):
+            agent._opposite(E)
 
 
 class TestDeduceOneMove:
