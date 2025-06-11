@@ -178,5 +178,5 @@ class FailureAgent(Agent):
                 q_table["failures"].add(move)
 
     def reset(self) -> None:
-        # Reset the agent's state
-        ...
+        """Intentionally left blank as the agent maintains no episodic state."""
+        pass
