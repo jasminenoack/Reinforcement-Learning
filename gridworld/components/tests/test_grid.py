@@ -448,6 +448,14 @@ class TestStep:
         assert done is False
         assert env.visit_counts == {(0, 0): 3}
 
+    def test_step_raises_when_next_cell_out_of_bounds(self, mocker):
+        env = GridWorldEnv()
+        mocker.patch.object(
+            env, "next_cell", autospec=True, return_value=((10, 10), MOVEMENT)
+        )
+        with pytest.raises(ValueError):
+            env.step(UP)
+
     def test_does_not_get_goal_reward_if_max_steps_not_at_goal(self):
         env = GridWorldEnv()
         env.agent_pos = (3, 4)
@@ -645,6 +653,13 @@ class TestGetCell:
         assert cell.obstacle is False
         assert cell.visited == 1
 
+    def test_out_of_bounds(self):
+        env = GridWorldEnv()
+        with pytest.raises(ValueError):
+            env.get_cell((-1, 0))
+        with pytest.raises(ValueError):
+            env.get_cell((0, env.cols))
+
 
 class TestFindGoalPosition:
     def test_find_goal_position(self):
@@ -734,4 +749,11 @@ class TestNextCell:
         env.get_cell((2, 1)).obstacle = True
         cell, effect = env.next_cell(LEFT)
         assert cell == (2, 2)
+        assert effect == OBSTACLE
+
+    def test_obstacle_takes_precedence_over_goal(self):
+        grid = [[Entry(start=True), Entry(goal=True, obstacle=True)]]
+        env = GridWorldEnv(grid=grid)
+        cell, effect = env.next_cell(RIGHT)
+        assert cell == (0, 0)
         assert effect == OBSTACLE
