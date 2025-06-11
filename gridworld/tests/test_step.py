@@ -85,3 +85,29 @@ class TestGetReverseAction:
             done=False,
         )
         assert step.get_reverse_action() is None
+
+    def test_stationary_action_returns_none(self):
+        step = Step(
+            start=(0, 0),
+            action=UP,
+            new_state=(0, 0),
+            reward=0,
+            done=False,
+        )
+        assert step.get_reverse_action() is None
+
+    def test_mismatched_direction_still_reverses_action(self):
+        step = Step(
+            start=(0, 0),
+            action=UP,
+            new_state=(2, 2),
+            reward=1,
+            done=True,
+        )
+        assert step.get_reverse_action() == Step(
+            start=(2, 2),
+            action=DOWN,
+            new_state=(0, 0),
+            reward=1,
+            done=True,
+        )
