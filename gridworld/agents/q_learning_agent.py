@@ -1,5 +1,4 @@
 from collections import defaultdict
-from email.policy import default
 from random import Random
 from gridworld.agents.generic_agent import Agent
 from gridworld.utils import SIMPLE_ACTIONS, Step
@@ -8,7 +7,9 @@ from gridworld.utils import SIMPLE_ACTIONS, Step
 class QLearningAgent(Agent):
     def __init__(self, *, rng: Random | None = None, **kwargs):
         self.actions = SIMPLE_ACTIONS
-        self.q_table = defaultdict(lambda: {action: 0 for action in self.actions})
+        self.q_table: defaultdict[tuple[int, int], dict[str, float]] = defaultdict(
+            lambda: {action: 0.0 for action in self.actions}
+        )
         # exploration rate
         self.epsilon = 0.1
         # learning rate (how fast Q-values update)
