@@ -1,7 +1,17 @@
 import pytest
 
 from gridworld.components.maze_builders import Entry, Walls
-from gridworld.utils import DOWN, GOAL, LEFT, MOVEMENT, OFF_BOARD, RIGHT, UP, OBSTACLE
+from gridworld.utils import (
+    DOWN,
+    GOAL,
+    INTERIOR_WALL,
+    LEFT,
+    MOVEMENT,
+    OFF_BOARD,
+    RIGHT,
+    UP,
+    OBSTACLE,
+)
 from ..grid_environment import Cell, GridWorldEnv
 
 
@@ -735,3 +745,18 @@ class TestNextCell:
         cell, effect = env.next_cell(LEFT)
         assert cell == (2, 2)
         assert effect == OBSTACLE
+
+    def test_hits_interior_wall(self) -> None:
+        env = GridWorldEnv(rows=1, cols=2)
+        env.get_cell((0, 0)).walls = Walls(right=True)
+        env.get_cell((0, 1)).walls = Walls(left=True)
+
+        prev_agent_pos = env.agent_pos
+        prev_visits = env.visit_counts.data.copy()
+
+        cell, effect = env.next_cell(RIGHT)
+
+        assert cell == prev_agent_pos
+        assert effect == INTERIOR_WALL
+        assert env.agent_pos == prev_agent_pos
+        assert env.visit_counts == prev_visits
