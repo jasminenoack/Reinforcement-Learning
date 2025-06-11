@@ -1,13 +1,15 @@
 from collections import defaultdict
 from random import Random
+from typing import Any, DefaultDict
+
 from gridworld.agents.generic_agent import Agent
 from gridworld.utils import SIMPLE_ACTIONS, Step
 
 
 class QLearningAgent(Agent):
-    def __init__(self, *, rng: Random | None = None, **kwargs):
+    def __init__(self, *, rng: Random | None = None, **kwargs: Any) -> None:
         self.actions = SIMPLE_ACTIONS
-        self.q_table: defaultdict[tuple[int, int], dict[str, float]] = defaultdict(
+        self.q_table: DefaultDict[tuple[int, int], dict[str, float]] = defaultdict(
             lambda: {action: 0.0 for action in self.actions}
         )
         # exploration rate
@@ -19,7 +21,7 @@ class QLearningAgent(Agent):
         self.rng = rng or Random()
         self.reset()
 
-    def act(self, state):
+    def act(self, state: tuple[int, int]) -> str:
         """
         using epsilon sometimes make a random choice
 
@@ -37,10 +39,10 @@ class QLearningAgent(Agent):
         ]
         return self.rng.choice(best_actions)
 
-    def reset(self):
+    def reset(self) -> None:
         pass
 
-    def observe(self, step: Step):
+    def observe(self, step: Step) -> None:
         state = step.start
         next_state = step.new_state
         action = step.action

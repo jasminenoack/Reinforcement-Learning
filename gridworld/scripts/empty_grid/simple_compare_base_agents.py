@@ -26,7 +26,7 @@ except FileExistsError:
     pass
 
 
-def log(*message: list[str]):
+def log(*message: object) -> None:
     console.print(*message)
     with open(output_file, "a") as f:
         f.write(" ".join(str(m) for m in message) + "\n")

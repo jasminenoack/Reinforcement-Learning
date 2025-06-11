@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 GridworldEnv: A simple, extensible environment for reinforcement learning agents.
 
@@ -139,7 +141,7 @@ class VisitCounter:
         return self
 
     @classmethod
-    def avg(cls, *visit_counts: list["VisitCounter"]) -> "VisitCounter":
+    def avg(cls, *visit_counts: VisitCounter) -> VisitCounter:
         coordinates = set()
         total_counters = len(visit_counts)
         new_counter = cls()

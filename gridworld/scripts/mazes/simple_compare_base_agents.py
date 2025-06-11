@@ -1,4 +1,3 @@
-from functools import reduce
 from os import mkdir
 import os
 import shutil
@@ -27,7 +26,7 @@ except FileExistsError:
     pass
 
 
-def log(*message: list[str]):
+def log(*message: object) -> None:
     console.print(*message)
     with open(output_file, "a") as f:
         f.write(" ".join(str(m) for m in message) + "\n")
@@ -57,7 +56,7 @@ def run_test(env: GridWorldEnv, agent: Agent, render: bool = False):
         analysis["reached_goal"]["count"] / len(results) * 100,
     )
     render_heatmap(
-        visit_counts=avg_visit_counts,
+        visit_counts=avg_visit_counts.data,
         rows=env.rows,
         cols=env.cols,
         stat=f"Avg Visit Count ({agent.__class__.__name__})",

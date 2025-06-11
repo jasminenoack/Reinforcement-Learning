@@ -4,7 +4,7 @@ import os
 import shutil
 from gridworld.agents.generic_agent import Agent
 from gridworld.agents.q_learning_agent import QLearningAgent
-from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
+from gridworld.components.grid_environment import GridWorldEnv
 from rich.console import Console
 from gridworld.utils import (
     line_plot,
@@ -26,7 +26,7 @@ except FileExistsError:
     pass
 
 
-def log(*message: list[str]):
+def log(*message: object) -> None:
     console.print(*message)
     with open(output_file, "a") as f:
         f.write(" ".join(str(m) for m in message) + "\n")
@@ -66,7 +66,7 @@ def run_test(env: GridWorldEnv, agent: Agent, iteration: int, render: bool = Fal
     )
 
 
-def write_summary_table(summaries: list[Summary], steps) -> None:
+def write_summary_table(summaries: list[Summary], steps: int) -> None:
     current_iterations = 0
     log(
         "| Iter | Avg Reward | Max Reward | Min Reward | Avg Steps | Max Steps | Min Steps | Reached Goal | Goal % |"
@@ -138,7 +138,7 @@ def write_summary_charts(summaries: list[Summary], steps: int) -> None:
     log(f"![reached_goal](./reached_goal-{steps}.png)")
 
 
-def run_env(max_steps: int):
+def run_env(max_steps: int) -> list[Summary]:
     log(f"Running env with max_steps: {max_steps}")
     summaries = []
     env = GridWorldEnv(max_steps=max_steps)

@@ -1,10 +1,9 @@
-from functools import reduce
 import os
 import shutil
 import time
 from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
-from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
+from gridworld.components.grid_environment import GridWorldEnv, StepResult
 from rich.console import Console
 
 from gridworld.components.maze_builders import (
@@ -43,25 +42,20 @@ class Runner:
                 self.env.render()
 
             action = self.agent.act(state)
-            step_result = self.env.step(action)
-            new_state, reward, done = step_result
-            step_result = Step(
+            step_data: StepResult = self.env.step(action)
+            new_state = step_data.new_state
+            reward = step_data.reward
+            done = step_data.done
+
+            step = Step(
                 start=state,
                 action=action,
                 reward=reward,
                 new_state=new_state,
                 done=done,
             )
-            self.agent.observe(step_result)
-            trajectory.append(
-                Step(
-                    start=state,
-                    action=action,
-                    reward=reward,
-                    new_state=new_state,
-                    done=done,
-                )
-            )
+            self.agent.observe(step)
+            trajectory.append(step)
             state = new_state
             if render:
                 time.sleep(sleep)
@@ -74,7 +68,7 @@ class Runner:
             )
             console.print(f"Visit counts: {self.env.visit_counts}")
             render_heatmap(
-                visit_counts=self.env.visit_counts,
+                visit_counts=self.env.visit_counts.data,
                 rows=self.env.rows,
                 cols=self.env.cols,
                 scale_max=3,
@@ -103,7 +97,7 @@ class Runner:
             results.append(result)
         return results
 
-    def analyze_results(self, results: list[RunnerReturn]) -> dict:
+    def analyze_results(self, results: list[RunnerReturn]) -> dict[str, dict[str, float]]:
         total_rewards = [result["total_reward"] for result in results]
         average_reward = sum(total_rewards) / len(total_rewards)
 

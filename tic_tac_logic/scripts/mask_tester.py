@@ -129,8 +129,9 @@ def mask_builder_view(agent: MaskAgent, envs: list[Grid]) -> None:
         x_placements,
         key=lambda x: (-x.counts.failure_probability(), -x.counts.failure_count),
     )[:10]:
+        formatted_pattern = placement.pattern.replace("\n", "|")
         print(
-            f"        {placement.pattern.replace("\n", "|")}  {placement.counts.failure_probability():.0f} ({placement.counts.failure_count}/{placement.counts.success_count})"
+            f"        {formatted_pattern}  {placement.counts.failure_probability():.0f} ({placement.counts.failure_count}/{placement.counts.success_count})"
         )
 
     print("")
@@ -139,8 +140,9 @@ def mask_builder_view(agent: MaskAgent, envs: list[Grid]) -> None:
         o_placements,
         key=lambda x: (-x.counts.failure_probability(), -x.counts.failure_count),
     )[:10]:
+        formatted_pattern = placement.pattern.replace("\n", "|")
         print(
-            f"        {placement.pattern.replace("\n", "|")}  {placement.counts.failure_probability():.0f} ({placement.counts.failure_count}/{placement.counts.success_count})"
+            f"        {formatted_pattern}  {placement.counts.failure_probability():.0f} ({placement.counts.failure_count}/{placement.counts.success_count})"
         )
 
 
