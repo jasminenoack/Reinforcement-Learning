@@ -104,8 +104,9 @@ class Grid:
     def get_state(self) -> BoardState:
         return BoardState()
 
-    def render(self):
-        for row in self.board:
+    def render(self) -> None:
+        """Pretty-print the current board state."""
+        for row in self.board.tolist():
             print(" ".join("Q" if cell else "." for cell in row))
         print(f"Moves: {self.moves}")
         print(f"Score: {self.score}")
