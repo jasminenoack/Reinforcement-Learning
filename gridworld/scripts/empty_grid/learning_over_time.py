@@ -53,7 +53,9 @@ summaries = []
 NUMBER_OF_EPISODES_PER_ITERATION = 30
 
 
-def run_test(env: GridWorldEnv, agent: QLearningAgent, iteration: int, render: bool = False) -> None:
+def run_test(
+    env: GridWorldEnv, agent: QLearningAgent, iteration: int, render: bool = False
+) -> None:
     runner = Runner(env, agent)
     results = runner.run_episodes(NUMBER_OF_EPISODES_PER_ITERATION, render=False)
     analysis = runner.analyze_results(results)

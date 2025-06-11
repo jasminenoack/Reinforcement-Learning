@@ -767,8 +767,12 @@ class TestAct:
     def test_returns_best_option_when_available(self, mocker):
         grid = [[E, E], [E, E]]
         agent = MaskAgent(2, 2)
-        mocker.patch.object(MaskAgent, "do_not_discover", autospec=True, return_value=True)
-        mocker.patch.object(MaskAgent, "find_aggressive_failures", autospec=True, return_value=set())
+        mocker.patch.object(
+            MaskAgent, "do_not_discover", autospec=True, return_value=True
+        )
+        mocker.patch.object(
+            MaskAgent, "find_aggressive_failures", autospec=True, return_value=set()
+        )
         mocker.patch.object(
             MaskAgent,
             "remove_failing_options",
@@ -781,8 +785,19 @@ class TestAct:
         grid = [[E, E], [E, E]]
         agent = MaskAgent(2, 2)
         random.seed(0)
-        mocker.patch.object(MaskAgent, "do_not_discover", autospec=True, return_value=True)
-        mocker.patch.object(MaskAgent, "find_aggressive_failures", autospec=True, return_value=set())
-        mocker.patch.object(MaskAgent, "remove_failing_options", autospec=True, side_effect=lambda self, g, pm, fm: pm)
-        mocker.patch.object(MaskAgent, "options_with_one_choice", autospec=True, return_value=set())
+        mocker.patch.object(
+            MaskAgent, "do_not_discover", autospec=True, return_value=True
+        )
+        mocker.patch.object(
+            MaskAgent, "find_aggressive_failures", autospec=True, return_value=set()
+        )
+        mocker.patch.object(
+            MaskAgent,
+            "remove_failing_options",
+            autospec=True,
+            side_effect=lambda self, g, pm, fm: pm,
+        )
+        mocker.patch.object(
+            MaskAgent, "options_with_one_choice", autospec=True, return_value=set()
+        )
         assert agent.act(Observation(grid)) == ((1, 1), "O")
