@@ -89,7 +89,7 @@ class Runner:
         clear_render: bool = False,
         sleep: float = 0.5,
     ) -> list[RunnerReturn]:
-        results = []
+        results: list[RunnerReturn] = []
         for _ in range(num_episodes):
             result = self.run_episode(
                 render=render, clear_render=clear_render, sleep=sleep

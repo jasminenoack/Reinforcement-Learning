@@ -44,6 +44,7 @@ Example usage:
 """
 
 from collections import defaultdict
+from collections.abc import ItemsView, ValuesView
 from dataclasses import dataclass
 from unittest.mock import ANY
 from rich.console import Console
@@ -102,13 +103,15 @@ class StepResult:
 
 
 class VisitCounter:
-    def __init__(self, data: dict = None) -> None:
-        self.data = data or defaultdict(int)
+    def __init__(
+        self, data: dict[tuple[int, int], int] | None = None
+    ) -> None:
+        self.data: dict[tuple[int, int], int] = data or defaultdict(int)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: tuple[int, int]) -> int:
         return self.data[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: tuple[int, int], value: int) -> None:
         self.data[key] = value
 
     def __eq__(self, value: "dict | VisitCounter") -> bool:
@@ -153,10 +156,10 @@ class VisitCounter:
             new_counter[coordinate] = avg
         return new_counter
 
-    def items(self):
+    def items(self) -> 'ItemsView[tuple[int, int], int]':
         return self.data.items()
 
-    def values(self):
+    def values(self) -> 'ValuesView[int]':
         return self.data.values()
 
 
