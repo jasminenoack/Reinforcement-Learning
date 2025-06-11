@@ -60,3 +60,10 @@ class TestHasDoor:
         assert cell.has_door(DOWN) is True
         assert cell.has_door(LEFT) is True
         assert cell.has_door(RIGHT) is True
+
+    def test_blocked_by_walls(self):
+        cell = Cell(walls=Walls(up=True, down=True, left=True, right=True))
+        assert cell.has_door(UP) is False
+        assert cell.has_door(DOWN) is False
+        assert cell.has_door(LEFT) is False
+        assert cell.has_door(RIGHT) is False
