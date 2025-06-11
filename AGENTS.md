@@ -82,3 +82,6 @@ Use a clear, professional tone. Prioritize readable, idiomatic code with minimal
 - Note any limitations, skipped areas, or ambiguities encountered.
 - Highlight any security concerns or risky behavior introduced.
 - Avoid vague phrases like “updated code” or “fixed tests” — be specific.
+
+## Typing and Linting
+- No-op methods should use `# pragma: no cover` and have docstrings to suppress lint warnings.
