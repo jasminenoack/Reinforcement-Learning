@@ -5,7 +5,13 @@ from tic_tac_logic.constants import X, O, E, Observation, StepResult
 
 
 class AlgorithmicAgent(BaseAgent):
-    """Deterministic agent for solving Tic-Tac-Logic puzzles."""
+    """
+    Deterministic agent for solving Tic-Tac-Logic puzzles.
+    
+    This is an agent being used as a testing ground for the codex genai coding agent. 
+    
+    I am aware it does not right now include all the rules, we are working on getting it to a good place 
+    """
 
     def act(self, observation: Observation) -> tuple[tuple[int, int], str]:
         board = [row.copy() for row in observation.grid]
