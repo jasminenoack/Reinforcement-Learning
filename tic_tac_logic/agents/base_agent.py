@@ -6,8 +6,18 @@ from tic_tac_logic.constants import StepResult, Observation
 class Agent(ABC):
     explain: bool = False
 
-    @abstractmethod
-    def __init__(self, grid: list[list[str]]) -> None:
+    def __init__(self, rows: int, columns: int) -> None:
+        """Common agent initialisation.
+
+        Parameters
+        ----------
+        rows:
+            Number of rows the agent will operate on.
+        columns:
+            Number of columns the agent will operate on.
+        """
+        self.rows = rows
+        self.columns = columns
         self.q_table: dict[Any, Any] = {}
 
     @abstractmethod

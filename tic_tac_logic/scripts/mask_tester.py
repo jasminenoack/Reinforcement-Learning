@@ -33,7 +33,7 @@ all_single_block_masks = rows_masks + columns_masks
 # all_masks = generate_pool_masks(rows=rows, columns=columns)
 # print(len(all_single_block_masks), "single block masks generated")
 
-agent = MaskAgent(grid=grids[0].grid, masks=all_single_block_masks)
+agent = MaskAgent(rows, columns, masks=all_single_block_masks)
 rounds_of_attempts = 100
 
 

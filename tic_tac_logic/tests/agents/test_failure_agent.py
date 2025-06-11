@@ -27,7 +27,7 @@ class TestLearn:
             [X, O, O, E],
         ]
         grid = Grid(current_grid)
-        agent = FailureAgent(current_grid)
+        agent = FailureAgent(len(current_grid), len(current_grid[0]))
         agent.q_table = {
             "failures": {
                 Move(
@@ -104,7 +104,7 @@ class TestLearn:
                 [" ", " ", " ", " ", " ", " "],
             ],
         )
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
         agent.learn(sample_result)
         assert agent.q_table == {
             "failures": {
@@ -156,7 +156,7 @@ class TestLearn:
                 ["X", " ", " ", " ", " ", " "],
             ],
         )
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
 
         agent.learn(sample_result)
         assert agent.q_table == {
@@ -201,7 +201,7 @@ class TestLearn:
                 [" ", " ", " ", " ", " ", " "],
             ],
         )
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
 
         agent.learn(sample_result)
         assert agent.q_table == {
@@ -220,7 +220,7 @@ class TestGetValidPlacements:
     def test_all_empty_spaces_have_two_valid_placements_to_start(self):
         easy_grid = get_easy_grid()
         grid = Grid(easy_grid)
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
         valid_placements = agent.get_valid_placements(grid.grid)
         assert len(valid_placements) == 72
 
@@ -228,7 +228,7 @@ class TestGetValidPlacements:
         easy_grid = get_easy_grid()
         grid = Grid(easy_grid)
         result = grid.act((1, 2), X)
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
         agent.learn(result)
         grid.reset()
         valid_placements = agent.get_valid_placements(grid.grid)
@@ -241,7 +241,7 @@ class TestGetValidPlacements:
         grid = Grid(easy_grid)
 
         result = grid.act((1, 2), X)
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
         agent.learn(result)
         grid.reset()
         valid_placements = agent.get_valid_placements(grid.grid)
@@ -252,7 +252,7 @@ class TestGetValidPlacements:
     def test_works_with_O(self):
         easy_grid = get_easy_grid()
         grid = Grid(easy_grid)
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
         result = grid.act((1, 2), O)
         before_valid_placements = agent.get_valid_placements(grid.grid)
         assert len(before_valid_placements) == 70
@@ -278,7 +278,7 @@ class TestGetValidPlacements:
     def test_removes_if_broken_in_column(self):
         easy_grid = get_easy_grid()
         grid = Grid(easy_grid)
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
         assert len(agent.get_valid_placements(grid.grid)) == 72
         sample_result = grid.act((7, 0), X)
         agent.learn(sample_result)
@@ -291,7 +291,7 @@ class TestGetValidPlacements:
         easy_grid[1] = ["X", "X", " ", " ", "X", " "]
         easy_grid[5] = ["X", "X", " ", " ", " ", " "]
         grid = Grid(easy_grid)
-        agent = FailureAgent(easy_grid)
+        agent = FailureAgent(len(easy_grid), len(easy_grid[0]))
         assert len(agent.get_valid_placements(grid.grid)) == 72
         sample_result = grid.act((5, 4), X)
         agent.learn(sample_result)
