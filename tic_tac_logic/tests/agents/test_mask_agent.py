@@ -1,4 +1,5 @@
 import pytest
+import random
 from tic_tac_logic.agents.mask_agent import (
     # MaskHorizontal3Centered,
     # MaskHorizontal3CenteredX,
@@ -9,7 +10,7 @@ from tic_tac_logic.agents.mask_agent import (
     MaskResult,
     ConfidentMask,
 )
-from tic_tac_logic.constants import X, O, E
+from tic_tac_logic.constants import X, O, E, Observation
 from tic_tac_logic.sample_grids import get_easy_grid
 from tic_tac_logic.env.grid import Grid
 
@@ -746,3 +747,42 @@ class TestOptionsWithOneChoice:
             ((0, 0), X),
             ((1, 3), O),
         }
+
+
+class TestAct:
+    def test_raises_if_no_empty_cells(self):
+        grid = [[X, O], [O, X]]
+        agent = MaskAgent(len(grid), len(grid[0]))
+        with pytest.raises(ValueError):
+            agent.act(Observation(grid))
+
+    def test_returns_random_move_when_exploring(self):
+        grid = [[E, E], [E, E]]
+        agent = MaskAgent(2, 2)
+        agent.epsilon = 1
+        random.seed(0)
+        result = agent.act(Observation(grid))
+        assert result == ((1, 1), "X")
+
+    def test_returns_best_option_when_available(self, mocker):
+        grid = [[E, E], [E, E]]
+        agent = MaskAgent(2, 2)
+        mocker.patch.object(MaskAgent, "do_not_discover", autospec=True, return_value=True)
+        mocker.patch.object(MaskAgent, "find_aggressive_failures", autospec=True, return_value=set())
+        mocker.patch.object(
+            MaskAgent,
+            "remove_failing_options",
+            autospec=True,
+            return_value={((0, 0), X)},
+        )
+        assert agent.act(Observation(grid)) == ((0, 0), X)
+
+    def test_returns_random_when_no_best_option(self, mocker):
+        grid = [[E, E], [E, E]]
+        agent = MaskAgent(2, 2)
+        random.seed(0)
+        mocker.patch.object(MaskAgent, "do_not_discover", autospec=True, return_value=True)
+        mocker.patch.object(MaskAgent, "find_aggressive_failures", autospec=True, return_value=set())
+        mocker.patch.object(MaskAgent, "remove_failing_options", autospec=True, side_effect=lambda self, g, pm, fm: pm)
+        mocker.patch.object(MaskAgent, "options_with_one_choice", autospec=True, return_value=set())
+        assert agent.act(Observation(grid)) == ((1, 1), "O")
