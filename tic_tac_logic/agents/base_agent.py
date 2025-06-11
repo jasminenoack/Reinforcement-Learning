@@ -18,7 +18,7 @@ class Agent(ABC):
         """
         self.rows = rows
         self.columns = columns
-        self.q_table: dict[Any, Any] = {}
+        self._q_table: dict[Any, Any] = {}
 
     @abstractmethod
     def act(self, observation: Observation) -> tuple[tuple[int, int], str]:
@@ -50,3 +50,11 @@ class Agent(ABC):
         :param next_state: The new state of the grid after the action.
         """
         pass
+
+    @property
+    def q_table(self) -> dict[Any, Any]:
+        return self._q_table
+
+    @q_table.setter
+    def q_table(self, value: dict[Any, Any]) -> None:
+        self._q_table = value

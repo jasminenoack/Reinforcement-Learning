@@ -156,6 +156,10 @@ class MaskAgent(Agent):
         """
         return self.mask_manager.q_table
 
+    @q_table.setter
+    def q_table(self, value: QTable) -> None:
+        self.mask_manager.q_table = value
+
     @property
     def masks(self) -> list[AbstractMask]:
         return self.mask_manager.get_masks()
