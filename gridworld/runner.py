@@ -28,6 +28,23 @@ class Runner:
         clear_render: bool = False,
         sleep: float = 0.5,
     ) -> RunnerReturn:
+        """Run the environment until the agent reaches a terminal state.
+
+        Parameters
+        ----------
+        render : bool, optional
+            Display the environment at each step when ``True``.
+        clear_render : bool, optional
+            Clear the console between renders to produce an animation effect.
+        sleep : float, optional
+            Seconds to pause between renders.
+
+        Returns
+        -------
+        RunnerReturn
+            Statistics describing the episode including reward, steps,
+            goal status, trajectory and visit counts.
+        """
         trajectory: list[Step] = []
         # make sure the environment is in a clean state
         self.env.reset()
@@ -97,7 +114,9 @@ class Runner:
             results.append(result)
         return results
 
-    def analyze_results(self, results: list[RunnerReturn]) -> dict[str, dict[str, float]]:
+    def analyze_results(
+        self, results: list[RunnerReturn]
+    ) -> dict[str, dict[str, float]]:
         total_rewards = [result["total_reward"] for result in results]
         average_reward = sum(total_rewards) / len(total_rewards)
 
