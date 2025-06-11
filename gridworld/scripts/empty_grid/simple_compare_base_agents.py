@@ -2,6 +2,7 @@ from functools import reduce
 from os import mkdir
 import os
 import shutil
+from typing import Any
 from gridworld.agents.lost_agent import LostAgent
 from gridworld.agents.manhattan_agent import ManhattanAgent
 from gridworld.agents.generic_agent import Agent
@@ -26,7 +27,7 @@ except FileExistsError:
     pass
 
 
-def log(*message: list[str]):
+def log(*message: Any) -> None:
     console.print(*message)
     with open(output_file, "a") as f:
         f.write(" ".join(str(m) for m in message) + "\n")

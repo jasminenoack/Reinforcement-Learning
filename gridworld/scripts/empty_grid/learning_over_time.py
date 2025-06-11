@@ -3,6 +3,7 @@ from functools import reduce
 from os import mkdir
 import os
 import shutil
+from typing import Any
 from gridworld.agents.generic_agent import Agent
 from gridworld.agents.q_learning_agent import QLearningAgent
 from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
@@ -28,7 +29,7 @@ except FileExistsError:
     pass
 
 
-def log(*message: list[str]):
+def log(*message: Any) -> None:
     console.print(*message)
     with open(output_file, "a") as f:
         f.write(" ".join(str(m) for m in message) + "\n")
@@ -52,7 +53,7 @@ summaries = []
 NUMBER_OF_EPISODES_PER_ITERATION = 30
 
 
-def run_test(env: GridWorldEnv, agent: Agent, iteration: int, render: bool = False):
+def run_test(env: GridWorldEnv, agent: QLearningAgent, iteration: int, render: bool = False) -> None:
     runner = Runner(env, agent)
     results = runner.run_episodes(NUMBER_OF_EPISODES_PER_ITERATION, render=False)
     analysis = runner.analyze_results(results)
@@ -78,7 +79,7 @@ def run_test(env: GridWorldEnv, agent: Agent, iteration: int, render: bool = Fal
 
     file_name = f"avg_directional_visit_count_{iteration}"
     render_directional_heatmap_for_q_table(
-        visit_counts=avg_visit_counts,
+        visit_counts=avg_visit_counts.data,
         rows=env.rows,
         cols=env.cols,
         q_table=agent.q_table,

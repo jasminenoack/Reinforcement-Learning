@@ -145,7 +145,7 @@ class MazeGenerator(ABC):
             self.grid.append(row)
 
     @abstractmethod
-    def run(self) -> list[Entry]: ...
+    def run(self) -> list[list[Entry]]: ...
 
     def get_cell(self, coor: tuple[int, int]) -> Entry:
         # get the cell at the given coordinates
@@ -246,7 +246,7 @@ class SparseObstacleMazeGenerator(MazeGenerator):
         for neighbor in neighbors:
             self.set_cell(neighbor, PATH)
 
-    def run(self) -> list[Entry]:
+    def run(self) -> list[list[Entry]]:
         self.block(self.start, START)
         self.block(self.end, GOAL)
         i = 0
@@ -309,7 +309,7 @@ class RecursiveBacktracking(MazeGenerator):
             previous_cell.walls.right = False
             previous_cell.mark(RIGHT)
 
-    def run(self) -> list[Entry]:
+    def run(self) -> list[list[Entry]]:
         self.set_cell(self.start, START, visited=False)
         self.set_cell(self.end, GOAL, visited=False)
         unvisited_cells = self.get_unvisited_coordinates()

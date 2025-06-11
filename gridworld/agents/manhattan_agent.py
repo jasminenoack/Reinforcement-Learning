@@ -1,4 +1,7 @@
 import random
+from typing import Any
+from collections.abc import MutableSet
+
 from gridworld.agents.generic_agent import Agent
 from gridworld.utils import (
     DOWN,
@@ -12,10 +15,10 @@ from gridworld.utils import (
 
 class ManhattanAgent(Agent):
 
-    def reset(self, **kwargs):
-        self._tried = {}  # maps (state) -> set(actions tried)
+    def reset(self, **kwargs: Any) -> None:
+        self._tried: dict[tuple[int, int], MutableSet[str]] = {}
 
-    def act(self, state):
+    def act(self, state: tuple[int, int]) -> str:
         row, col = state
         row_goal, col_goal = self.goal
 
@@ -44,6 +47,6 @@ class ManhattanAgent(Agent):
 
         raise ValueError(f"No available moves from {state}; stuck or misconfigured.")
 
-    def observe(self, step: Step):
+    def observe(self, step: Step) -> None:
         # Optional: reinforce that this action was tried (may be redundant)
         self._tried.setdefault(step.start, set()).add(step.action)

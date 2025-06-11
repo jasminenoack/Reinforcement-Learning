@@ -1,7 +1,10 @@
 from typing import NamedTuple, TypedDict
 
 from matplotlib import pyplot as plt
-from matplotlib.table import Cell
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from gridworld.components.grid_environment import Cell, VisitCounter
 import numpy as np
 
 
@@ -57,19 +60,19 @@ class RunnerReturn(TypedDict):
     total_reward: float
     steps: int
     reached_goal: bool
-    trajectory: list[tuple[int, int]]
-    visit_counts: dict[tuple[int, int], int]
+    trajectory: list[Step]
+    visit_counts: "VisitCounter"
 
 
 def _base_heatmap(
     visit_counts: dict[tuple[int, int], int],
     rows: int,
     cols: int,
-    stat="Visit Count",
+    stat: str = "Visit Count",
     folder: str = "output",
     filename: str | None = None,
     scale_max: int = 20,
-    grid: list[list[Cell]] | None = None,
+    grid: list[list["Cell"]] | None = None,
     q_table: dict[tuple[int, int], dict[str, float]] | None = None,
     show: bool = True,
 ) -> str:
@@ -83,14 +86,14 @@ def _base_heatmap(
         numpy_map[x, y] = count
 
     name = f"Gridworld {stat} Heatmap"
-    cmap = plt.cm.Oranges
+    cmap = plt.cm.get_cmap("Oranges")
     cmap.set_bad(color="black")
     plt.imshow(
         numpy_map,
         cmap=cmap,
         interpolation="nearest",
         vmax=scale_max,
-        extent=[0, cols, rows, 0],
+        extent=(0.0, float(cols), float(rows), 0.0),
     )
 
     if q_table:
@@ -206,11 +209,11 @@ def render_heatmap(
     visit_counts: dict[tuple[int, int], int],
     rows: int,
     cols: int,
-    stat="Visit Count",
+    stat: str = "Visit Count",
     folder: str = "output",
     filename: str | None = None,
     scale_max: int = 20,
-    grid: list[list[Cell]] | None = None,
+    grid: list[list["Cell"]] | None = None,
     q_table: dict[tuple[int, int], dict[str, float]] | None = None,
     show: bool = True,
 ) -> str:
@@ -234,11 +237,11 @@ def render_directional_heatmap_for_q_table(
     rows: int,
     cols: int,
     q_table: dict[tuple[int, int], dict[str, float]],
-    stat="Favorite Direction",
+    stat: str = "Favorite Direction",
     folder: str = "output",
     filename: str | None = None,
     scale_max: int = 20,
-) -> None:
+) -> str:
     all_confidences = [
         max(actions.values()) - sorted(actions.values())[-2]
         for actions in q_table.values()

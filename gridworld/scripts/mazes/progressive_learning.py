@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from os import mkdir
 import os
 import shutil
+from typing import Any
 from gridworld.agents.generic_agent import Agent
 from gridworld.agents.q_learning_agent import QLearningAgent
 from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
@@ -29,7 +30,7 @@ except FileExistsError:
     pass
 
 
-def log(*message: list[str]):
+def log(*message: Any) -> None:
     console.print(*message)
     with open(output_file, "a") as f:
         f.write(" ".join(str(m) for m in message) + "\n")
