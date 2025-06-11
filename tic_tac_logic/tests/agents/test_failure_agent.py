@@ -298,3 +298,14 @@ class TestGetValidPlacements:
         assert len(agent.get_valid_placements(grid.grid)) == 70
         grid.reset()
         assert len(agent.get_valid_placements(grid.grid)) == 71
+
+
+class TestReset:
+    def test_does_not_modify_failures(self) -> None:
+        agent = FailureAgent(3, 3)
+        move = Move.create(FailureClass.ROW, "X, X, O", 1, "X")
+        agent.q_table["failures"] = {move}
+
+        agent.reset()
+
+        assert agent.q_table["failures"] == {move}

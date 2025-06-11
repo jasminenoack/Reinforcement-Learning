@@ -40,6 +40,7 @@ class QLearningAgent(Agent):
         return self.rng.choice(best_actions)
 
     def reset(self) -> None:
+        """Clear any episodic state while preserving the Q-table and exploration settings."""
         pass
 
     def observe(self, step: Step) -> None:
