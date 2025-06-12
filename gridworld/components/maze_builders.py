@@ -27,10 +27,6 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 import random
 
-from numpy import diag
-
-
-from gridworld.utils import GOAL
 
 START = "S"
 GOAL = "G"
@@ -158,11 +154,10 @@ class MazeGenerator(ABC):
     ) -> None:
         # set the cell to the marker
         cell = self.get_cell(coor)
-        if not self.get_cell(coor).visited:
-            self.get_cell(coor).visited
-            self.get_cell(coor).mark(marker, visited=visited)
+        if not cell.visited:
+            cell.mark(marker, visited=visited)
         else:
-            raise ValueError(f"Cell {coor} already set to {self.get_cell(coor)}")
+            raise ValueError(f"Cell {coor} already set to {cell}")
 
     def get_neighbor_coordinates(
         self, coor: tuple[int, int], orthogonal: bool = False
