@@ -120,11 +120,12 @@ Let me know which step sounds most interesting and we can prototype it.
 from collections import defaultdict
 import random
 from typing import Any
+
+import numpy as np
+from numpy.typing import NDArray
+
 from queens.agents.random_agent import RandomAgent
 from queens.dtos import Observation, StepResult, RunnerReturn
-from numpy.typing import NDArray
-import numpy as np
-from collections import defaultdict
 
 
 class SimpleRandomReinforcementAgent(RandomAgent):
@@ -212,7 +213,7 @@ class SimpleRandomReinforcementAgent(RandomAgent):
 class DecayFailingPaths(SimpleRandomReinforcementAgent):
 
     def __str__(self) -> str:
-        return f"DecayFailingPaths()"
+        return "DecayFailingPaths()"
 
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
