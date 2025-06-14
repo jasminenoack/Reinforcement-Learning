@@ -63,17 +63,15 @@ class MaskManager:
     def get_applicable_masks(
         self, cell: tuple[int, int], grid: list[list[str]], current: str
     ) -> list[CompleteMask]:
-        masks = [
-            mask
-            for mask in self._current_masks
-            if mask.mask_applies(cell, grid, current)
-        ]
-        masks = [mask for mask in masks if mask]
-        return masks
+        applicable: list[CompleteMask] = []
+        for mask in self._current_masks:
+            if mask.mask_applies(cell, grid, current):
+                applicable.append(mask)
+        return applicable
 
     def iterate(self) -> None:
         self._iterations += 1
-        if self._iterations % 10 == 0:
+        if self._iterations % 25 == 0:
             self._prune_masks()
 
     def _prune_useless_masks(self, debug: bool = False) -> None:
@@ -84,14 +82,15 @@ class MaskManager:
         new_current_masks: list[CompleteMask] = []
         for mask, mask_result in self.q_table["masks"].items():
             success_count = mask_result.success_count
-            if success_count > 1:
+            if success_count > 0:
                 if debug or self.debug:
-                    print(
-                        f"   Mask {mask.name} has success count: {success_count} > 1."
-                    )
+                    print(f"   Mask {mask} has success count: {success_count} > 1.")
                 self.count_rejected_masks += 1
                 continue
             new_current_masks.append(mask)
+        for mask in self._current_masks:
+            if mask not in self.q_table["masks"]:
+                new_current_masks.append(mask)
 
         self._current_masks = new_current_masks
 
@@ -101,8 +100,7 @@ class MaskManager:
             count_masks_to_add = max(100, 1000 - len(self._current_masks))
             masks_to_add = _elements_from_generator(self._masks, count_masks_to_add)
             self._current_masks.extend(masks_to_add)
-        if self.debug:
-            print(f"Current masks: {len(self._current_masks)}")
+        print(f"Current masks: {len(self._current_masks)}")
 
     def trained_enough(self) -> bool:
         # untrained_masks = len(self._masks)
@@ -260,6 +258,7 @@ class MaskAgent(Agent):
         applicable_masks = self.mask_manager.get_applicable_masks(
             step_result.coordinate, step_result.pre_step_grid, step_result.symbol
         )
+
         lost = step_result.loss_reason
         q_table = self.q_table["masks"]
         for mask in applicable_masks:

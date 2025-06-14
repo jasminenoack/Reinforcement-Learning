@@ -55,9 +55,6 @@ class TestLearn:
         step = grid.act((1, 2), O)
         agent.learn(step)
 
-        for mask in agent.q_table["masks"]:
-            print(mask)
-
         for mask, mask_result in {
             CompleteMask(
                 pattern="X__",

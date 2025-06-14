@@ -9,6 +9,7 @@ from tic_tac_logic.env.grid import Grid
 from tic_tac_logic.constants import O
 from tic_tac_logic.runner import print_grid
 import logging
+from tic_tac_logic.agents.masks import generate_pool_masks
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -29,7 +30,10 @@ columns = len(grids[0].grid[0])
 # all_masks = generate_pool_masks(rows=rows, columns=columns)
 # print(len(all_single_block_masks), "single block masks generated")
 
-agent = MaskAgent(rows, columns)
+# for mask in generate_pool_masks(3, 3):
+#     print(mask)
+
+agent = MaskAgent(rows, columns, masks=generate_pool_masks(3, 3))
 rounds_of_attempts = 100
 
 
