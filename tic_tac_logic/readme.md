@@ -179,6 +179,34 @@ basically on learning it uses the entire set but predicting it filters to things
 
 6. Remove duplicate masks
 
+This has less impact than I expected
+
+  499246687 function calls (497143723 primitive calls) in 65.431 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     30/1    0.002    0.000   70.416   70.416 {built-in method builtins.exec}
+        1    0.001    0.001   70.416   70.416 mask_tester.py:1(<module>)
+     1000    0.046    0.000   70.337    0.070 mask_tester.py:76(run_episode)
+    20470    0.125    0.000   67.661    0.003 mask_agent.py:232(act)
+   663328   15.775    0.000   66.697    0.000 mask_agent.py:70(get_applicable_masks)
+    20470    0.158    0.000   65.803    0.003 mask_agent.py:196(remove_failing_options)
+        1    0.001    0.001   47.738   47.738 mask_tester.py:102(mask_builder_view)
+   663328   11.042    0.000   35.725    0.000 masks.py:268(generate_all_patterns)
+ 12157895    8.364    0.000   13.080    0.000 {method 'join' of 'str' objects}
+130891945    7.224    0.000    7.224    0.000 {method 'get' of 'dict' objects}
+130872370    6.007    0.000    6.007    0.000 {method 'extend' of 'list' objects}
+ 18256576    3.155    0.000    3.904    0.000 masks.py:22(get_pattern)
+ 12428228    1.245    0.000    1.961    0.000 {method 'add' of 'set' objects}
+  2300649    0.559    0.000    1.959    0.000 masks.py:183(mask_applies)
+ 17004689    1.739    0.000    1.739    0.000 {method 'replace' of 'str' objects}
+ 43211430    1.611    0.000    1.611    0.000 masks.py:297(<genexpr>)
+ 43211430    1.570    0.000    1.570    0.000 masks.py:302(<genexpr>)
+ 43211430    1.534    0.000    1.534    0.000 masks.py:307(<genexpr>)
+    20470    0.397    0.000    1.373    0.000 mask_agent.py:175(find_aggressive_failures)
+
+
 
 2. cache applicable masks to avoid rechoosing every time
 

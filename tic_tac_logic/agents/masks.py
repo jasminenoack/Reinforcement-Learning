@@ -195,6 +195,13 @@ class CompleteMask:
         return self.rules.total_cells()
 
 
+@dataclass(frozen=True)
+class _MaskIdentifier:
+    rules: MaskRules
+    pattern: str
+    current_symbol: str
+
+
 def generate_pool_masks(
     rows: int,
     columns: int,
@@ -202,6 +209,7 @@ def generate_pool_masks(
     skip_rows_under: int = 0,
     skip_columns_under: int = 0,
 ) -> Generator[CompleteMask, None, None]:
+    seen: set[_MaskIdentifier] = set()
     if debug:
         print(rows, columns)
 
@@ -234,6 +242,14 @@ def generate_pool_masks(
                     ),
                 ).generate_masks()
                 for mask in next_masks:
+                    unique_key = _MaskIdentifier(
+                        rules=mask.rules,
+                        pattern=mask.pattern,
+                        current_symbol=mask.symbol_to_place,
+                    )
+                    if unique_key in seen:
+                        continue
+                    seen.add(unique_key)
                     yield mask
                 if debug:
                     print(len(next_masks), "masks generated in iteration")
