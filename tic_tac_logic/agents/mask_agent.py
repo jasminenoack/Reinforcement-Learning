@@ -5,7 +5,7 @@ from typing import TypedDict
 from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import StepResult, E, PLACEMENT_OPTIONS, Observation
 import logging
-from tic_tac_logic.agents.masks import AbstractMask, MaskKey, generate_pool_masks
+from tic_tac_logic.agents.masks import AbstractMaskFactory, MaskKey, generate_pool_masks
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -35,7 +35,7 @@ class QTable(TypedDict):
 
 
 class MaskManager:
-    def __init__(self, masks: list[AbstractMask]) -> None:
+    def __init__(self, masks: list[AbstractMaskFactory]) -> None:
         self._masks = masks
         self._current_masks = masks[:20]
         self._masks = masks[20:]
@@ -43,9 +43,9 @@ class MaskManager:
         self.q_table: QTable = {  # pyright: ignore[reportIncompatibleVariableOverride]
             "masks": {}
         }
-        self.rejected_masks: list[AbstractMask] = []
+        self.rejected_masks: list[AbstractMaskFactory] = []
 
-    def get_masks(self) -> list[AbstractMask]:
+    def get_masks(self) -> list[AbstractMaskFactory]:
         """
         Returns the current set of masks.
         """
@@ -62,9 +62,9 @@ class MaskManager:
         For now, we just return the first 10 masks.
         """
         # print("Pruning masks...")
-        new_current_masks: list[AbstractMask] = []
-        q_table_keys_by_mask_type: dict[AbstractMask, list[MaskResult]] = defaultdict(
-            list
+        new_current_masks: list[AbstractMaskFactory] = []
+        q_table_keys_by_mask_type: dict[AbstractMaskFactory, list[MaskResult]] = (
+            defaultdict(list)
         )
         for key, result in self.q_table["masks"].items():
             q_table_keys_by_mask_type[key.mask_type].append(result)
@@ -140,7 +140,7 @@ class MaskAgent(Agent):
         self,
         rows: int,
         columns: int,
-        masks: list[AbstractMask] | None = None,
+        masks: list[AbstractMaskFactory] | None = None,
     ) -> None:
         super().__init__(rows, columns)
         self.epsilon = 0.01
@@ -161,7 +161,7 @@ class MaskAgent(Agent):
         self.mask_manager.q_table = value
 
     @property
-    def masks(self) -> list[AbstractMask]:
+    def masks(self) -> list[AbstractMaskFactory]:
         return self.mask_manager.get_masks()
 
     def log(self, message: str) -> None:

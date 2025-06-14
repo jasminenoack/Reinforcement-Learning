@@ -4,7 +4,7 @@ from tic_tac_logic.constants import E
 
 @dataclass(frozen=True)
 class MaskKey:
-    mask_type: "AbstractMask"
+    mask_type: "AbstractMaskFactory"
     pattern: str
     symbol: str
 
@@ -39,7 +39,7 @@ class MaskRules:
         return mini_grid
 
 
-class AbstractMask:
+class AbstractMaskFactory:
     def __init__(self, match_symbol: str | None, rule: MaskRules) -> None:
         self.match_symbol = match_symbol
         self.rule = rule
@@ -75,7 +75,7 @@ class AbstractMask:
             return None
         return self.create_mask_key(section, current=current)
 
-    def __eq__(self, value: "AbstractMask") -> bool:
+    def __eq__(self, value: "AbstractMaskFactory") -> bool:
         return self.match_symbol == value.match_symbol and self.rule == value.rule
 
     def __hash__(self) -> int:
@@ -97,7 +97,7 @@ class AbstractMask:
         return self.rows() * self.columns()
 
 
-def print_mask(mask: AbstractMask):
+def print_mask(mask: AbstractMaskFactory):
     rows_above = mask.rule.rows_above
     rows_below = mask.rule.rows_below
     columns_left = mask.rule.columns_left
@@ -120,10 +120,10 @@ def generate_pool_masks(
     debug: bool = False,
     skip_rows_under: int = 0,
     skip_columns_under: int = 0,
-) -> list[AbstractMask]:
+) -> list[AbstractMaskFactory]:
     if debug:
         print(rows, columns)
-    masks: list[AbstractMask] = []
+    masks: list[AbstractMaskFactory] = []
     for rows in range(skip_rows_under, rows + 1):
         if debug:
             print("   ", rows)
@@ -142,7 +142,7 @@ def generate_pool_masks(
                         columns_left = current_column
                         columns_right = columns - current_column - 1
                         masks.append(
-                            AbstractMask(
+                            AbstractMaskFactory(
                                 match_symbol=symbol,
                                 rule=MaskRules(
                                     rows_above=rows_above,
