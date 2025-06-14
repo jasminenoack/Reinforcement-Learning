@@ -201,7 +201,7 @@ def generate_pool_masks(
     debug: bool = False,
     skip_rows_under: int = 0,
     skip_columns_under: int = 0,
-) -> Generator[CompleteMask]:
+) -> Generator[CompleteMask, None, None]:
     if debug:
         print(rows, columns)
 

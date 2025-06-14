@@ -32,7 +32,7 @@ class QTable(TypedDict):
 
 
 def _elements_from_generator(
-    generator: Generator[CompleteMask], count: int
+    generator: Generator[CompleteMask, None, None], count: int
 ) -> list[CompleteMask]:
     """
     Returns the first `count` elements from the generator.
@@ -48,7 +48,9 @@ def _elements_from_generator(
 
 
 class MaskManager:
-    def __init__(self, masks: Generator[CompleteMask], debug: bool = False) -> None:
+    def __init__(
+        self, masks: Generator[CompleteMask, None, None], debug: bool = False
+    ) -> None:
         self._masks = masks
         self._current_masks: dict[str, list[CompleteMask]] = defaultdict(list)
         self._add_masks(1000)
@@ -125,11 +127,12 @@ class MaskAgent(Agent):
         self,
         rows: int,
         columns: int,
-        masks: Generator[CompleteMask] | None = None,
+        masks: Generator[CompleteMask, None, None] | None = None,
         debug: bool = False,
     ) -> None:
         super().__init__(rows, columns)
         self.epsilon = 0.01
+        self.decay = 0.99
         self.mask_manager = MaskManager(
             masks
             or generate_pool_masks(rows=self.rows, columns=self.columns, debug=debug)
@@ -278,6 +281,7 @@ class MaskAgent(Agent):
             else:
                 q_table[mask].success_count += 1
         self.mask_manager.iterate()
+        self.epsilon *= self.decay
 
     def reset(self) -> None:
         self.log("Starting a new episode, resetting agent state.")
