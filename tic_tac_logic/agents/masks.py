@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from tic_tac_logic.constants import E
+from tic_tac_logic.constants import E, X, O, PLACEMENT_OPTIONS
 
 
 @dataclass(frozen=True)
@@ -48,6 +48,8 @@ class AbstractMaskFactory:
         row_position = rule.rows_above
         column_position = rule.columns_left
         position = (row_position, column_position)
+        self.row_position = row_position
+        self.column_position = column_position
         self.name = f"Mask|{row_len}x{column_len}|{position}"
         if match_symbol:
             self.name += f"|{match_symbol}"
@@ -96,6 +98,45 @@ class AbstractMaskFactory:
     def total_cells(self) -> int:
         return self.rows() * self.columns()
 
+    def generate_masks(self) -> list["CompleteMask"]:
+        masks: list[CompleteMask] = []
+        symbols = [E]
+        if self.match_symbol:
+            symbols.append(self.match_symbol)
+        else:
+            symbols.append(X)
+            symbols.append(O)
+
+        patterns: list[list[str]] = [[]]
+        total_cells = self.total_cells()
+        current_cell = self.row_position * self.columns() + self.column_position
+
+        for i in range(total_cells):
+            if i == current_cell:
+                patterns = [pattern + [E] for pattern in patterns]
+            else:
+                patterns = [
+                    pattern + [symbol] for pattern in patterns for symbol in symbols
+                ]
+
+        assert all(
+            len(pattern) == total_cells for pattern in patterns
+        ), "All patterns must have the same length as total cells"
+        assert all(pattern[current_cell] == E for pattern in patterns)
+
+        for symbol in PLACEMENT_OPTIONS:
+            masks += [
+                CompleteMask(
+                    rules=self.rule,
+                    pattern="".join(pattern).replace(" ", "_"),
+                    symbol_to_place=symbol,
+                    match_symbol=self.match_symbol,
+                )
+                for pattern in patterns
+            ]
+
+        return masks
+
 
 def print_mask(mask: AbstractMaskFactory):
     rows_above = mask.rule.rows_above
@@ -112,6 +153,17 @@ def print_mask(mask: AbstractMaskFactory):
                 print("_", end="")
         print()
     print()
+
+
+@dataclass(frozen=True)
+class CompleteMask:
+    rules: MaskRules
+    pattern: str
+    symbol_to_place: str
+    match_symbol: str | None
+
+    def __repr__(self):
+        return f"CompleteMask({self.pattern} <- {self.symbol_to_place})"
 
 
 def generate_pool_masks(

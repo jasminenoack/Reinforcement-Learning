@@ -1,5 +1,10 @@
 import pytest
-from tic_tac_logic.agents.masks import AbstractMaskFactory, MaskRules, MaskKey
+from tic_tac_logic.agents.masks import (
+    AbstractMaskFactory,
+    MaskRules,
+    MaskKey,
+    CompleteMask,
+)
 from tic_tac_logic.constants import X, O, E
 
 
@@ -40,3 +45,123 @@ class TestGetMask:
         base_mask = AbstractMaskFactory(match_symbol=X, rule=MaskRules(0, 0, 0, 0))
         grid = [[X, O], [E, X]]
         assert base_mask.get_mask(coord, grid, current=X) == expected
+
+
+class TestGenerateMasks:
+    def test_generate_masks_horizontal(self) -> None:
+        rules = MaskRules(rows_above=0, rows_below=0, columns_left=1, columns_right=1)
+        base_mask = AbstractMaskFactory(
+            match_symbol=None,
+            rule=rules,
+        )
+        masks = base_mask.generate_masks()
+        assert masks == [
+            CompleteMask(
+                rules=rules,
+                pattern="___",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="__X",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="__O",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="X__",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="X_X",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="X_O",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="O__",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="O_X",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="O_O",
+                symbol_to_place=X,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="___",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="__X",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="__O",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="X__",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="X_X",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="X_O",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="O__",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="O_X",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+            CompleteMask(
+                rules=rules,
+                pattern="O_O",
+                symbol_to_place=O,
+                match_symbol=None,
+            ),
+        ]
