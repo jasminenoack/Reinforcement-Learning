@@ -51,7 +51,7 @@ def generate_masks() -> Generator[CompleteMask, None, None]:
 #     print(mask)
 
 agent = MaskAgent(rows, columns, masks=generate_masks())
-rounds_of_attempts = 100
+rounds_of_attempts = 50
 
 
 @dataclass

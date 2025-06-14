@@ -78,3 +78,72 @@ The main concern with it now is that it's slow as shit because the number of mas
 1. train a subset of masks at any time
 2. reject non-useful masts
 3. reject masks providing "duplicative information"
+
+## Performance
+
+One of the biggest issues with the mask agent is performance, he's real slow. Because of this it isn't really able to do things all that well.
+
+
+         4178258270 function calls (4174764914 primitive calls) in 602.234 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     29/1    0.002    0.000  680.535  680.535 {built-in method builtins.exec}
+        1    0.002    0.002  680.535  680.535 mask_tester.py:1(<module>)
+     1000    0.066    0.000  680.440    0.680 mask_tester.py:76(run_episode)
+   660327   27.436    0.000  674.388    0.001 mask_agent.py:69(get_applicable_masks)
+    20461    0.143    0.000  670.095    0.033 mask_agent.py:222(act)
+    20459    1.804    0.000  667.979    0.033 mask_agent.py:186(remove_failing_options)
+   660327  167.844    0.000  570.627    0.001 masks.py:252(generate_all_patterns)
+        1    0.001    0.001  300.130  300.130 mask_tester.py:102(mask_builder_view)
+183114735  141.186    0.000  222.241    0.000 {method 'join' of 'str' objects}
+353242080   60.893    0.000   75.264    0.000 masks.py:22(get_pattern)
+124298458   21.989    0.000   60.950    0.000 masks.py:183(mask_applies)
+306409304   29.662    0.000   29.662    0.000 {method 'replace' of 'str' objects}
+739356943   27.707    0.000   27.707    0.000 masks.py:281(<genexpr>)
+739356943   26.981    0.000   26.981    0.000 masks.py:286(<genexpr>)
+739356943   26.366    0.000   26.366    0.000 masks.py:291(<genexpr>)
+
+Ideas
+
+1. cache the patterns so we aren't constantly recalculating them
+
+         929679210 function calls (926990855 primitive calls) in 130.459 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     29/1    0.002    0.000  135.191  135.191 {built-in method builtins.exec}
+        1    0.001    0.001  135.191  135.191 mask_tester.py:1(<module>)
+     1000    0.049    0.000  135.110    0.135 mask_tester.py:76(run_episode)
+    20587    0.125    0.000  131.748    0.006 mask_agent.py:222(act)
+   669558   26.263    0.000  130.823    0.000 mask_agent.py:69(get_applicable_masks)
+    20586    0.396    0.000  130.046    0.006 mask_agent.py:186(remove_failing_options)
+        1    0.001    0.001   77.733   77.733 mask_tester.py:102(mask_builder_view)
+121110499   20.256    0.000   56.046    0.000 masks.py:183(mask_applies)
+   669558   10.370    0.000   33.465    0.000 masks.py:252(generate_all_patterns)
+ 76476886   13.636    0.000   16.947    0.000 masks.py:22(get_pattern)
+ 24496607    8.821    0.000   13.250    0.000 {method 'join' of 'str' objects}
+ 11943455    9.346    0.000    9.346    0.000 masks.py:178(remove_non_matching)
+ 13314359    5.216    0.000    8.135    0.000 masks.py:168(_mask_matches_pattern)
+133258699    8.122    0.000    8.122    0.000 {method 'get' of 'dict' objects}
+133238219    6.819    0.000    6.819    0.000 {method 'extend' of 'list' objects}
+121110499    4.690    0.000    4.690    0.000 masks.py:175(_mask_matches_symbol)
+ 41876976    3.427    0.000    3.427    0.000 {method 'replace' of 'str' objects}
+95031060/95030996    3.378    0.000    3.378    0.000 {built-in method builtins.len}
+     8492    0.013    0.000    1.864    0.000 mask_agent.py:264(learn)
+ 11442112    1.134    0.000    1.742    0.000 {method 'add' of 'set' objects}
+ 40379746    1.514    0.000    1.514    0.000 masks.py:281(<genexpr>)
+ 40379746    1.471    0.000    1.471    0.000 masks.py:286(<genexpr>)
+ 40379746    1.444    0.000    1.444    0.000 masks.py:291(<genexpr>)
+
+
+
+2. cache applicable masks to avoid rechoosing every time
+
+
+3. short circuit best option, if you have one that's plenty
+
+
+4. Only allow useful masks to come back as "applicable"

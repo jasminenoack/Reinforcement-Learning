@@ -240,10 +240,26 @@ def generate_pool_masks(
                     print_mask(next_masks[-1])
 
 
+@dataclass(frozen=True)
+class _MemoizedMaskKey:
+    coordinate: tuple[int, int]
+    grid: tuple[tuple[str, ...], ...]
+
+
+_memoized_patterns: dict[_MemoizedMaskKey, set[str]] = {}
+
+
 def generate_all_patterns(
     coordinate: tuple[int, int],
     grid: list[list[str]],
 ):
+    memoized_key = _MemoizedMaskKey(
+        coordinate=coordinate,
+        grid=tuple(tuple(row) for row in grid),
+    )
+    if memoized_key in _memoized_patterns:
+        return _memoized_patterns[memoized_key]
+
     patterns: set[str] = set()
     for rows_included in range(1, len(grid) + 1):
         for columns_included in range(1, len(grid[0]) + 1):
@@ -276,6 +292,7 @@ def generate_all_patterns(
                             .replace(" ", "_")
                             .replace("O", "_")
                         )
+    _memoized_patterns[memoized_key] = patterns
     return patterns
 
 
