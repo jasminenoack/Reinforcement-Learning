@@ -139,6 +139,46 @@ Ideas
  40379746    1.444    0.000    1.444    0.000 masks.py:291(<genexpr>)
 
 
+5. using sets instead of arrays in the mask manager
+
+This actually made it much worse
+
+         917205833 function calls (912813574 primitive calls) in 213.424 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     29/1    0.002    0.000  218.471  218.471 {built-in method builtins.exec}
+        1    0.002    0.002  218.471  218.471 mask_tester.py:1(<module>)
+     1000    0.064    0.000  218.382    0.218 mask_tester.py:76(run_episode)
+   644705   58.419    0.000  214.070    0.000 mask_agent.py:70(get_applicable_masks)
+    19373    0.136    0.000  213.925    0.011 mask_agent.py:221(act)
+    19372    0.612    0.000  212.183    0.011 mask_agent.py:185(remove_failing_options)
+        1    0.001    0.001  115.928  115.928 mask_tester.py:102(mask_builder_view)
+
+4. Only allow useful masks to come back as "applicable"
+
+First I added a second dict of "applicable" masks when we are pruning, this basically makes a stronger judgment about which masks to actually use when doing the calculations. I ran with just loading this to confirm it wasn't slow. It was fine.
+
+this helped a ton
+
+         510701248 function calls (508735218 primitive calls) in 66.603 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     29/1    0.002    0.000   71.743   71.743 {built-in method builtins.exec}
+        1    0.001    0.001   71.743   71.743 mask_tester.py:1(<module>)
+     1000    0.045    0.000   71.656    0.072 mask_tester.py:76(run_episode)
+    19880    0.118    0.000   68.518    0.003 mask_agent.py:232(act)
+   657245   15.699    0.000   68.072    0.000 mask_agent.py:70(get_applicable_masks)
+    19879    0.150    0.000   66.738    0.003 mask_agent.py:196(remove_failing_options)
+        1    0.011    0.011   50.553   50.553 mask_tester.py:102(mask_builder_view)
+
+basically on learning it uses the entire set but predicting it filters to things that "feel" useful.
+
+6. Remove duplicate masks
+
 
 2. cache applicable masks to avoid rechoosing every time
 
@@ -146,4 +186,3 @@ Ideas
 3. short circuit best option, if you have one that's plenty
 
 
-4. Only allow useful masks to come back as "applicable"

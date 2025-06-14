@@ -60,6 +60,7 @@ class MaskManager:
         }
         self.count_rejected_masks = 0
         self.debug = debug
+        self._predictive_masks: dict[str, list[CompleteMask]] = defaultdict(list)
 
     def _add_masks(self, count: int) -> None:
         masks = _elements_from_generator(self._masks, count)
@@ -67,12 +68,17 @@ class MaskManager:
             self._current_masks[mask.pattern].append(mask)
 
     def get_applicable_masks(
-        self, cell: tuple[int, int], grid: list[list[str]], current: str
+        self,
+        cell: tuple[int, int],
+        grid: list[list[str]],
+        current: str,
+        only_predictive: bool = False,
     ) -> list[CompleteMask]:
         all_patterns = generate_all_patterns(cell, grid)
         possible: list[CompleteMask] = []
+        dict_to_use = self._predictive_masks if only_predictive else self._current_masks
         for pattern in all_patterns:
-            possible.extend(self._current_masks.get(pattern, []))
+            possible.extend(dict_to_use.get(pattern, []))
         applicable: list[CompleteMask] = []
         for mask in possible:
             if mask.mask_applies(cell, grid, current):
@@ -89,9 +95,11 @@ class MaskManager:
         Prunes the masks based on some criteria.
         For now, we just return the first 10 masks.
         """
+        self._predictive_masks: dict[str, list[CompleteMask]] = defaultdict(list)
         in_q_table = list(self.q_table["masks"].items())
         for mask, mask_result in in_q_table:
             success_count = mask_result.success_count
+            failure_count = mask_result.failure_count
             if success_count > 0:
                 if debug or self.debug:
                     print(f"   Mask {mask} has success count: {success_count} > 1.")
@@ -101,6 +109,8 @@ class MaskManager:
                 self._current_masks[mask.pattern] = without_mask
                 del self.q_table["masks"][mask]
                 continue
+            if failure_count > 5:
+                self._predictive_masks[mask.pattern].append(mask)
 
     def _prune_masks(self) -> None:
         self._prune_useless_masks()
@@ -193,7 +203,7 @@ class MaskAgent(Agent):
         for move in possible_moves:
             cell, symbol = move
             applicable_masks = self.mask_manager.get_applicable_masks(
-                cell, grid, current=symbol
+                cell, grid, current=symbol, only_predictive=True
             )
 
             for mask in applicable_masks:
