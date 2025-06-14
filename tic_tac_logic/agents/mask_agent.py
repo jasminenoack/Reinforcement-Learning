@@ -115,8 +115,7 @@ class MaskManager:
     def _prune_masks(self) -> None:
         self._prune_useless_masks()
         if self._masks:
-            count_masks_to_add = max(100, 1000 - len(self._current_masks))
-            self._add_masks(count_masks_to_add)
+            self._add_masks(500)
         print(f"Current masks: {len(self._current_masks)}")
 
     def trained_enough(self) -> bool:
@@ -141,7 +140,7 @@ class MaskAgent(Agent):
         debug: bool = False,
     ) -> None:
         super().__init__(rows, columns)
-        self.epsilon = 0.01
+        self.epsilon = 0.1
         self.decay = 0.99
         self.mask_manager = MaskManager(
             masks
@@ -199,19 +198,28 @@ class MaskAgent(Agent):
         possible_moves: set[tuple[tuple[int, int], str]],
         failure_masks: set[CompleteMask],
     ):
-        bad_moves: set[tuple[tuple[int, int], str]] = set()
-        for move in possible_moves:
-            cell, symbol = move
-            applicable_masks = self.mask_manager.get_applicable_masks(
-                cell, grid, current=symbol, only_predictive=True
-            )
+        moves_by_cell: dict[tuple[int, int], set[str]] = defaultdict(set)
+        for cell, symbol in possible_moves:
+            moves_by_cell[cell].add(symbol)
 
-            for mask in applicable_masks:
-                if mask and mask in failure_masks:
-                    bad_moves.add((cell, symbol))
-                    break
+        for cell in moves_by_cell:
+            symbols = moves_by_cell[cell]
+            if len(symbols) == 1:
+                return {(cell, symbols.pop())}
+            bad_symbols: set[str] = set()
+            for symbol in symbols:
+                applicable_masks = self.mask_manager.get_applicable_masks(
+                    cell, grid, current=symbol, only_predictive=True
+                )
+                for mask in applicable_masks:
+                    if mask in failure_masks:
+                        bad_symbols.add(symbol)
+                        break
+            symbols -= bad_symbols
+            if len(symbols) == 1:
+                return {(cell, symbols.pop())}
 
-        return possible_moves - bad_moves
+        return possible_moves
 
     def options_with_one_choice(
         self, possible_moves: set[tuple[tuple[int, int], str]]

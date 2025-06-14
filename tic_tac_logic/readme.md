@@ -207,10 +207,37 @@ This has less impact than I expected
     20470    0.397    0.000    1.373    0.000 mask_agent.py:175(find_aggressive_failures)
 
 
+3. short circuit best option, if you have one that's plenty
+
+
+         298640658 function calls (296679329 primitive calls) in 40.468 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     30/1    0.002    0.000   44.148   44.148 {built-in method builtins.exec}
+        1    0.001    0.001   44.148   44.148 mask_tester.py:1(<module>)
+     1000    0.037    0.000   44.071    0.044 mask_tester.py:76(run_episode)
+    20212    0.118    0.000   41.561    0.002 mask_agent.py:241(act)
+   297423    7.212    0.000   40.723    0.000 mask_agent.py:70(get_applicable_masks)
+    20210    0.201    0.000   39.975    0.002 mask_agent.py:196(remove_failing_options)
+        1    0.001    0.001   34.403   34.403 mask_tester.py:102(mask_builder_view)
+   297423    8.066    0.000   26.429    0.000 masks.py:268(generate_all_patterns)
+  9612968    6.388    0.000    9.947    0.000 {method 'join' of 'str' objects}
+ 59663835    3.271    0.000    3.271    0.000 {method 'get' of 'dict' objects}
+ 13524651    2.355    0.000    2.904    0.000 masks.py:22(get_pattern)
+ 59643755    2.738    0.000    2.738    0.000 {method 'extend' of 'list' objects}
+ 10084593    1.011    0.000    1.688    0.000 {method 'add' of 'set' objects}
+    20210    0.397    0.000    1.320    0.000 mask_agent.py:175(find_aggressive_failures)
+ 12770227    1.313    0.000    1.313    0.000 {method 'replace' of 'str' objects}
+ 32830691    1.215    0.000    1.215    0.000 masks.py:297(<genexpr>)
+    42152    0.697    0.000    1.193    0.000 grid.py:22(lost)
+ 32830691    1.185    0.000    1.185    0.000 masks.py:302(<genexpr>)
+
+
 
 2. cache applicable masks to avoid rechoosing every time
 
-
-3. short circuit best option, if you have one that's plenty
+I'm not convinced I can amke this stable enough
 
 
