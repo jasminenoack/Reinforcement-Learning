@@ -1,156 +1,28 @@
 import pytest
 import random
 from tic_tac_logic.agents.mask_agent import (
-    # MaskHorizontal3Centered,
-    # MaskHorizontal3CenteredX,
-    # MaskHorizontal3CenteredO,
     generate_pool_masks,
     MaskAgent,
-    MaskKey,
     MaskResult,
-    ConfidentMask,
 )
 from tic_tac_logic.constants import X, O, E, Observation
 from tic_tac_logic.sample_grids import get_easy_grid
 from tic_tac_logic.env.grid import Grid
+from tic_tac_logic.agents.masks import (
+    MaskRules,
+    CompleteMask,
+)
 
-masks = generate_pool_masks(3, 3)
-MaskHorizontal3Centered = [mask for mask in masks if mask.name == "Mask|1x3|(0, 1)"][0]
-MaskHorizontal3CenteredX = [mask for mask in masks if mask.name == "Mask|1x3|(0, 1)|X"][
+masks = list(generate_pool_masks(3, 3))
+MaskHorizontal3Centered = [mask for mask in masks if mask.name == "Mask|1x3|(0, 1)|X"][
     0
 ]
-MaskHorizontal3CenteredO = [mask for mask in masks if mask.name == "Mask|1x3|(0, 1)|O"][
-    0
-]
-
-
-class TestMaskHorizontal3Centered:
-    @pytest.mark.parametrize(
-        "coord, expected",
-        [
-            ((0, 0), None),
-            (
-                (0, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3Centered,
-                    pattern="XO_",
-                    symbol=X,
-                ),
-            ),
-            ((0, 2), None),
-            ((1, 0), None),
-            (
-                (1, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3Centered,
-                    pattern="_XO",
-                    symbol=X,
-                ),
-            ),
-            ((1, 2), None),
-            ((2, 0), None),
-            (
-                (2, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3Centered,
-                    pattern="O_X",
-                    symbol=X,
-                ),
-            ),
-            ((2, 2), None),
-        ],
-    )
-    def test_get_mask(self, coord: tuple[int, int], expected: str | None):
-        mask = MaskHorizontal3Centered
-        print(mask)
-        result = mask.get_mask(coord, grid=[[X, O, E], [E, X, O], [O, E, X]], current=X)
-        print(result)
-        print(expected)
-        assert result == expected
-
-
-class TestMaskHorizontal3CenteredX:
-    @pytest.mark.parametrize(
-        "coord, expected",
-        [
-            ((0, 0), None),
-            (
-                (0, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
-                    pattern="X__",
-                    symbol=X,
-                ),
-            ),
-            ((0, 2), None),
-            ((1, 0), None),
-            (
-                (1, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
-                    pattern="_X_",
-                    symbol=X,
-                ),
-            ),
-            ((1, 2), None),
-            ((2, 0), None),
-            (
-                (2, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
-                    pattern="__X",
-                    symbol=X,
-                ),
-            ),
-            ((2, 2), None),
-        ],
-    )
-    def test_get_mask(self, coord: tuple[int, int], expected: str | None):
-        mask = MaskHorizontal3CenteredX
-        result = mask.get_mask(coord, grid=[[X, O, E], [E, X, O], [O, E, X]], current=X)
-        assert result == expected
-
-
-class TestMaskHorizontal3CenteredO:
-    @pytest.mark.parametrize(
-        "coord, expected",
-        [
-            ((0, 0), None),
-            (
-                (0, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
-                    pattern="_O_",
-                    symbol=O,
-                ),
-            ),
-            ((0, 2), None),
-            ((1, 0), None),
-            (
-                (1, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
-                    pattern="__O",
-                    symbol=O,
-                ),
-            ),
-            ((1, 2), None),
-            ((2, 0), None),
-            (
-                (2, 1),
-                MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
-                    pattern="O__",
-                    symbol=O,
-                ),
-            ),
-            ((2, 2), None),
-        ],
-    )
-    def test_get_mask(self, coord: tuple[int, int], expected: str | None):
-        mask = MaskHorizontal3CenteredO
-        result = mask.get_mask(coord, grid=[[X, O, E], [E, X, O], [O, E, X]], current=O)
-        assert result == expected
+MaskHorizontal3CenteredX = [
+    mask for mask in masks if mask.name == "Mask|1x3|(0, 1)|<X>|X"
+][0]
+MaskHorizontal3CenteredO = [
+    mask for mask in masks if mask.name == "Mask|1x3|(0, 1)|<O>|X"
+][0]
 
 
 class TestLearn:
@@ -179,50 +51,89 @@ class TestLearn:
         # 6    [X, E, O, E, E, X],
         # 7    [E, E, E, E, E, E],
         # ]
+
         step = grid.act((1, 2), O)
         agent.learn(step)
+
         for mask, mask_result in {
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
+            CompleteMask(
                 pattern="X__",
-                symbol="O",
+                match_symbol="X",
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                symbol_to_place=O,
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
+                mask=CompleteMask(
                     pattern="X__",
-                    symbol="O",
+                    match_symbol="X",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    symbol_to_place=O,
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
+            CompleteMask(
                 pattern="___",
-                symbol="O",
+                match_symbol="O",
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                symbol_to_place=O,
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
+                mask=CompleteMask(
                     pattern="___",
-                    symbol="O",
+                    match_symbol="O",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    symbol_to_place=O,
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
+            CompleteMask(
                 pattern="X__",
-                symbol="O",
+                match_symbol="X",
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                symbol_to_place=O,
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
+                mask=CompleteMask(
                     pattern="X__",
-                    symbol="O",
+                    match_symbol="X",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    symbol_to_place=O,
                 ),
                 failure_count=0,
                 success_count=1,
             ),
         }.items():
             assert agent.q_table["masks"][mask] == mask_result
+
         # [     0  1  2  3  4  5
         # 0    [E, E, X, E, E, E],
         # 1    [X, X, O, E, O, E],
@@ -236,216 +147,155 @@ class TestLearn:
         step = grid.act((0, 2), X)
         agent.learn(step)
         for mask, mask_result in {
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
+            CompleteMask(
                 pattern="X__",
-                symbol="O",
+                symbol_to_place="O",
+                match_symbol="X",
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
+                mask=CompleteMask(
                     pattern="X__",
-                    symbol="O",
+                    symbol_to_place="O",
+                    match_symbol="X",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
+            CompleteMask(
                 pattern="___",
-                symbol="O",
+                symbol_to_place="O",
+                match_symbol="O",
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
+                mask=CompleteMask(
                     pattern="___",
-                    symbol="O",
+                    symbol_to_place="O",
+                    match_symbol="O",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
+            CompleteMask(
                 pattern="X__",
-                symbol="O",
+                symbol_to_place="O",
+                match_symbol=None,
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
+                mask=CompleteMask(
+                    match_symbol=None,
                     pattern="X__",
-                    symbol="O",
+                    symbol_to_place="O",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
+            CompleteMask(
                 pattern="___",
-                symbol="X",
+                symbol_to_place="X",
+                match_symbol=None,
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
+                mask=CompleteMask(
+                    match_symbol=None,
                     pattern="___",
-                    symbol="X",
+                    symbol_to_place="X",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
+            CompleteMask(
                 pattern="___",
-                symbol="X",
+                symbol_to_place="X",
+                match_symbol="X",
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
+                mask=CompleteMask(
+                    match_symbol="X",
                     pattern="___",
-                    symbol="X",
+                    symbol_to_place="X",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
+            CompleteMask(
                 pattern="___",
-                symbol="X",
+                symbol_to_place="X",
+                match_symbol="O",
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
+                mask=CompleteMask(
+                    match_symbol="O",
                     pattern="___",
-                    symbol="X",
+                    symbol_to_place="X",
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                 ),
                 failure_count=0,
                 success_count=1,
-            ),
-        }.items():
-            assert agent.q_table["masks"][mask] == mask_result
-
-        # [     0  1  2  3  4  5
-        # 0    [E, E, X, E, E, E],
-        # 1    [X, X, O, O, O, E],
-        # 2    [E, E, O, E, E, O],
-        # 3    [E, X, E, E, E, E],
-        # 4    [E, E, E, E, O, E],
-        # 5    [X, E, X, E, E, E],
-        # 6    [X, E, O, E, E, X],
-        # 7    [E, E, E, E, E, E],
-        # ]
-        step = grid.act((1, 3), O)
-        agent.learn(step)
-        for mask, mask_result in {
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
-                pattern="___",
-                symbol="O",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
-                    pattern="___",
-                    symbol="O",
-                ),
-                failure_count=0,
-                success_count=1,
-            ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
-                pattern="X__",
-                symbol="O",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
-                    pattern="X__",
-                    symbol="O",
-                ),
-                failure_count=0,
-                success_count=1,
-            ),
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
-                pattern="X__",
-                symbol="O",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
-                    pattern="X__",
-                    symbol="O",
-                ),
-                failure_count=0,
-                success_count=1,
-            ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
-                pattern="___",
-                symbol="X",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
-                    pattern="___",
-                    symbol="X",
-                ),
-                failure_count=0,
-                success_count=1,
-            ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
-                pattern="___",
-                symbol="X",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
-                    pattern="___",
-                    symbol="X",
-                ),
-                failure_count=0,
-                success_count=1,
-            ),
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
-                pattern="___",
-                symbol="X",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
-                    pattern="___",
-                    symbol="X",
-                ),
-                failure_count=0,
-                success_count=1,
-            ),
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
-                pattern="O_O",
-                symbol="O",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
-                    pattern="O_O",
-                    symbol="O",
-                ),
-                failure_count=1,
-                success_count=0,
-            ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
-                pattern="O_O",
-                symbol="O",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
-                    pattern="O_O",
-                    symbol="O",
-                ),
-                failure_count=1,
-                success_count=0,
-            ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
-                pattern="___",
-                symbol="O",
-            ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
-                    pattern="___",
-                    symbol="O",
-                ),
-                failure_count=1,
-                success_count=0,
             ),
         }.items():
             assert agent.q_table["masks"][mask] == mask_result
@@ -476,80 +326,152 @@ class TestLearn:
         agent.learn(step)
 
         for mask, mask_result in {
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
+            CompleteMask(
                 pattern="__O",
-                symbol="X",
+                symbol_to_place="X",
+                match_symbol=None,
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                     pattern="__O",
-                    symbol="X",
+                    symbol_to_place="X",
+                    match_symbol=None,
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol="O",
                 pattern="__O",
-                symbol="X",
+                symbol_to_place="X",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    match_symbol="O",
                     pattern="__O",
-                    symbol="X",
+                    symbol_to_place="X",
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol="X",
                 pattern="___",
-                symbol="X",
+                symbol_to_place="X",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    match_symbol="X",
                     pattern="___",
-                    symbol="X",
+                    symbol_to_place="X",
                 ),
                 failure_count=0,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
                 pattern="X_X",
-                symbol="O",
+                symbol_to_place="O",
+                match_symbol=None,
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                     pattern="X_X",
-                    symbol="O",
+                    symbol_to_place="O",
+                    match_symbol=None,
                 ),
                 failure_count=0,
                 success_count=2,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol="O",
                 pattern="___",
-                symbol="O",
+                symbol_to_place="O",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    match_symbol="O",
                     pattern="___",
-                    symbol="O",
+                    symbol_to_place="O",
                 ),
                 failure_count=0,
                 success_count=2,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol="X",
                 pattern="X_X",
-                symbol="O",
+                symbol_to_place="O",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    match_symbol="X",
                     pattern="X_X",
-                    symbol="O",
+                    symbol_to_place="O",
                 ),
                 failure_count=0,
                 success_count=2,
@@ -576,80 +498,152 @@ class TestFindAgressiveFailures:
         agent = MaskAgent(len(easy_grid), len(easy_grid[0]))
 
         agent.q_table["masks"] = {
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol=None,
                 pattern="X__",
-                symbol="O",
+                symbol_to_place="O",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                     pattern="X__",
-                    symbol="O",
+                    match_symbol=None,
+                    symbol_to_place="O",
                 ),
                 failure_count=7,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol="O",
                 pattern="___",
-                symbol="O",
+                symbol_to_place="O",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    match_symbol="O",
                     pattern="___",
-                    symbol="O",
+                    symbol_to_place="O",
                 ),
                 failure_count=4,
                 success_count=0,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol="X",
                 pattern="X__",
-                symbol="O",
+                symbol_to_place="O",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    match_symbol="X",
                     pattern="X__",
-                    symbol="O",
+                    symbol_to_place="O",
                 ),
                 failure_count=100,
                 success_count=1,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3Centered,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
                 pattern="O_O",
-                symbol="X",
+                match_symbol=None,
+                symbol_to_place="X",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
                     pattern="O_O",
-                    symbol="X",
+                    match_symbol=None,
+                    symbol_to_place="X",
                 ),
                 failure_count=5,
                 success_count=0,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredO,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol="O",
                 pattern="O_O",
-                symbol="O",
+                symbol_to_place="O",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    match_symbol="O",
                     pattern="O_O",
-                    symbol="O",
+                    symbol_to_place="O",
                 ),
                 failure_count=10,
                 success_count=0,
             ),
-            MaskKey(
-                mask_type=MaskHorizontal3CenteredX,
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
+                ),
+                match_symbol="X",
                 pattern="___",
-                symbol="O",
+                symbol_to_place="O",
             ): MaskResult(
-                mask=MaskKey(
-                    mask_type=MaskHorizontal3CenteredX,
+                mask=CompleteMask(
+                    rules=MaskRules(
+                        rows_above=0,
+                        rows_below=0,
+                        columns_left=1,
+                        columns_right=1,
+                    ),
+                    match_symbol="X",
                     pattern="___",
-                    symbol="O",
+                    symbol_to_place="O",
                 ),
                 failure_count=1,
                 success_count=0,
@@ -657,21 +651,27 @@ class TestFindAgressiveFailures:
         }
 
         assert agent.find_aggressive_failures() == {
-            ConfidentMask(
-                mask_key=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
-                    pattern="O_O",
-                    symbol="X",
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
                 ),
-                prediction=-1.0,
+                pattern="O_O",
+                symbol_to_place="X",
+                match_symbol=None,
             ),
-            ConfidentMask(
-                mask_key=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
-                    pattern="O_O",
-                    symbol="O",
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
                 ),
-                prediction=-1.0,
+                match_symbol="O",
+                pattern="O_O",
+                symbol_to_place="O",
             ),
         }
 
@@ -701,21 +701,27 @@ class TestRemovePossibleMoves:
         }
 
         failure_masks = {
-            ConfidentMask(
-                mask_key=MaskKey(
-                    mask_type=MaskHorizontal3Centered,
-                    pattern="X__",
-                    symbol="O",
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
                 ),
-                prediction=-1.0,
+                pattern="X__",
+                symbol_to_place="O",
+                match_symbol="X",
             ),
-            ConfidentMask(
-                mask_key=MaskKey(
-                    mask_type=MaskHorizontal3CenteredO,
-                    pattern="___",
-                    symbol="O",
+            CompleteMask(
+                rules=MaskRules(
+                    rows_above=0,
+                    rows_below=0,
+                    columns_left=1,
+                    columns_right=1,
                 ),
-                prediction=-1.0,
+                match_symbol="O",
+                pattern="___",
+                symbol_to_place="O",
             ),
         }
         assert agent.remove_failing_options(
@@ -729,13 +735,13 @@ class TestRemovePossibleMoves:
 
     @pytest.mark.parametrize(
         "possible_moves,failure_masks,expected",
-        [
-            (
+        [  # pyright: ignore
+            [
                 {((0, 0), X)},
                 set(),
                 {((0, 0), X)},
-            ),
-            (
+            ],
+            [
                 {
                     ((0, 0), X),
                     ((0, 1), O),
@@ -745,21 +751,27 @@ class TestRemovePossibleMoves:
                     ((1, 3), O),
                 },
                 {
-                    ConfidentMask(
-                        mask_key=MaskKey(
-                            mask_type=MaskHorizontal3Centered,
-                            pattern="X__",
-                            symbol="O",
+                    CompleteMask(
+                        rules=MaskRules(
+                            rows_above=0,
+                            rows_below=0,
+                            columns_left=1,
+                            columns_right=1,
                         ),
-                        prediction=-1.0,
+                        pattern="X__",
+                        match_symbol=None,
+                        symbol_to_place="O",
                     ),
-                    ConfidentMask(
-                        mask_key=MaskKey(
-                            mask_type=MaskHorizontal3CenteredO,
-                            pattern="___",
-                            symbol="O",
+                    CompleteMask(
+                        rules=MaskRules(
+                            rows_above=0,
+                            rows_below=0,
+                            columns_left=1,
+                            columns_right=1,
                         ),
-                        prediction=-1.0,
+                        match_symbol="O",
+                        pattern="___",
+                        symbol_to_place="O",
                     ),
                 },
                 {
@@ -768,49 +780,58 @@ class TestRemovePossibleMoves:
                     ((1, 2), X),
                     ((1, 3), O),
                 },
-            ),
-            (
+            ],
+            [
                 {((1, 2), O), ((1, 2), X)},
                 {
-                    ConfidentMask(
-                        mask_key=MaskKey(
-                            mask_type=MaskHorizontal3Centered,
-                            pattern="X__",
-                            symbol="O",
+                    CompleteMask(
+                        rules=MaskRules(
+                            rows_above=0,
+                            rows_below=0,
+                            columns_left=1,
+                            columns_right=1,
                         ),
-                        prediction=-1.0,
+                        pattern="X__",
+                        match_symbol=None,
+                        symbol_to_place="O",
                     ),
-                    ConfidentMask(
-                        mask_key=MaskKey(
-                            mask_type=MaskHorizontal3Centered,
-                            pattern="X__",
-                            symbol="X",
+                    CompleteMask(
+                        rules=MaskRules(
+                            rows_above=0,
+                            rows_below=0,
+                            columns_left=1,
+                            columns_right=1,
                         ),
-                        prediction=-1.0,
+                        pattern="X__",
+                        match_symbol=None,
+                        symbol_to_place="X",
                     ),
                 },
                 set(),
-            ),
-            (
+            ],
+            [
                 {((9, 0), X), ((0, 0), X)},
                 {
-                    ConfidentMask(
-                        mask_key=MaskKey(
-                            mask_type=MaskHorizontal3Centered,
-                            pattern="X__",
-                            symbol="X",
+                    CompleteMask(
+                        rules=MaskRules(
+                            rows_above=0,
+                            rows_below=0,
+                            columns_left=1,
+                            columns_right=1,
                         ),
-                        prediction=-1.0,
+                        pattern="X__",
+                        symbol_to_place="X",
+                        match_symbol=None,
                     ),
                 },
                 {((9, 0), X), ((0, 0), X)},
-            ),
+            ],
         ],
     )
     def test_remove_failing_options_parametrized(
         self,
         possible_moves: set[tuple[tuple[int, int], str]],
-        failure_masks: set[ConfidentMask],
+        failure_masks: set[CompleteMask],
         expected: set[tuple[tuple[int, int], str]],
     ) -> None:
         grid = get_easy_grid()
