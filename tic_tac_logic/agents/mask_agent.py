@@ -5,7 +5,11 @@ from typing import Generator, TypedDict
 from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import StepResult, E, PLACEMENT_OPTIONS, Observation
 import logging
-from tic_tac_logic.agents.masks import CompleteMask, generate_pool_masks
+from tic_tac_logic.agents.masks import (
+    CompleteMask,
+    generate_pool_masks,
+    generate_all_patterns,
+)
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -46,7 +50,8 @@ def _elements_from_generator(
 class MaskManager:
     def __init__(self, masks: Generator[CompleteMask], debug: bool = False) -> None:
         self._masks = masks
-        self._current_masks = _elements_from_generator(masks, 1000)
+        self._current_masks: dict[str, list[CompleteMask]] = defaultdict(list)
+        self._add_masks(1000)
         self._iterations = 0
         self.q_table: QTable = {  # pyright: ignore[reportIncompatibleVariableOverride]
             "masks": {}
@@ -54,17 +59,20 @@ class MaskManager:
         self.count_rejected_masks = 0
         self.debug = debug
 
-    def get_masks(self) -> list[CompleteMask]:
-        """
-        Returns the current set of masks.
-        """
-        return self._current_masks
+    def _add_masks(self, count: int) -> None:
+        masks = _elements_from_generator(self._masks, count)
+        for mask in masks:
+            self._current_masks[mask.pattern].append(mask)
 
     def get_applicable_masks(
         self, cell: tuple[int, int], grid: list[list[str]], current: str
     ) -> list[CompleteMask]:
+        all_patterns = generate_all_patterns(cell, grid)
+        possible: list[CompleteMask] = []
+        for pattern in all_patterns:
+            possible.extend(self._current_masks.get(pattern, []))
         applicable: list[CompleteMask] = []
-        for mask in self._current_masks:
+        for mask in possible:
             if mask.mask_applies(cell, grid, current):
                 applicable.append(mask)
         return applicable
@@ -79,27 +87,24 @@ class MaskManager:
         Prunes the masks based on some criteria.
         For now, we just return the first 10 masks.
         """
-        new_current_masks: list[CompleteMask] = []
-        for mask, mask_result in self.q_table["masks"].items():
+        in_q_table = list(self.q_table["masks"].items())
+        for mask, mask_result in in_q_table:
             success_count = mask_result.success_count
             if success_count > 0:
                 if debug or self.debug:
                     print(f"   Mask {mask} has success count: {success_count} > 1.")
                 self.count_rejected_masks += 1
+                current_section = self._current_masks.get(mask.pattern, [])
+                without_mask = [m for m in current_section if m != mask]
+                self._current_masks[mask.pattern] = without_mask
+                del self.q_table["masks"][mask]
                 continue
-            new_current_masks.append(mask)
-        for mask in self._current_masks:
-            if mask not in self.q_table["masks"]:
-                new_current_masks.append(mask)
-
-        self._current_masks = new_current_masks
 
     def _prune_masks(self) -> None:
         self._prune_useless_masks()
         if self._masks:
             count_masks_to_add = max(100, 1000 - len(self._current_masks))
-            masks_to_add = _elements_from_generator(self._masks, count_masks_to_add)
-            self._current_masks.extend(masks_to_add)
+            self._add_masks(count_masks_to_add)
         print(f"Current masks: {len(self._current_masks)}")
 
     def trained_enough(self) -> bool:

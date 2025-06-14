@@ -240,5 +240,44 @@ def generate_pool_masks(
                     print_mask(next_masks[-1])
 
 
+def generate_all_patterns(
+    coordinate: tuple[int, int],
+    grid: list[list[str]],
+):
+    patterns: set[str] = set()
+    for rows_included in range(1, len(grid) + 1):
+        for columns_included in range(1, len(grid[0]) + 1):
+            for current_row in range(rows_included):
+                for current_column in range(columns_included):
+                    rows_above = current_row
+                    rows_below = rows_included - current_row - 1
+                    columns_left = current_column
+                    columns_right = columns_included - current_column - 1
+                    rules = MaskRules(
+                        rows_above=rows_above,
+                        rows_below=rows_below,
+                        columns_left=columns_left,
+                        columns_right=columns_right,
+                    )
+                    pattern = rules.get_pattern(coordinate, grid)
+                    if pattern:
+                        patterns.add(
+                            "".join(item for row in pattern for item in row).replace(
+                                " ", "_"
+                            )
+                        )
+                        patterns.add(
+                            "".join(item for row in pattern for item in row)
+                            .replace(" ", "_")
+                            .replace("X", "_")
+                        )
+                        patterns.add(
+                            "".join(item for row in pattern for item in row)
+                            .replace(" ", "_")
+                            .replace("O", "_")
+                        )
+    return patterns
+
+
 if __name__ == "__main__":
     masks = generate_pool_masks(2, 1, debug=True)

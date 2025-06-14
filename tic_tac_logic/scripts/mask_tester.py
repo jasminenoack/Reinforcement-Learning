@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Generator
 from tic_tac_logic.sample_grids import (
     get_testing_sample_grids,
 )
@@ -9,7 +10,7 @@ from tic_tac_logic.env.grid import Grid
 from tic_tac_logic.constants import O
 from tic_tac_logic.runner import print_grid
 import logging
-from tic_tac_logic.agents.masks import generate_pool_masks
+from tic_tac_logic.agents.masks import CompleteMask, generate_pool_masks
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -27,13 +28,29 @@ envs = [Grid(g.grid) for g in grids]
 rows = len(grids[0].grid)
 columns = len(grids[0].grid[0])
 
+
+def generate_masks() -> Generator[CompleteMask, None, None]:
+    row_masks = generate_pool_masks(rows=rows, columns=1)
+    while row_masks:
+        try:
+            yield next(row_masks)
+        except StopIteration:
+            break
+    column_masks = generate_pool_masks(rows=1, columns=columns)
+    while column_masks:
+        try:
+            yield next(column_masks)
+        except StopIteration:
+            break
+
+
 # all_masks = generate_pool_masks(rows=rows, columns=columns)
 # print(len(all_single_block_masks), "single block masks generated")
 
 # for mask in generate_pool_masks(3, 3):
 #     print(mask)
 
-agent = MaskAgent(rows, columns, masks=generate_pool_masks(3, 3))
+agent = MaskAgent(rows, columns, masks=generate_masks())
 rounds_of_attempts = 100
 
 
