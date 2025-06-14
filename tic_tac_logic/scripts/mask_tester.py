@@ -9,7 +9,6 @@ from tic_tac_logic.env.grid import Grid
 from tic_tac_logic.constants import O
 from tic_tac_logic.runner import print_grid
 import logging
-from tic_tac_logic.agents.masks import generate_pool_masks
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -27,13 +26,10 @@ envs = [Grid(g.grid) for g in grids]
 rows = len(grids[0].grid)
 columns = len(grids[0].grid[0])
 
-rows_masks = generate_pool_masks(rows=1, columns=columns)
-columns_masks = generate_pool_masks(rows=rows, columns=1)
-all_single_block_masks = rows_masks + columns_masks
 # all_masks = generate_pool_masks(rows=rows, columns=columns)
 # print(len(all_single_block_masks), "single block masks generated")
 
-agent = MaskAgent(rows, columns, masks=all_single_block_masks)
+agent = MaskAgent(rows, columns)
 rounds_of_attempts = 100
 
 
@@ -94,13 +90,12 @@ def mask_builder_view(agent: MaskAgent, envs: list[Grid]) -> None:
     x_placements: list[MaskInfo] = []
     o_placements: list[MaskInfo] = []
     for mask in q_table:
-        mask_type = mask.mask_type
         pattern = mask.pattern
-        symbol = mask.symbol
+        symbol = mask.symbol_to_place
         if symbol == O:
             o_placements.append(
                 MaskInfo(
-                    mask_type=mask_type.name,
+                    mask_type=mask.name,
                     pattern=pattern,
                     symbol=symbol,
                     counts=Counts(
@@ -112,7 +107,7 @@ def mask_builder_view(agent: MaskAgent, envs: list[Grid]) -> None:
         else:
             x_placements.append(
                 MaskInfo(
-                    mask_type=mask_type.name,
+                    mask_type=mask.name,
                     pattern=pattern,
                     symbol=symbol,
                     counts=Counts(

@@ -1,11 +1,11 @@
 from collections import defaultdict
 from dataclasses import dataclass
 import random
-from typing import TypedDict
+from typing import Generator, TypedDict
 from tic_tac_logic.agents.base_agent import Agent
 from tic_tac_logic.constants import StepResult, E, PLACEMENT_OPTIONS, Observation
 import logging
-from tic_tac_logic.agents.masks import AbstractMaskFactory, MaskKey, generate_pool_masks
+from tic_tac_logic.agents.masks import CompleteMask, generate_pool_masks
 
 logging.basicConfig(
     filename="tic_tac_logic/mask_agent.log",
@@ -17,117 +17,99 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class MaskResult:
-    mask: MaskKey
+    mask: CompleteMask
     failure_count: int
     success_count: int
 
 
-@dataclass(frozen=True)
-class ConfidentMask:
-    mask_key: MaskKey
-    # prediction is from  -1 for failure, 1 for success
-    prediction: float
-
-
 @dataclass
 class QTable(TypedDict):
-    masks: dict[MaskKey, MaskResult]
+    masks: dict[CompleteMask, MaskResult]
+
+
+def _elements_from_generator(
+    generator: Generator[CompleteMask], count: int
+) -> list[CompleteMask]:
+    """
+    Returns the first `count` elements from the generator.
+    If the generator has less than `count` elements, it returns all of them.
+    """
+    elements: list[CompleteMask] = []
+    for _ in range(count):
+        try:
+            elements.append(next(generator))
+        except StopIteration:
+            break
+    return elements
 
 
 class MaskManager:
-    def __init__(self, masks: list[AbstractMaskFactory]) -> None:
+    def __init__(self, masks: Generator[CompleteMask], debug: bool = False) -> None:
         self._masks = masks
-        self._current_masks = masks[:20]
-        self._masks = masks[20:]
+        self._current_masks = _elements_from_generator(masks, 1000)
         self._iterations = 0
         self.q_table: QTable = {  # pyright: ignore[reportIncompatibleVariableOverride]
             "masks": {}
         }
-        self.rejected_masks: list[AbstractMaskFactory] = []
+        self.count_rejected_masks = 0
+        self.debug = debug
 
-    def get_masks(self) -> list[AbstractMaskFactory]:
+    def get_masks(self) -> list[CompleteMask]:
         """
         Returns the current set of masks.
         """
         return self._current_masks
 
+    def get_applicable_masks(
+        self, cell: tuple[int, int], grid: list[list[str]], current: str
+    ) -> list[CompleteMask]:
+        masks = [
+            mask
+            for mask in self._current_masks
+            if mask.mask_applies(cell, grid, current)
+        ]
+        masks = [mask for mask in masks if mask]
+        return masks
+
     def iterate(self) -> None:
         self._iterations += 1
-        if self._iterations % 50 == 0:
+        if self._iterations % 10 == 0:
             self._prune_masks()
 
-    def _prune_useless_masks(self) -> None:
+    def _prune_useless_masks(self, debug: bool = False) -> None:
         """
         Prunes the masks based on some criteria.
         For now, we just return the first 10 masks.
         """
-        # print("Pruning masks...")
-        new_current_masks: list[AbstractMaskFactory] = []
-        q_table_keys_by_mask_type: dict[AbstractMaskFactory, list[MaskResult]] = (
-            defaultdict(list)
-        )
-        for key, result in self.q_table["masks"].items():
-            q_table_keys_by_mask_type[key.mask_type].append(result)
-        for mask in self._current_masks:
-            matches = q_table_keys_by_mask_type.get(mask, [])
-            # print(f"  Matches in Q-table: {len(matches)}")
-            """
-            Expected total =
-            # (places - 1) * 3 filters * 2 placement options
-            """
-            if mask.match_symbol:
-                num_filter_options = 2
-            else:
-                num_filter_options = 3
-            total_expected = (mask.total_cells() - 1) * num_filter_options * 2
-            if len(matches) < total_expected:
-                # print(
-                #     f"    Keeping mask {mask.name} with {len(matches)} matches expected {total_expected}."
-                # )
-                new_current_masks.append(mask)
+        new_current_masks: list[CompleteMask] = []
+        for mask, mask_result in self.q_table["masks"].items():
+            success_count = mask_result.success_count
+            if success_count > 1:
+                if debug or self.debug:
+                    print(
+                        f"   Mask {mask.name} has success count: {success_count} > 1."
+                    )
+                self.count_rejected_masks += 1
                 continue
-
-            results = [
-                (result.success_count, result.failure_count) for result in matches
-            ]
-            total_counts = [success + failure for success, failure in results]
-            if any(total < 25 for total in total_counts):
-                # print([total < 25 for total in total_counts], total_counts)
-                # print(
-                #     f"    Keeping mask {mask.name} with {len(matches)} matches, but not enough data {min(total_counts)} < 25."
-                # )
-                new_current_masks.append(mask)
-                continue
-
-            failure_rates = [
-                failure / (success + failure) if (success + failure) > 0 else 1.0
-                for success, failure in results
-            ]
-            if any(failure_rate > 0.7 for failure_rate in failure_rates):
-                # print(
-                #     f"    Keeping mask {mask.name} with {len(matches)} matches, failure rates: {failure_rates}"
-                # )
-                new_current_masks.append(mask)
-
-            # print(
-            #     f"    Removing Mask {mask.name} has {len(matches)} matches, failure rates: {failure_rates}"
-            # )
-            self.rejected_masks.append(mask)
+            new_current_masks.append(mask)
 
         self._current_masks = new_current_masks
 
     def _prune_masks(self) -> None:
         self._prune_useless_masks()
         if self._masks:
-            self._current_masks.append(self._masks.pop(0))
-        print(f"Current masks: {len(self._current_masks)}")
+            count_masks_to_add = max(100, 1000 - len(self._current_masks))
+            masks_to_add = _elements_from_generator(self._masks, count_masks_to_add)
+            self._current_masks.extend(masks_to_add)
+        if self.debug:
+            print(f"Current masks: {len(self._current_masks)}")
 
     def trained_enough(self) -> bool:
-        untrained_masks = len(self._masks)
+        # untrained_masks = len(self._masks)
         usable_masks = len(self._current_masks)
-        rejected_masks = len(self.rejected_masks)
+        rejected_masks = self.count_rejected_masks
         print(
-            f"Trained enough? Untrained: {untrained_masks}, Usable: {usable_masks}, Rejected: {rejected_masks}"
+            f"Trained enough? Untrained: Usable: {usable_masks}, Rejected: {rejected_masks}"
         )
 
         return not self._masks
@@ -140,12 +122,14 @@ class MaskAgent(Agent):
         self,
         rows: int,
         columns: int,
-        masks: list[AbstractMaskFactory] | None = None,
+        masks: Generator[CompleteMask] | None = None,
+        debug: bool = False,
     ) -> None:
         super().__init__(rows, columns)
         self.epsilon = 0.01
         self.mask_manager = MaskManager(
-            masks or generate_pool_masks(rows=self.rows, columns=self.columns)
+            masks
+            or generate_pool_masks(rows=self.rows, columns=self.columns, debug=debug)
         )
 
     @property
@@ -160,10 +144,6 @@ class MaskAgent(Agent):
     def q_table(self, value: QTable) -> None:
         self.mask_manager.q_table = value
 
-    @property
-    def masks(self) -> list[AbstractMaskFactory]:
-        return self.mask_manager.get_masks()
-
     def log(self, message: str) -> None:
         if self.explain:
             logger.info(message)
@@ -176,7 +156,7 @@ class MaskAgent(Agent):
             if grid[row_i][col_i] == E
         ]
 
-    def find_aggressive_failures(self) -> set[ConfidentMask]:
+    def find_aggressive_failures(self) -> set[CompleteMask]:
         """
         The goal here is to find cells that are particularly bad for the agent to place in.
         Basically, for us to decide that a mask is objectively bad we actually want to see that
@@ -186,37 +166,32 @@ class MaskAgent(Agent):
         There are some issues here if you use a single puzzle there could be a confounding factor.
         """
         q_table = self.q_table["masks"]
-        failures: set[ConfidentMask] = set()
-        for mask_key, mask_result in q_table.items():
+        failures: set[CompleteMask] = set()
+        for mask, mask_result in q_table.items():
             if mask_result.failure_count < 5:
                 continue
             if (
                 mask_result.success_count == 0
                 and mask_result.failure_count >= self.confidence_threshold
             ):
-                failures.add(
-                    ConfidentMask(
-                        mask_key=mask_key,
-                        prediction=-1.0,  # -1 for failure
-                    )
-                )
+                failures.add(mask)
         return failures
 
     def remove_failing_options(
         self,
         grid: list[list[str]],
         possible_moves: set[tuple[tuple[int, int], str]],
-        failure_masks: set[ConfidentMask],
+        failure_masks: set[CompleteMask],
     ):
         bad_moves: set[tuple[tuple[int, int], str]] = set()
         for move in possible_moves:
             cell, symbol = move
-            for mask in self.masks:
-                mask = mask.get_mask(cell, grid, current=symbol)
-                if (
-                    mask
-                    and ConfidentMask(mask_key=mask, prediction=-1) in failure_masks
-                ):
+            applicable_masks = self.mask_manager.get_applicable_masks(
+                cell, grid, current=symbol
+            )
+
+            for mask in applicable_masks:
+                if mask and mask in failure_masks:
                     bad_moves.add((cell, symbol))
                     break
 
@@ -281,18 +256,13 @@ class MaskAgent(Agent):
         return random_cell, random_symbol
 
     def learn(self, step_result: StepResult) -> None:
-        masks = self.masks
         assert step_result.pre_step_grid
-        masks = [
-            mask.get_mask(
-                step_result.coordinate, step_result.pre_step_grid, step_result.symbol
-            )
-            for mask in masks
-        ]
-        masks = set([mask for mask in masks if mask is not None])
+        applicable_masks = self.mask_manager.get_applicable_masks(
+            step_result.coordinate, step_result.pre_step_grid, step_result.symbol
+        )
         lost = step_result.loss_reason
         q_table = self.q_table["masks"]
-        for mask in masks:
+        for mask in applicable_masks:
             if mask not in q_table:
                 q_table[mask] = MaskResult(
                     mask=mask,

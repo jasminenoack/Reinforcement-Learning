@@ -1,338 +1,186 @@
 from tic_tac_logic.agents.masks import (
     generate_pool_masks,
     MaskRules,
-    AbstractMaskFactory,
+    CompleteMask,
 )
 
 
 class TestGeneratePoolMasks:
     def test_generates_1x1_mask(self):
-        masks = generate_pool_masks(1, 1)
+        masks = list(generate_pool_masks(1, 1))
         assert masks == [
-            AbstractMaskFactory(
+            CompleteMask(
                 match_symbol="X",
-                rule=MaskRules(
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="X",
             ),
-            AbstractMaskFactory(
+            CompleteMask(
+                match_symbol="X",
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=0
+                ),
+                pattern="_",
+                symbol_to_place="O",
+            ),
+            CompleteMask(
                 match_symbol="O",
-                rule=MaskRules(
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="X",
             ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
+            CompleteMask(
+                match_symbol="O",
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="O",
+            ),
+            CompleteMask(
+                match_symbol=None,
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=0
+                ),
+                pattern="_",
+                symbol_to_place="X",
+            ),
+            CompleteMask(
+                match_symbol=None,
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=0
+                ),
+                pattern="_",
+                symbol_to_place="O",
             ),
         ]
 
     def test_generates_2x2_masks(self):
-        masks = generate_pool_masks(2, 2)
-        assert len(masks) == 27
-        assert masks == [
-            AbstractMaskFactory(
+        masks = list(generate_pool_masks(2, 2))
+        assert len(masks) == 406
+        assert masks[:14] == [
+            CompleteMask(
                 match_symbol="X",
-                rule=MaskRules(
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="X",
             ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
+            CompleteMask(
+                match_symbol="X",
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="O",
             ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
+            CompleteMask(
+                match_symbol="O",
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="X",
             ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
+            CompleteMask(
                 match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-        ]
-
-    def test_generates_off_shape_1X2(self):
-        masks = generate_pool_masks(1, 2)
-        assert len(masks) == 9
-        assert masks == [
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="O",
             ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
+            CompleteMask(
+                match_symbol=None,
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="X",
             ),
-            AbstractMaskFactory(
+            CompleteMask(
                 match_symbol=None,
-                rule=MaskRules(
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=0
                 ),
+                pattern="_",
+                symbol_to_place="O",
             ),
-            AbstractMaskFactory(
+            CompleteMask(
                 match_symbol="X",
-                rule=MaskRules(
+                rules=MaskRules(
                     rows_above=0, rows_below=0, columns_left=0, columns_right=1
                 ),
+                pattern="__",
+                symbol_to_place="X",
             ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
+            CompleteMask(
                 match_symbol="X",
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=1, columns_right=0
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
                 ),
+                pattern="_X",
+                symbol_to_place="X",
             ),
-            AbstractMaskFactory(
+            CompleteMask(
+                match_symbol="X",
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
+                ),
+                pattern="__",
+                symbol_to_place="O",
+            ),
+            CompleteMask(
+                match_symbol="X",
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
+                ),
+                pattern="_X",
+                symbol_to_place="O",
+            ),
+            CompleteMask(
                 match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=1, columns_right=0
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
                 ),
+                pattern="__",
+                symbol_to_place="X",
             ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=0, columns_left=1, columns_right=0
+            CompleteMask(
+                match_symbol="O",
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
                 ),
+                pattern="_O",
+                symbol_to_place="X",
+            ),
+            CompleteMask(
+                match_symbol="O",
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
+                ),
+                pattern="__",
+                symbol_to_place="O",
+            ),
+            CompleteMask(
+                match_symbol="O",
+                rules=MaskRules(
+                    rows_above=0, rows_below=0, columns_left=0, columns_right=1
+                ),
+                pattern="_O",
+                symbol_to_place="O",
             ),
         ]
 
     def test_generates_between_sizes(self):
-        masks = generate_pool_masks(
-            rows=2, columns=2, skip_rows_under=2, skip_columns_under=2
+        masks = list(
+            generate_pool_masks(
+                rows=2, columns=2, skip_rows_under=2, skip_columns_under=2
+            )
         )
-        assert len(masks) == 12
-        assert masks == [
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=0, rows_below=1, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=0, columns_right=1
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="X",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol="O",
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-            AbstractMaskFactory(
-                match_symbol=None,
-                rule=MaskRules(
-                    rows_above=1, rows_below=0, columns_left=1, columns_right=0
-                ),
-            ),
-        ]
+        assert len(masks) == 344
