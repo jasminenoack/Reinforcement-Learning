@@ -17,7 +17,7 @@ from gridworld.runner import Runner
 
 console = Console()
 
-folder = f"output/gridworld-simple-comparison"
+folder = "output/gridworld-simple-comparison"
 output_file = f"{folder}/output.txt"
 if os.path.exists(folder):
     shutil.rmtree(folder)

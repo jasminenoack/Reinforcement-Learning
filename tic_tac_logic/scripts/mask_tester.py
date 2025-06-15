@@ -7,7 +7,6 @@ from tic_tac_logic.constants import Result
 from tic_tac_logic.agents.mask_agent import MaskAgent
 from tic_tac_logic.env.grid import Grid
 from tic_tac_logic.constants import O
-from tic_tac_logic.runner import print_grid
 import logging
 from tic_tac_logic.agents.masks import generate_pool_masks
 

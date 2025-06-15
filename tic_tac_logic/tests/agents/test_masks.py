@@ -1,11 +1,8 @@
-import pytest
 from tic_tac_logic.agents.masks import (
     generate_pool_masks,
     MaskRules,
     AbstractMask,
-    MaskKey,
 )
-from tic_tac_logic.constants import X, O, E
 
 
 class TestGeneratePoolMasks:
