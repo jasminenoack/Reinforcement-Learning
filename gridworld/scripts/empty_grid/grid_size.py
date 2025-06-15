@@ -5,7 +5,7 @@ import shutil
 from typing import Any
 from gridworld.agents.generic_agent import Agent
 from gridworld.agents.q_learning_agent import QLearningAgent
-from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
+from gridworld.components.grid_environment import GridWorldEnv
 from rich.console import Console
 from gridworld.utils import (
     line_plot,
@@ -15,7 +15,7 @@ from gridworld.runner import Runner
 
 console = Console()
 
-folder = f"output/gridworld-learning-by-grid-size"
+folder = "output/gridworld-learning-by-grid-size"
 output_file = f"{folder}/output.md"
 
 if os.path.exists(folder):
@@ -215,9 +215,9 @@ def write_cross_summary_charts(
         title="Avg Reward by grid size",
         x_label="Iterations",
         folder=folder,
-        filename=f"avg_reward",
+        filename="avg_reward",
     )
-    log(f"![avg_reward](./avg_reward.png)")
+    log("![avg_reward](./avg_reward.png)")
 
     line_plot(
         x_values=x_values,
@@ -225,9 +225,9 @@ def write_cross_summary_charts(
         title="Avg Steps by grid size",
         x_label="Iterations",
         folder=folder,
-        filename=f"avg_steps",
+        filename="avg_steps",
     )
-    log(f"![avg_steps](./avg_steps.png)")
+    log("![avg_steps](./avg_steps.png)")
 
     line_plot(
         x_values=x_values,
@@ -235,9 +235,9 @@ def write_cross_summary_charts(
         title="Reached Goal by grid size",
         x_label="Iterations",
         folder=folder,
-        filename=f"reached_goal",
+        filename="reached_goal",
     )
-    log(f"![reached_goal](./reached_goal.png)")
+    log("![reached_goal](./reached_goal.png)")
 
 
 summaries_by_grid_size = {

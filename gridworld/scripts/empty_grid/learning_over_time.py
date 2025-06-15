@@ -1,10 +1,8 @@
 from dataclasses import dataclass
-from functools import reduce
 from os import mkdir
 import os
 import shutil
 from typing import Any
-from gridworld.agents.generic_agent import Agent
 from gridworld.agents.q_learning_agent import QLearningAgent
 from gridworld.components.grid_environment import GridWorldEnv, VisitCounter
 from rich.console import Console
@@ -17,7 +15,7 @@ from gridworld.runner import Runner
 
 console = Console()
 
-folder = f"output/gridworld-learning-history"
+folder = "output/gridworld-learning-history"
 output_file = f"{folder}/output.md"
 
 if os.path.exists(folder):
@@ -137,7 +135,7 @@ def write_summary_charts(summaries: list[Summary]) -> None:
         folder=folder,
         filename="avg_reward",
     )
-    log(f"![avg_reward](./avg_reward.png)")
+    log("![avg_reward](./avg_reward.png)")
     line_plot(
         x_values=x_values,
         y_values={
@@ -150,7 +148,7 @@ def write_summary_charts(summaries: list[Summary]) -> None:
         folder=folder,
         filename="avg_steps",
     )
-    log(f"![avg_steps](./avg_steps.png)")
+    log("![avg_steps](./avg_steps.png)")
     line_plot(
         x_values=x_values,
         y_values={
@@ -162,7 +160,7 @@ def write_summary_charts(summaries: list[Summary]) -> None:
         folder=folder,
         filename="reached_goal",
     )
-    log(f"![reached_goal](./reached_goal.png)")
+    log("![reached_goal](./reached_goal.png)")
 
 
 env = GridWorldEnv(rows=10, cols=10)

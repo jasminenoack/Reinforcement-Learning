@@ -138,7 +138,7 @@ class Runner:
 
 
 if __name__ == "__main__":
-    folder = f"output/runner-main"
+    folder = "output/runner-main"
     output_file = f"{folder}/output.txt"
     if os.path.exists(folder):
         shutil.rmtree(folder)

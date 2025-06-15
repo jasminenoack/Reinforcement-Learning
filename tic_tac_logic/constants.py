@@ -3,7 +3,7 @@ from typing import Any
 
 
 X = "X"
-O = "O"
+O = "O"  # noqa: E741 - single-letter constant for TicTacToe "O"
 E = " "
 
 PLACEMENT_OPTIONS = [X, O]

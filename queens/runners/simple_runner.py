@@ -4,21 +4,8 @@ import random
 from time import sleep
 from typing import Any
 from queens.agents.generic_agent import Agent
-from queens.agents.random_agent import (
-    RandomAgent,  # type: ignore
-    RandomAgentAlsoByColumn,  # type: ignore
-    RandomAgentByRow,  # type: ignore
-)
 from queens.agents.reinforcement_agents import (
-    DynamicEpsilonAgent,  # type: ignore
-    SimpleAgentHighAlpha,  # type: ignore
-    SimpleAgentHighEpsilon,  # type: ignore
-    SimpleAgentMidAlpha,  # type: ignore
-    SimpleAgentMidEpsilon,  # type: ignore
-    SimpleAgentNoEpsilon,  # type: ignore
-    SimpleRandomReinforcementAgent,  # type: ignore
     DecayFailingPaths,  # type: ignore
-    SimpleReinforcementAgent,  # type: ignore
 )
 from queens.components.grid import (
     Grid,
@@ -126,7 +113,7 @@ class Runner:
 
 if __name__ == "__main__":
     size = 8
-    folder = f"output/queens"
+    folder = "output/queens"
     output_file = f"{folder}/output.txt"
     if os.path.exists(folder):
         shutil.rmtree(folder)

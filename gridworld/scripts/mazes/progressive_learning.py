@@ -18,7 +18,7 @@ from gridworld.runner import Runner
 console = Console()
 
 
-folder = f"output/progressive"
+folder = "output/progressive"
 output_file = f"{folder}/output.md"
 if os.path.exists(folder):
     shutil.rmtree(folder)
@@ -164,7 +164,7 @@ def write_multiple_summary_charts(
         folder=folder,
         filename="all_avg_reward",
     )
-    log(f"![all_avg_reward](./all_avg_reward.png)")
+    log("![all_avg_reward](./all_avg_reward.png)")
 
     line_plot(
         x_values=x_values,
@@ -174,7 +174,7 @@ def write_multiple_summary_charts(
         folder=folder,
         filename="all_avg_steps",
     )
-    log(f"![all_avg_steps](./all_avg_steps.png)")
+    log("![all_avg_steps](./all_avg_steps.png)")
 
     line_plot(
         x_values=x_values,
@@ -184,7 +184,7 @@ def write_multiple_summary_charts(
         folder=folder,
         filename="all_reached_goal",
     )
-    log(f"![all_reached_goal](./all_reached_goal.png)")
+    log("![all_reached_goal](./all_reached_goal.png)")
 
 
 OF_ENV = 3
